@@ -24,7 +24,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--yellow-background);
-            color: var(--text-on-yellow); /* Título principal sobre fondo amarillo */
+            color: var(--text-on-yellow);
         }
 
         /* Aplica color de fondo NEGRO y texto BLANCO a los paneles principales */
@@ -119,11 +119,12 @@
     <!-- Mensaje de Notificación para Compartir -->
     <div id="toastMessage" class="hidden">¡Enlace copiado!</div>
 
-    <!-- LOGO PLACEHOLDER -->
+    <!-- LOGO ACTUALIZADO: logo-blindaje.jpg -->
     <div class="mb-4 w-full max-w-xl flex justify-center">
-        <img src="https://placehold.co/150x50/000000/ffffff?text=MB+LOGO" 
-             alt="Logo Movimiento Blindaje" 
-             class="h-12 object-contain rounded-md shadow-lg">
+        <!-- Se usa la imagen subida por el usuario -->
+        <img src="logo-blindaje.jpg" 
+            alt="Logo Movimiento Blindaje" 
+            class="h-12 object-contain rounded-md shadow-lg">
     </div>
 
     <!-- Título de la Aplicación (sobre fondo amarillo, por lo tanto texto oscuro) -->
@@ -131,17 +132,20 @@
         Apocalipsis: Estudios Bíblicos
     </h1>
 
+    <!-- ID de Usuario (Para depuración de Firestore) -->
+    <p id="userIdDisplay" class="text-xs text-text-on-yellow mb-4">ID de usuario: Cargando...</p>
+
     <div class="w-full max-w-xl flex flex-col gap-6">
 
         <!-- Panel del Reproductor Principal (Tarjeta Negra, Texto Blanco) -->
         <div id="playerPanel" class="bg-card-bg rounded-xl p-6 card-shadow text-text-on-card">
             
             <div class="flex flex-col items-center">
-                <!-- Portada / Ilustración -->
+                <!-- Portada / Ilustración (Se actualizará dinámicamente) -->
                 <img id="currentCover" 
-                     src="https://placehold.co/240x240/059669/ffffff?text=APOCALIPSIS" 
-                     alt="Portada del Audio"
-                     class="w-48 h-48 rounded-xl mb-6 shadow-xl object-cover ring-4 ring-primary">
+                    src="" 
+                    alt="Portada del Audio"
+                    class="w-48 h-48 rounded-xl mb-6 shadow-xl object-cover ring-4 ring-primary">
                 
                 <!-- Información de la Pista (Texto Blanco/Gris Claro) -->
                 <p id="currentSpeaker" class="text-sm font-semibold text-secondary-text-on-card mb-1">Cargando...</p>
@@ -189,10 +193,9 @@
                     </button>
                 </div>
 
-                <!-- Botón de Compartir (Nuevo) -->
+                <!-- Botón de Compartir -->
                 <div class="flex justify-center mt-2">
                     <button id="shareButton" class="flex items-center space-x-2 px-6 py-2 bg-gray-700 text-white font-semibold rounded-full hover:bg-gray-600 transition duration-150 active:scale-95">
-                         <!-- Icono de Compartir (Lucide-react SVG) -->
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share-2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
                         <span>Compartir Audio</span>
                     </button>
@@ -214,6 +217,22 @@
 
     <!-- Scripts de Funcionalidad -->
     <script type="module">
+        // Importaciones de Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // Configuración de Firebase y Autenticación
+        setLogLevel('Debug');
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'audio-player-devotional';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db;
+        let auth;
+        let userId = null;
+        const playerStatePath = 'player_state'; // Nombre de la colección privada
+        
         // Lista de URLs para los estudios del Libro de Apocalipsis
         const newUrls = [
             "https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%201%201%20al%205.mp3",
@@ -244,6 +263,7 @@
 
             if (match) {
                 const [, chapter, startVerse, endVerse] = match;
+                // Devolver el título con formato de rango de versos
                 return `${index + 1}. Apocalipsis ${chapter}:${startVerse}-${endVerse}`;
             }
             
@@ -251,15 +271,30 @@
             return `${index + 1}. Pista de Audio ${index + 1}`;
         };
 
+        // Función para generar una URL de miniatura dinámica
+        const generateCoverUrl = (title) => {
+            // Ejemplo: Extrae el número de capítulo para usarlo en la miniatura
+            const chapterMatch = title.match(/Apocalipsis\s+(\d+)/);
+            const chapter = chapterMatch ? chapterMatch[1] : 'TEMA';
+            
+            // Usa placehold.co con el número de capítulo en el texto
+            // Se usa el color primario (Deep Emerald) como fondo para mantener la estética
+            return `https://placehold.co/192x192/${'059669'}/${'ffffff'}?text=CAP%20${chapter}`;
+        };
+
         // Generar la lista de reproducción con datos simulados
-        const devocionales = newUrls.map((url, index) => ({
-            id: index + 1,
-            title: generateTitleFromUrl(url, index),
-            speaker: "Movimiento Blindaje",
-            duration: "--:--", 
-            url: url,
-            cover: `https://placehold.co/192x192/059669/ffffff?text=AP${index + 1}`
-        }));
+        const devocionales = newUrls.map((url, index) => {
+            const title = generateTitleFromUrl(url, index);
+            return {
+                id: index + 1,
+                title: title,
+                speaker: "Movimiento Blindaje",
+                duration: "--:--", 
+                url: url,
+                // Llama a la nueva función para obtener la miniatura basada en el título
+                cover: generateCoverUrl(title)
+            };
+        });
 
         // Variables Globales
         const audioPlayer = document.getElementById('audioPlayer');
@@ -279,14 +314,154 @@
         const currentSpeaker = document.getElementById('currentSpeaker');
         const currentCover = document.getElementById('currentCover');
         const playlistContainer = document.getElementById('playlistContainer');
+        const userIdDisplay = document.getElementById('userIdDisplay');
 
         let currentTrackIndex = 0;
         let isPlaying = false;
+
+        // --- Funciones de Persistencia (Firestore) ---
+
+        // Función para limitar la frecuencia de guardado
+        function throttle(fn, delay) {
+            let lastCall = 0;
+            return function (...args) {
+                const now = (new Date()).getTime();
+                if (now - lastCall < delay) {
+                    return;
+                }
+                lastCall = now;
+                fn.apply(this, args);
+            };
+        }
+
+        // Obtener la referencia al documento de estado del reproductor
+        function getPlayerStateDocRef() {
+            if (!db || !userId) return null;
+            // Path: /artifacts/{appId}/users/{userId}/player_state/current_state
+            return doc(db, 'artifacts', appId, 'users', userId, playerStatePath, 'current_state');
+        }
+
+        // Guardar el estado del reproductor en Firestore (limitado a cada 5 segundos)
+        const savePlayerStateThrottled = throttle(async () => {
+            if (!db || !userId) return;
+
+            try {
+                const docRef = getPlayerStateDocRef();
+                const state = {
+                    trackIndex: currentTrackIndex,
+                    currentTime: audioPlayer.currentTime,
+                    isPlaying: isPlaying && !audioPlayer.paused, // Solo True si realmente está reproduciendo
+                    timestamp: new Date()
+                };
+                await setDoc(docRef, state, { merge: true });
+                console.debug("Player state saved:", state);
+            } catch (e) {
+                console.error("Error saving player state:", e);
+            }
+        }, 5000); // Guardar cada 5 segundos
+
+        // Cargar el estado del reproductor desde Firestore
+        async function loadPlayerState() {
+            if (!db || !userId) {
+                // Si no hay persistencia, carga la pista 0
+                loadTrack(0);
+                return;
+            }
+
+            try {
+                const docRef = getPlayerStateDocRef();
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const state = docSnap.data();
+                    console.log("Loaded state:", state);
+
+                    currentTrackIndex = state.trackIndex || 0;
+                    const savedTime = state.currentTime || 0;
+                    const wasPlaying = state.isPlaying || false;
+
+                    // 1. Cargar la pista
+                    loadTrack(currentTrackIndex);
+                    
+                    // 2. Esperar a que los metadatos estén listos para buscar
+                    audioPlayer.addEventListener('loadedmetadata', function seekAndPlay() {
+                        // Eliminar este listener para que no se ejecute en cargas posteriores
+                        audioPlayer.removeEventListener('loadedmetadata', seekAndPlay);
+
+                        if (savedTime > 0) {
+                            audioPlayer.currentTime = savedTime;
+                            
+                            // Actualizar la interfaz de usuario de inmediato
+                            const duration = audioPlayer.duration;
+                            progressBar.max = duration;
+                            progressBar.value = savedTime;
+                            currentTimeDisplay.textContent = formatTime(savedTime);
+                            const percent = (savedTime / duration) * 100;
+                            progressBar.style.background = `linear-gradient(to right, var(--primary-light) ${percent}%, #444444 ${percent}%)`;
+                        }
+
+                        // 3. Intentar reanudar la reproducción si estaba activo
+                        if (wasPlaying) {
+                            isPlaying = true; // Establecer bandera
+                            updatePlayPauseIcon();
+                            audioPlayer.play().catch(e => {
+                                console.warn("Autoplay blocked. User must click play.", e);
+                                isPlaying = false; // Restablecer bandera si el navegador lo bloquea
+                                updatePlayPauseIcon();
+                            });
+                        } else {
+                            isPlaying = false;
+                            updatePlayPauseIcon();
+                        }
+                    }, { once: true });
+                    
+                } else {
+                    console.log("No previous player state found. Loading track 0.");
+                    loadTrack(0);
+                }
+            } catch (e) {
+                console.error("Error loading player state:", e);
+                loadTrack(0); // Fallback
+            }
+        }
+
+
+        // Inicialización de Firebase
+        async function initFirebase() {
+            if (!firebaseConfig) {
+                console.error("Firebase config not available. Persistence disabled.");
+                userIdDisplay.textContent = "ID de usuario: N/A (Persistencia Desactivada)";
+                loadTrack(0);
+                return;
+            }
+
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            
+            try {
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                userId = auth.currentUser.uid;
+                userIdDisplay.textContent = `ID de usuario: ${userId}`;
+                
+                await loadPlayerState();
+
+            } catch (error) {
+                console.error("Firebase Auth failed:", error);
+                userIdDisplay.textContent = `ID de usuario: Error de autenticación`;
+                loadTrack(0); // Carga predeterminada si la autenticación falla
+            }
+        }
 
         // --- Funciones de Utilidad ---
 
         // Convierte segundos a formato MM:SS
         function formatTime(seconds) {
+            if (isNaN(seconds) || seconds < 0) return '--:--';
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = Math.floor(seconds % 60);
             return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
@@ -305,65 +480,56 @@
 
         // Copia texto al portapapeles (usando execCommand como fallback seguro)
         function copyToClipboard(text) {
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(text)
-                    .then(() => showToast('¡Enlace copiado al portapapeles!'))
-                    .catch(err => console.error('Error al copiar (API):', err));
-            } else {
-                // Fallback para entornos no seguros (como iframes)
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                textarea.style.position = 'fixed'; // Evita el desplazamiento
-                document.body.appendChild(textarea);
-                textarea.focus();
-                textarea.select();
-                try {
-                    document.execCommand('copy');
-                    showToast('¡Enlace copiado al portapapeles!');
-                } catch (err) {
-                    console.error('Error al copiar (execCommand):', err);
-                    showToast('Error al copiar el enlace.');
-                }
-                document.body.removeChild(textarea);
-            }
+             const textarea = document.createElement('textarea');
+             textarea.value = text;
+             textarea.style.position = 'fixed'; 
+             document.body.appendChild(textarea);
+             textarea.focus();
+             textarea.select();
+             try {
+                 document.execCommand('copy');
+                 showToast('¡Enlace copiado al portapapeles!');
+             } catch (err) {
+                 console.error('Error al copiar el enlace:', err);
+                 showToast('Error al copiar el enlace.');
+             }
+             document.body.removeChild(textarea);
         }
 
         // --- Funciones del Reproductor ---
 
         // Carga una pista en el reproductor
         function loadTrack(index) {
-            if (index < 0 || index >= devocionales.length) {
-                index = 0;
+            if (devocionales.length === 0) return;
+
+            // Asegura que el índice esté dentro del rango
+            index = index % devocionales.length;
+            if (index < 0) {
+                index = devocionales.length - 1;
             }
+            
             currentTrackIndex = index;
             const track = devocionales[currentTrackIndex];
 
-            audioPlayer.src = track.url;
+            // Cargar la nueva fuente si es diferente
+            if (audioPlayer.src !== track.url) {
+                audioPlayer.src = track.url;
+                audioPlayer.load(); // Cargar la pista
+            }
+            
+            // Actualizar UI
             currentTitle.textContent = track.title;
             currentSpeaker.textContent = track.speaker;
+            // *** ACTUALIZACIÓN CLAVE: Usar la miniatura generada ***
             currentCover.src = track.cover;
 
-            // Restablecer el estado
+            // Restablecer el estado visual (los tiempos se actualizarán con 'loadedmetadata')
             progressBar.value = 0;
             currentTimeDisplay.textContent = '0:00';
             durationDisplay.textContent = track.duration || '--:--';
 
             updatePlaylistHighlight();
-            
-            if (devocionales.length > 0) {
-                audioPlayer.load();
-            }
-
-            // Intenta reproducir si estaba reproduciendo antes
-            if (isPlaying) {
-                setTimeout(() => {
-                    audioPlayer.play().catch(e => {
-                        console.warn("Error al intentar reproducir automáticamente:", e);
-                        isPlaying = false;
-                        updatePlayPauseIcon();
-                    });
-                }, 50);
-            }
+            savePlayerStateThrottled(); // Guardar el cambio de pista
         }
 
         // Alterna entre Reproducir y Pausar
@@ -375,8 +541,7 @@
                     console.error("Error al reproducir el audio:", e);
                 });
             }
-            isPlaying = !isPlaying;
-            updatePlayPauseIcon();
+            // isPlaying se actualiza mediante los eventos 'play'/'pause' del audioPlayer
         }
 
         // Actualiza el icono de Reproducir/Pausar
@@ -393,7 +558,8 @@
 
         // Salta a la pista siguiente
         function nextTrack() {
-            loadTrack((currentTrackIndex + 1) % devocionales.length);
+            loadTrack((currentTrackIndex + 1));
+            // Si no estaba reproduciendo, intenta iniciar la reproducción
             if (!isPlaying) {
                 isPlaying = true;
                 updatePlayPauseIcon();
@@ -402,7 +568,8 @@
 
         // Salta a la pista anterior
         function prevTrack() {
-            loadTrack((currentTrackIndex - 1 + devocionales.length) % devocionales.length);
+            loadTrack(currentTrackIndex - 1);
+            // Si no estaba reproduciendo, intenta iniciar la reproducción
             if (!isPlaying) {
                 isPlaying = true;
                 updatePlayPauseIcon();
@@ -415,6 +582,7 @@
                 audioPlayer.currentTime = Math.max(0, Math.min(audioPlayer.duration, audioPlayer.currentTime + seconds));
                 // Forzar actualización de la barra y el tiempo
                 audioPlayer.dispatchEvent(new Event('timeupdate')); 
+                savePlayerStateThrottled();
             }
         }
 
@@ -436,23 +604,47 @@
                     item.classList.remove('hover:bg-gray-800');
                 }
             });
+            
+            // Actualizar iconos de Play/Pausa en la lista
+            document.querySelectorAll('.play-indicator').forEach((indicator, index) => {
+                const isCurrent = index === currentTrackIndex;
+                const shouldShow = isCurrent && isPlaying;
+                indicator.style.display = shouldShow ? 'block' : 'none';
+                
+                // Si está reproduciendo, el ícono debería ser de Pausa, si está pausado, de Play
+                indicator.innerHTML = isPlaying 
+                    ? `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>` // Pausa
+                    : `<svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"></path></svg>`; // Play
+            });
+
         }
 
         // Renderiza la lista de reproducción
         function renderPlaylist() {
             playlistContainer.innerHTML = devocionales.map((track, index) => `
                 <div id="track-${track.id}" data-index="${index}"
-                     class="playlist-item flex items-center p-3 rounded-lg cursor-pointer transition duration-150 border border-transparent"
-                     data-url="${track.url}">
-                    <!-- Portada Pequeña -->
-                    <img src="${track.cover}" alt="Cover" class="w-10 h-10 rounded-full mr-3 object-cover border-2 border-primary/50">
+                    class="playlist-item flex items-center p-3 rounded-lg cursor-pointer transition duration-150 border border-transparent"
+                    data-url="${track.url}">
+                    
+                    <!-- Contenedor de Minatura e Indicador (Circular) -->
+                    <div class="relative w-10 h-10 flex items-center justify-center mr-3 flex-shrink-0">
+                        <!-- Imagen de la miniatura -->
+                        <img src="${track.cover}" alt="Cover ${track.id}" class="w-10 h-10 rounded-full object-cover border-2 border-primary/50 opacity-70">
+                        
+                        <!-- Overlay para el Indicador de Play/Pausa -->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black/30 rounded-full">
+                             <!-- El ícono se actualiza en updatePlaylistHighlight -->
+                             <span class="text-white play-indicator" style="display: none;"></span>
+                        </div>
+                    </div>
+
                     <!-- Título e Info -->
                     <div class="flex-grow min-w-0">
                         <p class="text-sm font-semibold truncate text-text-on-card">${track.title}</p>
                         <p class="text-xs text-secondary-text-on-card">${track.speaker}</p>
                     </div>
                     <!-- Duración (ID para actualización) -->
-                    <span id="duration-${track.id}" class="text-sm text-secondary-text-on-card ml-4">${track.duration}</span>
+                    <span id="duration-${track.id}" class="text-sm text-secondary-text-on-card ml-4 flex-shrink-0">${track.duration}</span>
                 </div>
             `).join('');
 
@@ -468,13 +660,15 @@
                         isPlaying = true; 
                         updatePlayPauseIcon();
                         audioPlayer.play().catch(e => {
-                            console.warn("Error al reproducir el audio después de cambiar de pista:", e);
+                            console.warn("Error al reproducir el audio después de cambiar de pista (Autoplay):", e);
                             isPlaying = false; 
                             updatePlayPauseIcon();
                         });
                     }
                 });
             });
+            // Una vez renderizada, asegúrate de que el estado visual esté correcto
+            updatePlaylistHighlight();
         }
 
         // --- Event Listeners ---
@@ -483,11 +677,9 @@
         nextButton.addEventListener('click', nextTrack);
         prevButton.addEventListener('click', prevTrack);
         
-        // Nuevos Event Listeners para salto rápido
         jumpBackButton.addEventListener('click', () => jump(-5));
         jumpForwardButton.addEventListener('click', () => jump(5));
 
-        // Nuevo Event Listener para compartir
         shareButton.addEventListener('click', () => {
             const currentUrl = devocionales[currentTrackIndex].url;
             copyToClipboard(currentUrl);
@@ -510,34 +702,44 @@
         // Evento de "tiempo actualizado" para la barra de progreso
         audioPlayer.addEventListener('timeupdate', () => {
             if (!audioPlayer.seeking) {
-                progressBar.value = audioPlayer.currentTime;
-                currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+                const currentTime = audioPlayer.currentTime;
+                progressBar.value = currentTime;
+                currentTimeDisplay.textContent = formatTime(currentTime);
                 
                 // Actualiza el relleno de la barra para que se vea el progreso
-                const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                const percent = (currentTime / audioPlayer.duration) * 100;
                 progressBar.style.background = `linear-gradient(to right, var(--primary-light) ${percent}%, #444444 ${percent}%)`;
+
+                savePlayerStateThrottled();
             }
         });
 
         // Evento de "cambio de progreso" por arrastre del usuario
         progressBar.addEventListener('input', () => {
+            // Actualización visual en tiempo real mientras el usuario arrastra
             currentTimeDisplay.textContent = formatTime(progressBar.value);
             const percent = (progressBar.value / progressBar.max) * 100;
             progressBar.style.background = `linear-gradient(to right, var(--primary-light) ${percent}%, #444444 ${percent}%)`;
         });
 
         progressBar.addEventListener('change', () => {
+            // Cambio real en el audio
             audioPlayer.currentTime = progressBar.value;
+            savePlayerStateThrottled();
         });
 
         // Evento de "pista terminada"
         audioPlayer.addEventListener('ended', () => {
+            // Guardar estado final de la pista anterior (currentTime = duration)
+            savePlayerStateThrottled.apply(this);
+
             isPlaying = false;
             updatePlayPauseIcon();
             
             if (currentTrackIndex < devocionales.length - 1) {
-                 nextTrack(); 
+                nextTrack(); 
             } else {
+                // Volver a la primera pista (sin reproducir automáticamente)
                 loadTrack(0);
                 isPlaying = false;
                 updatePlayPauseIcon();
@@ -548,17 +750,34 @@
         audioPlayer.addEventListener('play', () => {
             isPlaying = true;
             updatePlayPauseIcon();
+            updatePlaylistHighlight(); // Actualizar icono en la lista
         });
         audioPlayer.addEventListener('pause', () => {
             isPlaying = false;
             updatePlayPauseIcon();
+            savePlayerStateThrottled.apply(this); // Guardar posición al pausar
+            updatePlaylistHighlight(); // Actualizar icono en la lista
         });
 
-        // --- Inicialización ---
+        // Manejo de errores de carga (p. ej., URL no disponible)
+        audioPlayer.addEventListener('error', (e) => {
+            console.error("Error al cargar o reproducir el audio:", audioPlayer.error, e);
+            showToast("Error: No se pudo cargar el audio. Intentando pista siguiente...");
+            isPlaying = false;
+            updatePlayPauseIcon();
+            // Intenta cargar la siguiente pista después de un breve retraso
+            setTimeout(() => {
+                if (currentTrackIndex < devocionales.length - 1) {
+                    nextTrack();
+                }
+            }, 3000);
+        });
+
+        // --- Inicialización Principal ---
 
         window.onload = () => {
             renderPlaylist();
-            loadTrack(0); // Carga la primera pista
+            initFirebase(); // Inicia Firebase, que a su vez llama a loadPlayerState o loadTrack(0)
         };
 
     </script>
