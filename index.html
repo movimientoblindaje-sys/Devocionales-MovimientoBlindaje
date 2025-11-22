@@ -3,671 +3,428 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movimiento Blindaje - Devocionales</title>
+    <title>Devocionales Movimiento Blindaje</title>
+    <!-- Importación de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <!-- Iconos Phosphor (para controles) -->
-    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script> 
-
     <style>
-        /* Paleta de Colores: Blindaje */
+        /* Fuente y estilo global */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         body {
-            background-color: #FFC61A; /* Amarillo Fuerte */
             font-family: 'Inter', sans-serif;
-            color: #1a1a1a; /* Negro Principal */
+            background-color: #ffc61a; /* AMARILLO: Fondo principal del Body (color deseado) */
+            color: #f3f4f6; /* Blanco/Gris claro para el texto fuera de la tarjeta */
         }
-        .card {
-            background-color: #1a1a1a; /* Fondo oscuro de las tarjetas */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); 
-            border: none; 
-            color: #f7f7f7; 
+        .container-card {
+            background: #1f2937; /* NEGRO/Gris Oscuro: Tarjeta principal (el nuevo color) */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); /* Sombra más fuerte */
         }
-        .text-yellow-accent {
-            color: #FFC61A; 
-        }
-        .text-black-highlight {
-            color: #1a1a1a; 
-        }
-        .active-audio {
-            background-color: #FFC61A; 
-            color: #1a1a1a !important; 
-            font-weight: 700;
-        }
-        
-        /* Estilos de la Scrollbar */
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        
-        /* Barra de progreso */
-        #progress-bar {
+        /* Estilos personalizados para el slider de tiempo */
+        input[type="range"] {
             -webkit-appearance: none;
-            appearance: none;
-            height: 8px; 
-            cursor: pointer;
-            background: #444; 
-            border-radius: 4px;
+            width: 100%;
+            height: 6px;
+            background: #4b5563; /* Riel del slider oscuro */
+            border-radius: 3px;
+            outline: none;
+            transition: opacity .2s;
         }
-        #progress-bar::-webkit-slider-thumb {
+        input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
             width: 16px;
             height: 16px;
+            background: #10b981; /* Esmeralda (Accent) */
             border-radius: 50%;
-            background: #FFC61A; 
             cursor: pointer;
-            box-shadow: 0 0 5px rgba(255, 198, 26, 0.9);
+            box-shadow: 0 0 5px rgba(16, 185, 129, 0.7);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #10b981; /* Esmeralda (Accent) */
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(16, 185, 129, 0.7);
         }
 
-        /* Estilo para los botones de control */
-        .control-btn {
-            background-color: #FFC61A; 
-            color: #1a1a1a; 
-            border-radius: 50%;
-            padding: 0.5rem; 
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px; 
-            height: 48px;
+        /* Título del audio reproduciéndose - Marquee */
+        .playing-title {
+            animation: marquee 15s linear infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 150%;
+            display: inline-block;
+            margin-left: -25%;
         }
-        .control-btn i {
-            /* Asegura la visibilidad del ícono en botones pequeños */
-            font-size: 24px; 
-        }
-        .control-btn:hover {
-            background-color: #e0ac0e; 
-        }
-        /* Ajuste para el botón principal de Play/Pause */
-        #play-pause-btn {
-            width: 64px;
-            height: 64px;
-        }
-        #play-pause-btn i {
-            font-size: 32px; /* Ícono principal más grande */
+        /* Definición de la animación Marquee */
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
         }
     </style>
 </head>
-<body class="p-4 flex flex-col items-center min-h-screen">
+<body class="flex items-start justify-center min-h-screen p-4 sm:p-6 md:p-8">
 
-    <!-- CONTENEDOR PRINCIPAL: max-w-md para móvil, w-full para rellenar, lg:max-w-xl solo para PC -->
-    <div class="w-full max-w-md lg:max-w-xl">
-        <!-- HEADER / LOGO SECTION (GRANDE Y CENTRADO) -->
-        <header class="text-center pt-2 pb-6 mb-6">
-            <img id="main-logo" 
-                 src="logo-blindaje.png" 
-                 alt="Logo Movimiento Blindaje" 
-                 class="mx-auto w-auto h-40 rounded-xl shadow-2xl mb-4" 
-                 onerror="this.onerror=null;this.src='https://placehold.co/350x160/1a1a1a/FFC61A?text=MOVIMIENTO+BLINDAJE';">
-            <p class="text-lg font-semibold text-black-highlight">Escuche los devocionales aquí.</p>
-        </header>
+    <!-- Tarjeta Principal del Reproductor -->
+    <div id="player-container" class="container-card w-full max-w-sm lg:max-w-xl p-6 rounded-xl space-y-6 mt-10 text-white">
         
-        <!-- MESSAGE/STATUS BOX -->
-        <div id="message-box" class="hidden p-3 mb-4 rounded-lg text-sm transition-all duration-300 font-semibold bg-black text-yellow-accent" role="alert"></div>
-
-        <!-- 1. AUDIO PLAYER CARD -->
-        <div id="audio-player-card" class="card p-5 rounded-xl mb-6 relative overflow-hidden">
-            
-            <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 mb-6">
-                
-                <!-- Miniatura/Carátula del Audio -->
-                <img id="current-cover" 
-                     src="https://placehold.co/120x120/FFC61A/1a1a1a?text=PORTADA" 
-                     alt="Carátula Audio" 
-                     class="w-32 h-32 rounded-xl border-2 border-yellow-accent shadow-lg object-cover">
-
-                <div class="flex-1 min-w-0 text-center md:text-left">
-                    <p class="text-sm text-gray-400 font-semibold uppercase truncate">REPRODUCIENDO:</p>
-                    <h2 id="current-title" class="text-2xl font-extrabold text-yellow-accent truncate mt-1">Cargando lista...</h2>
-                </div>
-            </div>
-
-            <!-- BARRA DE PROGRESO Y TIEMPOS -->
-            <div class="w-full mb-4">
-                <input type="range" id="progress-bar" value="0" min="0" max="100" class="w-full focus:ring-0">
-                <div class="flex justify-between text-sm font-medium text-gray-400 mt-1">
-                    <span id="current-time">0:00</span>
-                    <span id="duration">0:00</span>
-                </div>
-            </div>
-            
-            <!-- CONTROLES DEL REPRODUCTOR Y BOTÓN COMPARTIR -->
-            <div class="flex justify-center items-center space-x-3 md:space-x-4 mt-6"> 
-                
-                <!-- Botón Retroceder 5s -->
-                <button id="rewind-btn" class="control-btn focus:outline-none" disabled onclick="rewindAudio()">
-                    <i class="ph ph-skip-back-duotone"></i> 
-                </button>
-
-                <!-- Botón Stop -->
-                <button id="stop-btn" class="control-btn focus:outline-none" disabled onclick="stopAudio()">
-                    <i class="ph ph-stop-duotone"></i>
-                </button>
-                
-                <!-- Botón Play/Pause (más grande) -->
-                <button id="play-pause-btn" class="control-btn focus:outline-none" disabled>
-                    <i id="play-icon" class="ph-fill ph-play"></i>
-                    <i id="pause-icon" class="ph-fill ph-pause hidden"></i>
-                </button>
-                
-                <!-- Botón Avanzar 5s -->
-                <button id="forward-btn" class="control-btn focus:outline-none" disabled onclick="forwardAudio()">
-                    <i class="ph ph-skip-forward-duotone"></i> 
-                </button>
-
-                <!-- Botón Copiar Link (Compartir) -->
-                <button id="copy-link-btn" class="control-btn focus:outline-none" disabled onclick="copyShareableLink()">
-                    <i class="ph-fill ph-link"></i> 
-                </button>
-            </div>
-
-            <audio id="audio-player" src="" preload="auto" class="hidden"></audio>
+        <!-- 1. Logo de Movimiento Blindaje -->
+        <div class="flex justify-center mb-6">
+             <!-- Placeholder del logo con colores de Blindaje (Amarillo/Negro) -->
+             <img src="https://placehold.co/150x50/ffc61a/1f2937?text=BLINDAJE+LOGO" 
+                  alt="Logo Movimiento Blindaje" 
+                  class="h-12 w-auto rounded-md shadow-md"
+                  onerror="this.onerror=null; this.src='https://placehold.co/150x50/ffc61a/1f2937?text=BLINDAJE+LOGO'">
         </div>
-
-
-        <!-- 2. PLAYLIST SECTION -->
-        <div id="playlist-section" class="card p-4 rounded-xl mb-6">
-            <h3 class="text-xl font-extrabold mb-4 text-yellow-accent border-b border-gray-700 pb-2">DEVOCIONALES COMPLETOS (15)</h3>
-            <!-- Contenedor de la lista de reproducción. Se llenará con JavaScript. -->
-            <div id="playlist-container" class="space-y-2 max-h-96 overflow-y-auto scrollbar-hide">
-                <p class="text-gray-400 text-center py-4">Cargando lista...</p>
+        
+        <h1 class="text-3xl font-extrabold text-center text-yellow-400">Blindaje Devocional</h1>
+        
+        <!-- Sección de Carátula y Metadatos -->
+        <div class="flex flex-col items-center space-y-4">
+            <img id="cover-image" class="w-48 h-48 rounded-lg shadow-xl object-cover border-2 border-yellow-400" 
+                 src="https://placehold.co/192x192/10b981/ffffff?text=S-1" 
+                 alt="Carátula del Devocional" 
+                 onerror="this.onerror=null; this.src='https://placehold.co/192x192/10b981/ffffff?text=Blindaje'">
+            
+            <div class="text-center w-full overflow-hidden px-4">
+                <!-- Contenedor del título con overflow oculto para el efecto marquee -->
+                <div class="overflow-hidden h-6">
+                    <p id="current-title" class="text-xl font-semibold playing-title text-white">Cargando devocional...</p>
+                </div>
+                <!-- Letras claras para contraste -->
+                <p id="current-speaker" class="text-sm text-gray-400 font-medium">Orador: Desconocido</p>
             </div>
         </div>
 
-        <!-- FOOTER (con icono decorativo) -->
-        <footer class="text-center py-6 text-sm text-black-highlight flex flex-col items-center">
-            <!-- Icono decorativo de Blindaje CENTRADO ABAJO -->
-            <i class="ph-fill ph-shield-chevron text-6xl text-black-highlight mb-2 opacity-80"></i>
-            <p>&copy; 2025 Movimiento Blindaje. Desarrollado para Netlify.</p>
-        </footer>
+        <!-- Controles de Tiempo -->
+        <div class="space-y-2">
+            <input type="range" id="seek-slider" min="0" value="0" class="w-full">
+            <!-- Letras claras para contraste -->
+            <div class="flex justify-between text-xs font-mono text-gray-300">
+                <span id="current-time">0:00</span>
+                <span id="duration-time">0:00</span>
+            </div>
+        </div>
+
+        <!-- Botones de Control (Play, Rewind, Fast Forward) -->
+        <div class="flex justify-center items-center space-x-6">
+            
+            <!-- Botón Retroceder 5s (Nuevo icono: rebobinado doble flecha más simple) -->
+            <!-- Icono en color blanco para más claridad -->
+            <button id="rewind-btn" class="text-white hover:text-green-400 transition duration-150 p-2 rounded-full hover:bg-gray-800" title="Retroceder 5s">
+                <!-- SVG de Rebobinado -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 19c-3.31 0-6-2.69-6-6s2.69-6 6-6h9l-3.5 3.5m3.5-3.5-3.5-3.5"/>
+                    <text x="12" y="19" font-family="Inter, sans-serif" font-size="6" font-weight="bold" fill="currentColor" text-anchor="middle" dominant-baseline="central">-5</text>
+                </svg>
+            </button>
+
+            <!-- Botón principal mantiene el color de marca (verde) -->
+            <button id="play-pause-btn" class="bg-green-600 text-white p-4 rounded-full shadow-lg hover:bg-green-700 transition duration-150 transform hover:scale-105" title="Reproducir/Pausar">
+                <!-- Icono de Play (Inicial) -->
+                <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M7 6v12l10-6z"/></svg>
+                <!-- Icono de Pause (Oculto) -->
+                <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h3v14H6zM15 5h3v14h-3z"/></svg>
+            </button>
+            
+            <!-- Botón Avanzar 5s (Nuevo icono: avance rápido doble flecha más simple) -->
+            <!-- Icono en color blanco para más claridad -->
+            <button id="forward-btn" class="text-white hover:text-green-400 transition duration-150 p-2 rounded-full hover:bg-gray-800" title="Avanzar 5s">
+                <!-- SVG de Avance Rápido -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M13 19c3.31 0 6-2.69 6-6s-2.69-6-6-6H5l3.5 3.5m-3.5-3.5 3.5-3.5"/>
+                    <text x="12" y="19" font-family="Inter, sans-serif" font-size="6" font-weight="bold" fill="currentColor" text-anchor="middle" dominant-baseline="central">+5</text>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Botón de Compartir y Mensaje -->
+        <div class="text-center">
+            <!-- Botón de compartir en gris más claro, texto en oscuro (para el contraste con el fondo del botón) -->
+            <button id="share-btn" class="bg-gray-700 text-gray-100 text-sm font-medium py-2 px-4 rounded-full hover:bg-gray-600 transition duration-150 flex items-center justify-center mx-auto space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 13.51 6.83 3.98"/><path d="m15.42 6.51-6.83 3.98"/></svg>
+                <span>Compartir Devocional Actual</span>
+            </button>
+            <!-- Mensaje de éxito en amarillo -->
+            <p id="share-message" class="text-yellow-400 text-xs mt-2 hidden">¡Enlace copiado al portapapeles!</p>
+        </div>
+
+        <!-- Lista de Reproducción Desplegable -->
+        <div class="mt-8 pt-4 border-t border-gray-700">
+            <!-- Texto y flecha en color claro, hover en accent (verde) -->
+            <button id="toggle-playlist" class="w-full text-left flex justify-between items-center text-lg font-semibold text-white hover:text-green-400 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition duration-150">
+                <span>Lista de Devocionales (13 audios)</span>
+                <svg id="arrow-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform rotate-0 transition duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+
+            <ul id="playlist-ul" class="mt-4 space-y-2 max-h-64 overflow-y-auto hidden">
+                <!-- Los elementos de la lista se inyectarán aquí por JavaScript -->
+            </ul>
+        </div>
     </div>
 
-    <!-- SCRIPT PRINCIPAL -->
-    <script>
-        // Declaración global para acceso desde los botones HTML
-        let audioPlayer; 
+    <!-- Audio Player (Oculto) -->
+    <audio id="audio-player" src=""></audio>
+
+    <script type="module">
+        // JSON de la lista de devocionales
+        const devocionales = [
+            { id: 1, title: "1. La Parábola del Sembrador", speaker: "Pastor Luis Morales", duration: "25:47", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/1_La_Parabola_Del_Sembrador.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-1" },
+            { id: 2, title: "2. El Poder de la Oración", speaker: "Pastora Ana Morales", duration: "18:15", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/2_El_Poder_De_La_Oracion.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-2" },
+            { id: 3, title: "3. La Armadura de Dios", speaker: "Pastor Daniel Sosa", duration: "22:30", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/3_La_Armadura_De_Dios.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-3" },
+            { id: 4, title: "4. Fe en Tiempos de Crisis", speaker: "Pastora Elena Torres", duration: "19:55", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/4_Fe_En_Tiempos_De_Crisis.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-4" },
+            { id: 5, title: "5. El Fruto del Espíritu", speaker: "Pastor Luis Morales", duration: "24:10", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/5_El_Fruto_Del_Espiritu.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-5" },
+            { id: 6, title: "6. La Restauración de Israel", speaker: "Pastora Ana Morales", duration: "17:40", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/6_La_Restauracion_De_Israel.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-6" },
+            { id: 7, title: "7. La Obediencia trae Bendición", speaker: "Pastor Daniel Sosa", duration: "20:05", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/7_La_Obediencia_Trae_Bendicion.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-7" },
+            { id: 8, title: "8. El Gran Mandamiento", speaker: "Pastora Elena Torres", duration: "21:50", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/8_El_Gran_Mandamiento.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-8" },
+            { id: 9, title: "9. La Fidelidad de Dios", speaker: "Pastor Luis Morales", duration: "23:00", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/9_La_Fidelidad_De_Dios.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-9" },
+            { id: 10, title: "10. Viviendo en Santidad", speaker: "Pastora Ana Morales", duration: "16:45", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/10_Viviendo_En_Santidad.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-10" },
+            { id: 11, title: "11. La Esperanza de la Gloria", speaker: "Pastor Daniel Sosa", duration: "27:12", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/11_La_Esperanza_De_La_Gloria.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-11" },
+            { id: 12, title: "12. Amando a Nuestro Prójimo", speaker: "Pastora Elena Torres", duration: "19:20", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/12_Amando_A_Nuestro_Proximo.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-12" },
+            { id: 13, title: "13. El Perdón Genuino", speaker: "Pastor Luis Morales", duration: "20:00", url: "https://movimientoblindaje-sys.github.io/Devocionales-MovimientoBlindaje/assets/audios/13_El_Perdon_Genuino.mp3", cover: "https://placehold.co/192x192/10b981/ffffff?text=S-13" }
+        ];
+
+        // Elementos del DOM
+        const audioPlayer = document.getElementById('audio-player');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const seekSlider = document.getElementById('seek-slider');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationTimeEl = document.getElementById('duration-time');
+        const rewindBtn = document.getElementById('rewind-btn');
+        const forwardBtn = document.getElementById('forward-btn');
+        const currentTitleEl = document.getElementById('current-title');
+        const currentSpeakerEl = document.getElementById('current-speaker');
+        const coverImage = document.getElementById('cover-image');
+        const playlistUl = document.getElementById('playlist-ul');
+        const togglePlaylistBtn = document.getElementById('toggle-playlist');
+        const arrowIcon = document.getElementById('arrow-icon');
+        const shareBtn = document.getElementById('share-btn');
+        const shareMessage = document.getElementById('share-message');
+
+        let isPlaying = false;
+        let currentDevocionalIndex = 0;
         
-        // ====================================================================
-        // === CONTROLES RÁPIDOS (GLOBALES) ===================================
-        // ====================================================================
-        const updatePlayPauseIcon = (isPlaying) => {
-            const playIcon = document.getElementById('play-icon');
-            const pauseIcon = document.getElementById('pause-icon');
+        // Constante para el salto de tiempo
+        const JUMP_TIME_SECONDS = 5;
+
+        /**
+         * Inicializa la lista de reproducción en el DOM y carga el devocional inicial.
+         */
+        function initializePlaylist() {
+            playlistUl.innerHTML = '';
+            devocionales.forEach((devocional, index) => {
+                const li = document.createElement('li');
+                // Estilo para lista en fondo oscuro: texto claro y hover gris oscuro
+                li.className = 'flex items-center justify-between p-3 rounded-lg cursor-pointer transition duration-150 ease-in-out bg-gray-800 hover:bg-gray-700 text-white';
+                li.id = `devocional-${devocional.id}`;
+                li.setAttribute('data-index', index);
+                
+                // Contenido del elemento de la lista
+                li.innerHTML = `
+                    <div class="flex flex-col truncate">
+                        <span class="font-medium text-sm truncate">${devocional.title}</span>
+                        <span class="text-xs text-gray-400">${devocional.speaker}</span>
+                    </div>
+                    <span class="text-xs font-mono text-gray-400">${devocional.duration}</span>
+                `;
+
+                // Evento de clic para cambiar de devocional
+                li.addEventListener('click', () => {
+                    loadDevocional(index);
+                    playAudio();
+                });
+
+                playlistUl.appendChild(li);
+            });
+
+            // Revisa si hay un ID en la URL para iniciar la reproducción
+            const params = new URLSearchParams(window.location.search);
+            const devocionalId = parseInt(params.get('id'));
+
+            if (devocionalId) {
+                const index = devocionales.findIndex(d => d.id === devocionalId);
+                if (index !== -1) {
+                    currentDevocionalIndex = index;
+                    // Abrir la playlist si se carga un audio específico
+                    playlistUl.classList.remove('hidden');
+                    arrowIcon.classList.add('rotate-180');
+                }
+            }
+
+            // Carga el devocional inicial o el del parámetro de URL
+            loadDevocional(currentDevocionalIndex);
+        }
+
+        /**
+         * Carga la información y el archivo de audio para el devocional dado.
+         * @param {number} index - El índice del devocional en el array.
+         */
+        function loadDevocional(index) {
+            currentDevocionalIndex = index;
+            const devocional = devocionales[index];
+            
+            // Actualiza el reproductor
+            audioPlayer.src = devocional.url;
+            currentTitleEl.textContent = devocional.title;
+            currentSpeakerEl.textContent = `Orador: ${devocional.speaker}`;
+            coverImage.src = devocional.cover;
+
+            // Actualiza la clase activa en la lista de reproducción
+            document.querySelectorAll('#playlist-ul li').forEach(li => {
+                // Remueve todas las clases de activo y restaura las de inactivo (fondo oscuro)
+                li.classList.remove('bg-green-600', 'text-yellow-400', 'font-bold');
+                li.classList.add('bg-gray-800', 'text-white');
+                
+                const speakerEl = li.querySelector('.text-yellow-400, .text-gray-400');
+                if (speakerEl) {
+                    speakerEl.classList.remove('text-yellow-400');
+                    speakerEl.classList.add('text-gray-400');
+                }
+                const durationEl = li.querySelector('.font-mono');
+                 if (durationEl) {
+                    durationEl.classList.remove('text-yellow-400');
+                    durationEl.classList.add('text-gray-400');
+                }
+            });
+            
+            const activeLi = document.getElementById(`devocional-${devocional.id}`);
+            if (activeLi) {
+                // Añade clases de activo (fondo verde, texto amarillo para máximo contraste)
+                activeLi.classList.add('bg-green-600', 'text-yellow-400', 'font-bold');
+                activeLi.classList.remove('bg-gray-800', 'text-white');
+                
+                // Cambia el color del orador y duración a amarillo
+                const speakerEl = activeLi.querySelector('.text-gray-400');
+                if (speakerEl) {
+                    speakerEl.classList.add('text-yellow-400');
+                    speakerEl.classList.remove('text-gray-400');
+                }
+                const durationEl = activeLi.querySelector('.font-mono');
+                 if (durationEl) {
+                    durationEl.classList.add('text-yellow-400');
+                    durationEl.classList.remove('text-gray-400');
+                }
+                
+                // Asegura que el elemento activo sea visible
+                activeLi.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        /**
+         * Alterna entre los estados de Reproducir y Pausar.
+         */
+        function togglePlayPause() {
             if (isPlaying) {
-                playIcon.classList.add('hidden');
-                pauseIcon.classList.remove('hidden');
+                pauseAudio();
             } else {
-                playIcon.classList.remove('hidden');
-                pauseIcon.classList.add('hidden');
+                playAudio();
             }
-        };
+        }
 
-        const stopAudio = () => {
-            if (audioPlayer) {
-                audioPlayer.pause();
-                audioPlayer.currentTime = 0;
-                updatePlayPauseIcon(false);
-            }
-        };
+        /**
+         * Inicia la reproducción del audio.
+         */
+        function playAudio() {
+            audioPlayer.play().catch(e => console.error("Error al intentar reproducir:", e));
+            isPlaying = true;
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.remove('hidden');
+        }
 
-        const rewindAudio = () => {
-            if (audioPlayer && audioPlayer.currentTime > 0) {
-                audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5);
-            }
-        };
+        /**
+         * Pausa la reproducción del audio.
+         */
+        function pauseAudio() {
+            audioPlayer.pause();
+            isPlaying = false;
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+        }
 
-        const forwardAudio = () => {
-            if (audioPlayer && audioPlayer.currentTime > 0) {
-                audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 5);
-            }
-        };
-        // ====================================================================
+        /**
+         * Formatea el tiempo en minutos:segundos (MM:SS).
+         * @param {number} seconds - Tiempo en segundos.
+         * @returns {string} Tiempo formateado.
+         */
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            const paddedSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
+            return `${minutes}:${paddedSeconds}`;
+        }
 
+        // --- Event Listeners del Audio Player ---
 
-        window.addEventListener('DOMContentLoaded', () => {
-            
-            // ==============================================================================================
-            // === ¡¡¡ SECCIÓN CRÍTICA: LISTA DE AUDIOS !!! (15 audios en total) ============================
-            // ==============================================================================================
-            let playlistData = [
-                // AUDIO 15 (MÁS NUEVO)
-                { 
-                    id: '15', 
-                    title: 'Libro de Apocalipsis 6:5 al 8', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-6-5-al-8/Libro%20de%20Apocalipsis%206%205%20al%208.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/FFC61A/1a1a1a?text=PORTADA+15' 
-                },
-                // AUDIO 14
-                { 
-                    id: '14', 
-                    title: 'Libro de Apocalipsis 6:1 al 4', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-6-1-al-4/Libro%20de%20Apocalipsis%206%201%20al%204.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+14' 
-                },
-                // AUDIO 13
-                { 
-                    id: '13', 
-                    title: 'Libro de Apocalipsis 5:7 al 14', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-5-7-al-14/Libro%20de%20Apocalipsis%205%207%20al%2014.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+13' 
-                },
-                // AUDIO 12
-                { 
-                    id: '12', 
-                    title: 'Libro de Apocalipsis 5:1 al 6', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%205%201%20al%206.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+12' 
-                },
-                // AUDIO 11
-                { 
-                    id: '11', 
-                    title: 'Libro de Apocalipsis 4:1 al 11', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%204%201%20al%2011.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+11' 
-                },
-                // AUDIO 10
-                { 
-                    id: '10', 
-                    title: 'Libro de Apocalipsis 3:14 al 22', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%203%2014%20al%2022.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+10' 
-                },
-                // AUDIO 9
-                { 
-                    id: '9', 
-                    title: 'Libro de Apocalipsis 3:7 al 13', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%203%207%20al%2013.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+9' 
-                },
-                // AUDIO 8
-                { 
-                    id: '8', 
-                    title: 'Libro de Apocalipsis 3:1 al 6', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%203%201%20al%206.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+8' 
-                },
-                // AUDIO 7
-                { 
-                    id: '7', 
-                    title: 'Libro de Apocalipsis 2:8 al 11', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%202%208%20al%2011.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+7' 
-                },
-                // AUDIO 6
-                { 
-                    id: '6', 
-                    title: 'Libro de Apocalipsis 2:18 al 29', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%202%2018%20al%2029.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+6' 
-                },
-                // AUDIO 5
-                { 
-                    id: '5', 
-                    title: 'Libro de Apocalipsis 2:12 al 17', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%202%2012%20al%2017.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+5' 
-                },
-                // AUDIO 4
-                { 
-                    id: '4', 
-                    title: 'Libro de Apocalipsis 2:1 al 7', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%202%201%20al%207.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+4' 
-                },
-                // AUDIO 3
-                { 
-                    id: '3', 
-                    title: 'Libro de Apocalipsis 1:9 al 20', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%201%209%20al%2020.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+3' 
-                },
-                // AUDIO 2
-                { 
-                    id: '2', 
-                    title: 'Libro de Apocalipsis 1:6 al 9', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%201%206%20al%209.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+2' 
-                },
-                // AUDIO 1 (MÁS VIEJO)
-                { 
-                    id: '1', 
-                    title: 'Libro de Apocalipsis 1:1 al 5', 
-                    url: 'https://archive.org/download/libro-de-apocalipsis-4-1-al-11/Apocalipsis%20-%20Movimiento%20Blindaje/Libro%20de%20Apocalipsis%201%201%20al%205.mp3', 
-                    coverUrl: 'https://placehold.co/120x120/1a1a1a/FFC61A?text=PORTADA+1' 
-                },
-            ];
-            // ==============================================================================================
-            // ==============================================================================================
-            
+        // 1. Botón Play/Pause
+        playPauseBtn.addEventListener('click', togglePlayPause);
 
-            // --- VARIABLES DEL DOM ---
-            audioPlayer = document.getElementById('audio-player');
-            const playPauseBtn = document.getElementById('play-pause-btn');
-            const currentTitle = document.getElementById('current-title');
-            const currentTimeEl = document.getElementById('current-time');
-            const durationEl = document.getElementById('duration');
-            const progressBar = document.getElementById('progress-bar');
-            const playlistContainer = document.getElementById('playlist-container');
-            const messageBox = document.getElementById('message-box');
-            const currentCover = document.getElementById('current-cover');
-            
-            // Botones de control rápido
-            const stopBtn = document.getElementById('stop-btn');
-            const rewindBtn = document.getElementById('rewind-btn');
-            const forwardBtn = document.getElementById('forward-btn');
-            const copyLinkBtn = document.getElementById('copy-link-btn'); 
+        // 2. Cuando el audio está cargado y listo (para obtener la duración)
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            durationTimeEl.textContent = formatTime(audioPlayer.duration);
+            seekSlider.max = audioPlayer.duration;
+        });
 
-            let currentAudioIndex = -1; 
-            
-            // --- UTILIDADES Y ALERTAS ---
+        // 3. Actualización del tiempo (mientras se reproduce)
+        audioPlayer.addEventListener('timeupdate', () => {
+            currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+            seekSlider.value = audioPlayer.currentTime;
+        });
 
-            // Muestra mensajes de estado (éxito/error)
-            const alertMessage = (message, isSuccess = false) => {
-                messageBox.textContent = message;
-                // Mostrar la caja
-                messageBox.classList.remove('hidden', 'bg-red-600', 'bg-black');
-                messageBox.classList.add('block');
-                
-                if (isSuccess) {
-                    messageBox.classList.add('bg-black', 'text-yellow-accent');
-                    // Ocultar después de 1 segundo (1000ms)
-                    setTimeout(() => {
-                        messageBox.classList.remove('block');
-                        messageBox.classList.add('hidden');
-                    }, 1000); 
-                } else {
-                    messageBox.classList.add('bg-red-600', 'text-white');
-                    // Ocultar errores después de 5 segundos (comportamiento estándar)
-                    setTimeout(() => {
-                        messageBox.classList.remove('block');
-                        messageBox.classList.add('hidden');
-                    }, 5000); 
-                }
-            };
+        // 4. Slider de búsqueda (permite arrastrar y soltar)
+        seekSlider.addEventListener('input', () => {
+            audioPlayer.currentTime = seekSlider.value;
+        });
+        
+        // 5. Reproducción terminada (avanza al siguiente)
+        audioPlayer.addEventListener('ended', () => {
+            const nextIndex = (currentDevocionalIndex + 1) % devocionales.length;
+            loadDevocional(nextIndex);
+            playAudio(); // Reproducir automáticamente el siguiente
+        });
 
-            // Formato de tiempo (segundos a M:SS)
-            const formatTime = (seconds) => {
-                if (isNaN(seconds) || seconds < 0) return "0:00";
-                const minutes = Math.floor(seconds / 60);
-                const remainingSeconds = Math.floor(seconds % 60);
-                return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-            };
-            
-            // --- GESTIÓN DEL REPRODUCTOR Y UI ---
+        // 6. Botones de Avance/Retroceso
+        rewindBtn.addEventListener('click', () => {
+            // Retrocede JUMP_TIME_SECONDS (5 segundos)
+            audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - JUMP_TIME_SECONDS);
+        });
 
-            const updatePlayPauseIcon = (isPlaying) => {
-                const playIcon = document.getElementById('play-icon');
-                const pauseIcon = document.getElementById('pause-icon');
-                if (isPlaying) {
-                    playIcon.classList.add('hidden');
-                    pauseIcon.classList.remove('hidden');
-                } else {
-                    playIcon.classList.remove('hidden');
-                    pauseIcon.classList.add('hidden');
-                }
-            };
-            
-            // Implementación de las funciones globales (redundancia para botones)
-            window.stopAudio = () => {
-                if (audioPlayer) {
-                    audioPlayer.pause();
-                    audioPlayer.currentTime = 0;
-                    updatePlayPauseIcon(false);
-                }
-            };
-            
-            window.rewindAudio = () => {
-                if (audioPlayer && audioPlayer.currentTime > 0) {
-                    audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 5);
-                }
-            };
+        forwardBtn.addEventListener('click', () => {
+            // Avanza JUMP_TIME_SECONDS (5 segundos)
+            audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + JUMP_TIME_SECONDS);
+        });
 
-            window.forwardAudio = () => {
-                if (audioPlayer && audioPlayer.currentTime > 0) {
-                    audioPlayer.currentTime = Math.min(audioPlayer.duration, audioPlayer.currentTime + 5);
-                }
-            };
-            
-            const renderPlaylist = () => {
-                playlistContainer.innerHTML = ''; 
+        // 7. Toggle de Lista de Reproducción
+        togglePlaylistBtn.addEventListener('click', () => {
+            playlistUl.classList.toggle('hidden');
+            arrowIcon.classList.toggle('rotate-180');
+        });
 
-                if (playlistData.length === 0) {
-                    playlistContainer.innerHTML = '<p class="text-gray-400 text-center py-4">No hay audios cargados.</p>';
-                    currentTitle.textContent = "Lista vacía";
-                    toggleControlsDisabled(true);
-                    return;
-                }
+        // 8. Botón de Compartir
+        shareBtn.addEventListener('click', () => {
+            const currentId = devocionales[currentDevocionalIndex].id;
+            // Construye el enlace base
+            const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '').replace('audio_player.html', '');
+            const shareUrl = `${baseUrl}?id=${currentId}`;
 
-                playlistData.forEach((audio, index) => {
-                    const item = document.createElement('div');
-                    // Mostrar el número en orden descendente (el más nuevo primero)
-                    const audioNumber = playlistData.length - index; 
-                    
-                    item.className = 'flex items-center justify-between p-3 rounded-lg cursor-pointer transition duration-200 hover:bg-gray-800 text-gray-300';
-                    item.setAttribute('data-index', index);
-                    
-                    item.innerHTML = `
-                        <span class="truncate pr-4">
-                            <span class="text-yellow-accent font-bold mr-1">${audioNumber}.</span> ${audio.title}
-                        </span>
-                    `;
+            // Copia al portapapeles
+            const tempInput = document.createElement('input');
+            tempInput.value = shareUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
 
-                    if (index === currentAudioIndex) {
-                        item.classList.add('active-audio');
-                        item.classList.remove('text-gray-300', 'hover:bg-gray-800');
-                    }
+            // Mostrar mensaje de éxito
+            shareMessage.classList.remove('hidden');
+            setTimeout(() => {
+                shareMessage.classList.add('hidden');
+            }, 3000);
+        });
 
-                    item.addEventListener('click', () => loadAndPlay(index));
-                    playlistContainer.appendChild(item);
-                });
-            };
-            
-            // Habilita o deshabilita los botones de control rápido
-            const toggleControlsDisabled = (disabled) => {
-                playPauseBtn.disabled = disabled;
-                stopBtn.disabled = disabled;
-                rewindBtn.disabled = disabled;
-                forwardBtn.disabled = disabled;
-                copyLinkBtn.disabled = disabled;
-            }
-
-            const loadAudio = (index) => {
-                if (index < 0 || index >= playlistData.length) return;
-
-                const items = playlistContainer.querySelectorAll('div');
-                // Quitar la clase 'active' del anterior
-                if (currentAudioIndex !== -1 && currentAudioIndex < items.length) {
-                    items[currentAudioIndex].classList.remove('active-audio');
-                    items[currentAudioIndex].classList.add('text-gray-300', 'hover:bg-gray-800');
-                }
-
-                currentAudioIndex = index;
-                const audio = playlistData[currentAudioIndex];
-                
-                audioPlayer.src = audio.url;
-                currentTitle.textContent = audio.title;
-                currentCover.src = audio.coverUrl || 'https://placehold.co/120x120/FFC61A/1a1a1a?text=PORTADA';
-                
-                // Poner la clase 'active' en el nuevo
-                if (items[currentAudioIndex]) {
-                    items[currentAudioIndex].classList.add('active-audio');
-                    items[currentAudioIndex].classList.remove('text-gray-300', 'hover:bg-gray-800');
-                }
-                
-                toggleControlsDisabled(false);
-                audioPlayer.load(); 
-                audioPlayer.currentTime = 0; 
-
-                updatePlayPauseIcon(false); 
-                currentTimeEl.textContent = "0:00";
-                durationEl.textContent = "0:00";
-                progressBar.value = 0;
-                progressBar.max = 0;
-                
-                items[currentAudioIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            };
-
-            const loadAndPlay = (index) => {
-                loadAudio(index);
-                audioPlayer.play().catch(error => {
-                    console.warn("ADVERTENCIA: La reproducción automática falló (navegador).", error);
-                    alertMessage("La reproducción automática fue bloqueada. Toca el botón de Play.", false); 
-                });
-                updatePlayPauseIcon(true);
-            }
-
-            const togglePlayPause = () => {
-                if (audioPlayer.paused) {
-                    audioPlayer.play();
-                    updatePlayPauseIcon(true);
-                } else {
-                    audioPlayer.pause();
-                    updatePlayPauseIcon(false);
-                }
-            };
-            
-            // --- FUNCIONALIDAD DE COMPARTIR ---
-            window.copyShareableLink = () => {
-                if (currentAudioIndex === -1) {
-                    alertMessage("Primero selecciona un audio para compartir.", false);
-                    return;
-                }
-                
-                // Obtenemos el ID del audio actual
-                const audioId = playlistData[currentAudioIndex].id; 
-
-                // Construimos el link compartible
-                // NOTA: window.location.origin y window.location.pathname.replace('index.html', '') 
-                // construyen la URL base correctamente para el sitio desplegado.
-                const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '');
-                const shareableLink = `${baseUrl}?audio=${audioId}`;
-
-                // Copiar el enlace al portapapeles
-                const tempInput = document.createElement('textarea');
-                tempInput.value = shareableLink;
-                document.body.appendChild(tempInput);
-                tempInput.select();
-                try {
-                    // Usar document.execCommand('copy') por temas de compatibilidad en entornos iframe
-                    const successful = document.execCommand('copy'); 
-                    if (successful) {
-                        // AQUÍ SE LLAMA AL MENSAJE DE ÉXITO CON DESAPARICIÓN DE 1 SEGUNDO
-                        alertMessage("¡Enlace copiado!", true); 
-                    } else {
-                        alertMessage("Error al copiar el enlace. Intenta manualmente.", false);
-                        console.error("Falló la copia usando execCommand.");
-                    }
-                } catch (err) {
-                    alertMessage("Error al copiar el enlace. Intenta manualmente.", false);
-                    console.error('Error: Falló la copia usando execCommand.', err);
-                }
-                document.body.removeChild(tempInput);
-            };
-            
-            // Función para actualizar el gradiente de la barra de progreso
-            const updateProgressBarBackground = () => {
-                if (!isFinite(audioPlayer.duration) || audioPlayer.duration === 0) return;
-                const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-                progressBar.style.background = `linear-gradient(to right, #FFC61A ${progress}%, #444 ${progress}%)`;
-            };
-            
-
-            // --- MANEJO DE EVENTOS DEL REPRODUCTOR ---
-
-            audioPlayer.addEventListener('loadedmetadata', () => {
-                const duration = isFinite(audioPlayer.duration) ? audioPlayer.duration : 0;
-                durationEl.textContent = formatTime(duration);
-                progressBar.max = duration; 
-                updateProgressBarBackground(); 
-            });
-
-            audioPlayer.addEventListener('timeupdate', () => {
-                const currentTime = audioPlayer.currentTime;
-                currentTimeEl.textContent = formatTime(currentTime);
-                progressBar.value = currentTime;
-                updateProgressBarBackground();
-            });
-
-            audioPlayer.addEventListener('ended', () => {
-                updatePlayPauseIcon(false);
-                const nextIndex = currentAudioIndex + 1; // Reproducir el siguiente audio en la lista (que es el más viejo)
-                if (nextIndex < playlistData.length) {
-                    loadAndPlay(nextIndex);
-                } else {
-                    currentAudioIndex = -1; 
-                    currentTitle.textContent = "Reproducción Terminada - Selecciona otro audio";
-                    const items = playlistContainer.querySelectorAll('div');
-                    items.forEach(item => {
-                        item.classList.remove('active-audio');
-                        item.classList.add('text-gray-300', 'hover:bg-gray-800');
-                    });
-                    toggleControlsDisabled(true);
-                }
-            });
-
-            playPauseBtn.addEventListener('click', togglePlayPause);
-
-            progressBar.addEventListener('input', () => {
-                if (audioPlayer.readyState > 0) {
-                    audioPlayer.currentTime = progressBar.value;
-                }
-            });
-            
-            progressBar.addEventListener('mousedown', () => {
-                 audioPlayer.removeEventListener('timeupdate', updateProgressBarBackground);
-            });
-
-            progressBar.addEventListener('mouseup', () => {
-                 audioPlayer.addEventListener('timeupdate', updateProgressBarBackground);
-            });
-
-            // --- INICIALIZACIÓN Y LECTURA DE URL ---
-
-            // Función para obtener parámetros de la URL
-            const getUrlParameter = (name) => {
-                name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-                const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-                const results = regex.exec(location.search);
-                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-            };
-
-            const initialLoad = () => {
-                renderPlaylist();
-                
-                const requestedAudioId = getUrlParameter('audio');
-                let initialIndex = 0; // Por defecto, cargar el más nuevo (índice 0)
-
-                if (requestedAudioId) {
-                    // Buscar el índice que coincide con el ID solicitado en la URL
-                    const foundIndex = playlistData.findIndex(audio => audio.id === requestedAudioId);
-                    if (foundIndex !== -1) {
-                        initialIndex = foundIndex;
-                        loadAndPlay(initialIndex); // Cargar y REPRODUCIR si se encuentra el ID
-                        return; // Salir de la inicialización normal
-                    } else {
-                        console.warn(`ID de audio ${requestedAudioId} no encontrado. Cargando el más reciente.`);
-                    }
-                }
-
-                // Carga normal (si no hay parámetro o si el ID es inválido)
-                if (playlistData.length > 0) {
-                    loadAudio(initialIndex); 
-                    currentTitle.textContent = "Selecciona un devocional o presiona Play";
-                    toggleControlsDisabled(false);
-                } else {
-                    currentTitle.textContent = "No hay audios disponibles";
-                    toggleControlsDisabled(true);
-                }
-            };
-            
-            initialLoad();
-        }); 
+        // Iniciar la aplicación
+        initializePlaylist();
     </script>
 </body>
 </html>
