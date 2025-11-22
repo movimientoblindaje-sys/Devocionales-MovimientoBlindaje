@@ -114,28 +114,32 @@
         }
     </style>
 </head>
-<body class="p-4 sm:p-6 min-h-screen flex flex-col items-center">
+<body class="p-0 sm:p-6 min-h-screen flex flex-col items-center">
 
     <!-- Mensaje de Notificación para Compartir -->
     <div id="toastMessage" class="hidden">¡Enlace copiado!</div>
 
-    <!-- LOGO ACTUALIZADO: logo-blindaje.png -->
-    <div class="mb-4 w-full max-w-xl flex justify-center">
-        <!-- Se usa la imagen subida por el usuario -->
-        <img src="logo-blindaje.png" 
+    <!-- LOGO GRANDE Y ADAPTATIVO -->
+    <!-- En celular: Ocupa todo el ancho (w-full), sin bordes redondeados, HEREDA el fondo AMARILLO del body. -->
+    <div class="mb-4 w-full flex justify-center py-4 sm:py-6 rounded-none sm:rounded-xl">
+        <!-- La imagen ocupa el 100% del ancho de su contenedor, pero está limitada a 300px de ancho. 
+             La altura es h-24 (grande). El object-contain asegura que no se deforme. -->
+        <img src="logo-blindaje.jpg" 
             alt="Logo Movimiento Blindaje" 
-            class="h-12 object-contain rounded-md shadow-lg">
+            class="h-24 w-full object-contain px-4" 
+            style="max-width: 300px; max-height: 96px;"> 
     </div>
+    
+    <!-- Contenido principal centrado y con ancho limitado para el resto de la interfaz -->
+    <div class="w-full max-w-xl flex flex-col gap-6 p-4 sm:p-0">
 
-    <!-- Título de la Aplicación (sobre fondo amarillo, por lo tanto texto oscuro) -->
-    <h1 class="text-2xl font-extrabold text-text-on-yellow mb-6 text-center tracking-wide">
-        Apocalipsis: Estudios Bíblicos
-    </h1>
+        <!-- Título de la Aplicación (sobre fondo amarillo, por lo tanto texto oscuro) -->
+        <h1 class="text-2xl font-extrabold text-text-on-yellow text-center tracking-wide">
+            Apocalipsis: Estudios Bíblicos
+        </h1>
 
-    <!-- ID de Usuario (Para depuración de Firestore) -->
-    <p id="userIdDisplay" class="text-xs text-text-on-yellow mb-4">ID de usuario: Cargando...</p>
-
-    <div class="w-full max-w-xl flex flex-col gap-6">
+        <!-- ID de Usuario (Para depuración de Firestore) -->
+        <p id="userIdDisplay" class="text-xs text-text-on-yellow text-center mb-2">ID de usuario: Cargando...</p>
 
         <!-- Panel del Reproductor Principal (Tarjeta Negra, Texto Blanco) -->
         <div id="playerPanel" class="bg-card-bg rounded-xl p-6 card-shadow text-text-on-card">
