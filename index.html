@@ -5,14 +5,17 @@
     - Persistencia de estado (índice, volumen, tiempo) en Firestore.
     - Botones de avance/retroceso de 5 segundos.
     - Compartir enlace directo al audio actual (vía parámetro URL).
---><!DOCTYPE html>
+-->
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Devocional Diario - Reproductor</title>
-    <!-- Carga de Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Inter para la estética --><style>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter para la estética -->
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
@@ -36,21 +39,21 @@
             cursor: pointer;
         }
 
-        /* Estilo para el logo grande y rectangular */
+        /* Estilo para el logo grande */
         .large-logo {
-            max-width: 200px; /* Ajusta el ancho máximo según necesites */
-            height: auto; /* Mantiene la proporción original */
-            object-fit: contain; /* Asegura que la imagen completa sea visible */
-            border-radius: 0; /* Asegura que sea rectangular */
+            height: 160px; /* Tamaño grande */
+            width: 160px; /* Tamaño grande */
         }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen">
 
-    <!-- Logo y Título --><header class="text-center mb-8">
-        <!-- Logo con placeholder de fallback. Se quitó rounded-full y se ajustó el onerror --><img id="logo-img" 
+    <!-- Logo y Título -->
+    <header class="text-center mb-8">
+        <!-- Logo con placeholder de fallback. Se añadió la clase large-logo -->
+        <img id="logo-img" 
              src="logo-blindaje.png" 
-             onerror="this.src='https://placehold.co/200x100/000000/FFFFFF?text=BLINDAJE+LOGO'"
+             onerror="this.src='https://placehold.co/160x160/000000/FFFFFF?text=BLINDAJE'"
              alt="Logo Blindaje" 
              class="mx-auto large-logo shadow-lg mb-4">
         
@@ -58,53 +61,65 @@
         <p id="devotion-day-info" class="text-sm font-semibold text-gray-800 mt-2"></p>
     </header>
 
-    <!-- Contenedor de Tarjetas: Apiladas verticalmente (flex-col) --><main id="card-container" class="flex flex-col gap-6 max-w-4xl mx-auto">
+    <!-- Contenedor de Tarjetas: Apiladas verticalmente (flex-col) -->
+    <main id="card-container" class="flex flex-col gap-6 max-w-4xl mx-auto">
         
-        <!-- Tarjeta 1: Reproductor Principal --><section id="player-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
+        <!-- Tarjeta 1: Reproductor Principal -->
+        <section id="player-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
             <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Reproductor de Audio</h2>
 
             <div class="space-y-4">
-                <!-- Información de la Pista Actual --><div class="text-center mb-6">
+                <!-- Información de la Pista Actual -->
+                <div class="text-center mb-6">
                     <p id="track-name" class="text-2xl font-semibold truncate">Cargando...</p>
                     <p id="track-artist" class="text-sm text-gray-400">Blindaje Espiritual</p>
                 </div>
 
-                <!-- Barra de Progreso --><div class="flex items-center space-x-2">
+                <!-- Barra de Progreso -->
+                <div class="flex items-center space-x-2">
                     <span id="current-time" class="text-sm w-12 text-left">0:00</span>
                     <input type="range" id="seek-bar" value="0" min="0" max="100" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer range-lg">
                     <span id="total-time" class="text-sm w-12 text-right">0:00</span>
                 </div>
                 
-                <!-- Controles de Reproducción --><div class="flex justify-center items-center space-x-4 md:space-x-6 pt-4">
+                <!-- Controles de Reproducción -->
+                <div class="flex justify-center items-center space-x-4 md:space-x-6 pt-4">
                     
-                    <!-- Retroceder 5s (icono más grande) --><button id="skip-backward-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Retroceder 5 segundos">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h3a1 1 0 100-2H7zm4-2.586l3 3a1 1 0 010 1.414l-3 3A1 1 0 0110 12V8a1 1 0 011.414-.707z" clip-rule="evenodd"></path></svg>
+                    <!-- Retroceder 5s -->
+                    <button id="skip-backward-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Retroceder 5 segundos">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h3a1 1 0 100-2H7zm4-2.586l3 3a1 1 0 010 1.414l-3 3A1 1 0 0110 12V8a1 1 0 011.414-.707z" clip-rule="evenodd"></path></svg>
                     </button>
 
-                    <!-- Anterior (icono más grande) --><button id="prev-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Pista Anterior">
-                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-5-8a1 1 0 011-1h4.586l-1.293-1.293a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H6a1 1 0 01-1-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <!-- Anterior -->
+                    <button id="prev-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Pista Anterior">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-5-8a1 1 0 011-1h4.586l-1.293-1.293a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H6a1 1 0 01-1-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
                     </button>
 
-                    <!-- Reproducir / Pausar (icono aún más grande) --><button id="play-pause-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-4 rounded-full shadow-lg transition-all transform hover:scale-105" aria-label="Reproducir o Pausar">
-                        <svg id="play-icon" class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
-                        <svg id="pause-icon" class="w-12 h-12 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h1a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <!-- Reproducir / Pausar -->
+                    <button id="play-pause-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-4 rounded-full shadow-lg transition-all transform hover:scale-105" aria-label="Reproducir o Pausar">
+                        <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                        <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h1a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
                     </button>
 
-                    <!-- Siguiente (icono más grande) --><button id="next-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Pista Siguiente">
-                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <!-- Siguiente -->
+                    <button id="next-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Pista Siguiente">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
                     </button>
                     
-                    <!-- Avanzar 5s (icono más grande) --><button id="skip-forward-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Avanzar 5 segundos">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3-9a1 1 0 00-2 0v3a1 1 0 102 0V9zM7 8a1 1 0 011.414-.707l3 3a1 1 0 010 1.414l-3 3A1 1 0 017 12V8z" clip-rule="evenodd"></path></svg>
+                    <!-- Avanzar 5s -->
+                    <button id="skip-forward-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Avanzar 5 segundos">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3-9a1 1 0 00-2 0v3a1 1 0 102 0V9zM7 8a1 1 0 011.414-.707l3 3a1 1 0 010 1.414l-3 3A1 1 0 017 12V8z" clip-rule="evenodd"></path></svg>
                     </button>
                 </div>
 
-                <!-- Botón de Compartir Audio --><button id="share-audio-btn" class="w-full bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/40 font-semibold py-3 px-4 rounded-lg mt-4 transition-colors flex items-center justify-center">
+                <!-- Botón de Compartir Audio -->
+                <button id="share-audio-btn" class="w-full bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/40 font-semibold py-3 px-4 rounded-lg mt-4 transition-colors flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 13h3a3 3 0 000-6h-.025A5.56 5.56 0 0016 6.5 6.5 6.5 0 009.75 4.148 5.485 5.485 0 0110 6.5C10 9.047 8.163 11.233 5.766 11.758A7.03 7.03 0 0010 19a7.001 7.001 0 006.338-3.993 4.974 4.974 0 00-.776-3.873zM7 10a3 3 0 100-6 3 3 0 000 6z"></path></svg>
                     Compartir Audio
                 </button>
 
-                <!-- Control de Volumen --><div class="flex items-center space-x-2 pt-4">
+                <!-- Control de Volumen -->
+                <div class="flex items-center space-x-2 pt-4">
                     <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.673 8.327a1 1 0 010 3.346A5.008 5.008 0 0016 10a5.008 5.008 0 00-1.327-3.346z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
                     <input type="range" id="volume-bar" value="100" min="0" max="100" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer range-sm">
                     <span id="volume-display" class="text-sm w-8 text-right text-gray-400">100%</span>
@@ -112,25 +127,31 @@
             </div>
         </section>
 
-        <!-- Tarjeta 2: Audios del Día (Los 3 que rotan diariamente) --><section id="daily-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
+        <!-- Tarjeta 2: Audios del Día (Los 3 que rotan diariamente) -->
+        <section id="daily-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
             <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Audios de Hoy</h2>
             <ul id="daily-list" class="divide-y divide-gray-800">
-                <!-- Los audios del día se renderizarán aquí --></ul>
+                <!-- Los audios del día se renderizarán aquí -->
+            </ul>
         </section>
 
-        <!-- Tarjeta 3: Audios Anteriores (Archivados por rotación) --><section id="archive-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
+        <!-- Tarjeta 3: Audios Anteriores (Archivados por rotación) -->
+        <section id="archive-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
             <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Audios Anteriores</h2>
             <ul id="archive-list" class="divide-y divide-gray-800">
-                <!-- Los audios anteriores se renderizarán aquí --></ul>
+                <!-- Los audios anteriores se renderizarán aquí -->
+            </ul>
         </section>
         
-        <!-- Indicador de Usuario (Necesario para Firestore) --><div class="text-center text-xs text-white/50 mt-4">
+        <!-- Indicador de Usuario (Necesario para Firestore) -->
+        <div class="text-center text-xs text-white/50 mt-4">
             ID de Usuario: <span id="user-id">Cargando...</span>
         </div>
 
     </main>
 
-    <!-- Scripts de Firebase y Lógica del Reproductor --><script type="module">
+    <!-- Scripts de Firebase y Lógica del Reproductor -->
+    <script type="module">
         // Importaciones de Firebase (necesarias para la persistencia)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -211,7 +232,7 @@
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-18-9-al-20.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-18-21-al-24.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-19-1-al-10.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-apocalipsis/Libro-de-Apocalipsis-19-11-al-21.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-19-11-al-21.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-1-al-6.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-7-al-10.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-11-al-15.mp3",
@@ -311,442 +332,423 @@
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = Math.floor(seconds % 60);
-            // FIX: Template expression was incomplete, causing SyntaxError.
-            // Solución: Usar un operador ternario para agregar un '0' si los segundos son < 10.
             return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
         }
-        
-        // --- Lógica del Reproductor ---
 
-        function loadTrack(index) {
-            if (index < 0 || index >= ALL_TRACKS.length) {
-                console.error("Índice de pista fuera de rango.");
-                return;
-            }
-
-            currentTrackIndex = index;
-            const track = ALL_TRACKS[currentTrackIndex];
-            
-            // Si ya existe un audio, detenemos y limpiamos
-            if (audio) {
-                audio.pause();
-                audio.src = '';
-            }
-
-            audio = new Audio(track.url);
-            audio.volume = parseFloat(volumeBar.value) / 100;
-            trackNameEl.textContent = track.name;
-            currentTimeEl.textContent = '0:00';
-            totalTimeEl.textContent = '0:00';
-            seekBar.value = 0;
-            
-            updatePlayPauseButton(false);
-            highlightCurrentTrack();
-
-            // Guardar estado al cambiar de pista
-            saveUserState(audio.currentTime);
-
-            // Event listeners específicos del audio (se deben añadir después de crear el objeto Audio)
-            audio.addEventListener('loadedmetadata', () => {
-                const totalSeconds = audio.duration;
-                totalTimeEl.textContent = formatTime(totalSeconds);
-                seekBar.max = totalSeconds;
-                
-                // Intentar recuperar el tiempo de la pista guardada si no es un enlace compartido
-                if (getTrackIndexFromUrl() === null) {
-                    loadUserState();
-                }
-            });
-
-            audio.addEventListener('timeupdate', () => {
-                if (!seekBar.isDragging) {
-                    seekBar.value = audio.currentTime;
-                    currentTimeEl.textContent = formatTime(audio.currentTime);
-                }
-            });
-
-            audio.addEventListener('ended', () => {
-                playNextTrack();
-            });
-            
-            // Autoplay solo si venimos de un estado de reproducción previo (a menos que sea el inicio)
-            if (isPlaying) {
-                audio.play().catch(e => console.error("Error al iniciar la reproducción automáticamente:", e));
-            }
-        }
-
-        function updatePlayPauseButton(isCurrentlyPlaying) {
-            if (isCurrentlyPlaying) {
-                playIcon.classList.add('hidden');
-                pauseIcon.classList.remove('hidden');
-                isPlaying = true;
-            } else {
-                playIcon.classList.remove('hidden');
-                pauseIcon.classList.add('hidden');
-                isPlaying = false;
-            }
-        }
-
-        function togglePlayPause() {
-            if (audio.paused || audio.ended) {
-                audio.play().then(() => updatePlayPauseButton(true)).catch(e => {
-                    console.error("Error al reproducir el audio:", e);
-                    // Mostrar un mensaje de error simple si la reproducción falla (por ejemplo, autoplay bloqueado)
-                    showUserMessage("Presiona Play de nuevo. El navegador bloqueó la reproducción automática.");
-                });
-            } else {
-                audio.pause();
-                updatePlayPauseButton(false);
-                saveUserState(audio.currentTime);
-            }
-        }
-
-        function playNextTrack() {
-            let nextIndex = (currentTrackIndex + 1);
-            if (nextIndex >= ALL_TRACKS.length) {
-                nextIndex = 0; // Vuelve al inicio
-            }
-            loadTrack(nextIndex);
-            if (isPlaying) {
-                audio.play();
-            }
-        }
-
-        function playPrevTrack() {
-            let prevIndex = (currentTrackIndex - 1);
-            if (prevIndex < 0) {
-                prevIndex = ALL_TRACKS.length - 1; // Vuelve al final
-            }
-            loadTrack(prevIndex);
-            if (isPlaying) {
-                audio.play();
-            }
-        }
-
-        function skipTime(seconds) {
-            if (audio) {
-                audio.currentTime += seconds;
-                // Asegurar que no se salga de los límites
-                if (audio.currentTime < 0) audio.currentTime = 0;
-                if (audio.currentTime > audio.duration) audio.currentTime = audio.duration;
-                saveUserState(audio.currentTime);
-            }
-        }
-
-        function handleSeekChange() {
-            // Guardar si se detiene el arrastre o si el audio está cargado
-            if (audio && audio.readyState > 0) {
-                audio.currentTime = parseFloat(seekBar.value);
-                saveUserState(audio.currentTime);
-            }
-        }
-
-        function handleVolumeChange() {
-            const volume = parseFloat(volumeBar.value) / 100;
-            if (audio) {
-                audio.volume = volume;
-            }
-            volumeDisplay.textContent = `${volumeBar.value}%`;
-            // No guardar el volumen en Firestore ya que no es vital para la posición de reproducción
-        }
-        
-        // --- Renderizado de Listas y Navegación ---
-
-        function highlightCurrentTrack() {
-            document.querySelectorAll('.track-item').forEach(li => {
-                li.classList.remove('bg-yellow-500/10', 'border-yellow-500');
-                li.classList.add('hover:bg-gray-700/50', 'border-gray-800');
-            });
-            const activeEl = document.getElementById(`track-${currentTrackIndex}`);
-            if (activeEl) {
-                activeEl.classList.remove('hover:bg-gray-700/50', 'border-gray-800');
-                activeEl.classList.add('bg-yellow-500/10', 'border-yellow-500');
-            }
-        }
-
-        /** Renderiza una pista individual en una lista. */
-        function renderTrack(track, index, container, trackDay) {
-            const li = document.createElement('li');
-            li.id = `track-${index}`;
-            li.className = 'track-item flex justify-between items-center py-3 px-2 border-b transition-colors cursor-pointer border-gray-800 hover:bg-gray-700/50';
-            li.setAttribute('data-index', index);
-            
-            let label = track.name;
-            
-            // Asignar etiquetas de Desayuno, Almuerzo, Cena solo a las pistas de "Hoy"
-            if (trackDay) {
-                 const partIndex = index % TRACKS_PER_DAY; // 0, 1, 2
-                 const parts = ["Desayuno", "Almuerzo", "Cena"];
-                 label = `${parts[partIndex]}: ${track.name}`;
-            }
-
-            li.innerHTML = `
-                <span class="text-sm font-medium truncate">${label}</span>
-                <button class="text-gray-400 hover:text-yellow-500 p-1 rounded-full transition-colors" data-index="${index}" aria-label="Reproducir ${label}">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                </button>
-            `;
-            
-            li.querySelector('button').addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (index !== currentTrackIndex) {
-                    loadTrack(index);
-                    togglePlayPause(); // Iniciar reproducción
-                } else {
-                    togglePlayPause();
-                }
-            });
-            // Permitir clic en el LI para iniciar reproducción si no es el actual
-             li.addEventListener('click', () => {
-                if (index !== currentTrackIndex) {
-                    loadTrack(index);
-                    togglePlayPause(); // Iniciar reproducción
-                } else {
-                    togglePlayPause();
-                }
-            });
-
-            container.appendChild(li);
-        }
-
-        function renderPlaylists() {
-            // Limpiar listas
-            dailyListEl.innerHTML = '';
-            archiveListEl.innerHTML = '';
-
-            const totalTracks = ALL_TRACKS.length;
-            
-            // Audios de Hoy
-            // Rango: [currentStartIndex, currentStartIndex + TRACKS_PER_DAY - 1]
-            for (let i = currentStartIndex; i < currentStartIndex + TRACKS_PER_DAY && i < totalTracks; i++) {
-                renderTrack(ALL_TRACKS[i], i, dailyListEl, true); // true para indicar que es pista diaria
-            }
-
-            // Audios Anteriores (Desde el inicio hasta justo antes de la lista de hoy)
-            // Rango: [0, currentStartIndex - 1]
-            for (let i = 0; i < currentStartIndex && i < totalTracks; i++) {
-                renderTrack(ALL_TRACKS[i], i, archiveListEl, false);
-            }
-
-            highlightCurrentTrack();
-        }
-
-        /** Muestra un mensaje temporal al usuario. */
-        function showUserMessage(message) {
-            // Implementación simple: usar un div flotante o loguear
-            console.log("Mensaje al Usuario:", message);
-            const playerCard = document.getElementById('player-card');
-            let msgEl = document.getElementById('user-msg-temp');
-            if (!msgEl) {
-                 msgEl = document.createElement('div');
-                 msgEl.id = 'user-msg-temp';
-                 msgEl.className = 'absolute top-0 left-0 right-0 bg-yellow-500 text-gray-900 font-bold p-3 rounded-t-xl text-center transition-opacity duration-300 opacity-0';
-                 playerCard.style.position = 'relative'; // Asegura que el mensaje se posicione correctamente
-                 playerCard.prepend(msgEl);
-            }
-            msgEl.textContent = message;
-            msgEl.classList.remove('opacity-0');
-            msgEl.classList.add('opacity-100');
-
-            setTimeout(() => {
-                msgEl.classList.remove('opacity-100');
-                msgEl.classList.add('opacity-0');
-            }, 3000);
-        }
-
-        // --- Persistencia con Firebase Firestore (Privada) ---
-        
-        /** Obtiene la referencia al documento de estado del usuario. */
-        function getUserStateDocRef() {
-            // path: /artifacts/{appId}/users/{userId}/{collectionName}/{docId}
-            return doc(db, 'artifacts', appId, 'users', userId, DB_COLLECTION, DB_DOC_ID);
-        }
-
-        /** Guarda el estado actual de reproducción en Firestore. */
-        async function saveUserState(time) {
-            if (!db || !userId || time === undefined) return;
-            
-            const state = {
-                currentTrackIndex: currentTrackIndex,
-                currentTime: time,
-                volume: audio ? audio.volume : parseFloat(volumeBar.value) / 100,
-                lastUpdated: new Date().toISOString()
-            };
-
+        /** Persiste el estado actual (índice, volumen) a Firestore. */
+        async function saveState() {
+            if (!db || !userId) return;
             try {
-                await setDoc(getUserStateDocRef(), state, { merge: true });
-                // console.log("Estado guardado:", state);
+                const docRef = doc(db, `artifacts/${appId}/users/${userId}/${DB_COLLECTION}`, DB_DOC_ID);
+                await setDoc(docRef, {
+                    currentTrackIndex: currentTrackIndex,
+                    volume: audio ? audio.volume : 1,
+                    lastPlayedTime: (audio && !isNaN(audio.currentTime)) ? audio.currentTime : 0
+                }, { merge: true });
+                // console.log("Estado guardado correctamente.");
             } catch (error) {
                 console.error("Error al guardar el estado en Firestore:", error);
             }
         }
+        
+        /** Renderiza la lista de reproducción en las tarjetas. */
+        function renderPlaylist() {
+            dailyListEl.innerHTML = '';
+            archiveListEl.innerHTML = '';
 
-        /** Carga el estado inicial del usuario. */
-        function loadUserState() {
-            if (!db || !userId) return;
+            const archiveTracks = tracks.slice(0, currentStartIndex);
+            const dailyTracks = tracks.slice(currentStartIndex, currentStartIndex + TRACKS_PER_DAY);
             
-            const docRef = getUserStateDocRef();
+            const dailyNames = ["Desayuno", "Almuerzo", "Cena"];
+
+            // Renderizar audios de hoy
+            dailyTracks.forEach((track, index) => {
+                const globalIndex = currentStartIndex + index;
+                const isCurrent = globalIndex === currentTrackIndex;
+                
+                // Asignar el nombre del momento del día
+                const trackDisplay = `${dailyNames[index]}: ${track.name}`;
+
+                const li = createPlaylistItem(globalIndex, trackDisplay, isCurrent);
+                dailyListEl.appendChild(li);
+            });
+
+            // Renderizar audios anteriores
+            archiveTracks.forEach((track, index) => {
+                const isCurrent = index === currentTrackIndex; 
+                const li = createPlaylistItem(index, track.name, isCurrent, true);
+                archiveListEl.appendChild(li);
+            });
             
-            // Escucha en tiempo real para mantener la posición sincronizada
-            onSnapshot(docRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const state = docSnap.data();
-                    console.log("Estado cargado:", state);
+            // Mensaje de finalización
+            if (currentStartIndex >= ALL_TRACKS.length) {
+                 dailyListEl.innerHTML = `<li class="text-white/70 p-4">¡Felicidades! Has completado la lectura de Apocalipsis.</li>`;
+            } else if (ALL_TRACKS.length === 0) {
+                 dailyListEl.innerHTML = `<li class="text-red-400 p-4">Error: No se pudo cargar la lista de audios.</li>`;
+            }
+
+            // Actualizar botones de Prev/Next
+            prevBtn.disabled = currentTrackIndex <= 0;
+            nextBtn.disabled = currentTrackIndex >= ALL_TRACKS.length - 1;
+        }
+
+        /** Helper para crear un elemento de la lista de reproducción. */
+        function createPlaylistItem(index, name, isCurrent, isArchive = false) {
+            const li = document.createElement('li');
+            
+            // Estilo para el elemento de la lista
+            li.className = `p-3 md:p-4 cursor-pointer transition-all rounded-md flex justify-between items-center 
+                            ${isCurrent ? 'bg-yellow-600 font-bold hover:bg-yellow-700' : 'hover:bg-gray-800'}
+                            ${isArchive ? 'text-white/80' : ''}`;
+            li.setAttribute('data-index', index);
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = name;
+
+            // Icono de reproducción
+            const playIconSvg = `<svg class="w-5 h-5 ml-2 ${isCurrent ? 'text-gray-900' : 'text-yellow-400'}" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>`;
+            
+            li.innerHTML = nameSpan.outerHTML + playIconSvg;
+
+            li.addEventListener('click', () => {
+                loadTrack(index);
+                playTrack();
+            });
+            
+            return li;
+        }
+
+        /** Carga una pista específica por índice. */
+        function loadTrack(index) {
+            if (ALL_TRACKS.length === 0) return;
+            
+            // Asegura que el índice esté dentro del rango de la lista completa
+            currentTrackIndex = (index % ALL_TRACKS.length + ALL_TRACKS.length) % ALL_TRACKS.length;
+
+            const track = ALL_TRACKS[currentTrackIndex];
+            audio.src = track.url;
+            
+            // Nombre en el reproductor (le agrega Desayuno, Almuerzo, Cena si es de hoy)
+            let displayTrackName = track.name;
+            if (currentTrackIndex >= currentStartIndex && currentTrackIndex < currentStartIndex + TRACKS_PER_DAY) {
+                const dailyIndex = currentTrackIndex - currentStartIndex;
+                const dailyNames = ["Desayuno", "Almuerzo", "Cena"];
+                displayTrackName = `${dailyNames[dailyIndex]}: ${track.name}`;
+            }
+
+            trackNameEl.textContent = displayTrackName;
+            totalTimeEl.textContent = '0:00';
+            seekBar.value = 0;
+            
+            // Pausar y preparar para la reproducción
+            if (isPlaying) {
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            }
+            audio.load();
+            renderPlaylist();
+            saveState();
+        }
+
+        // --- Funciones de Control del Reproductor ---
+        function playTrack() {
+            if (ALL_TRACKS.length === 0 || !audio.src) return;
+            
+            if (audio.readyState === 0) {
+                audio.load();
+            }
+
+            audio.play()
+                .then(() => {
+                    isPlaying = true;
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                })
+                .catch(error => {
+                    console.error("Error al intentar reproducir el audio:", error);
+                    alertUser("Advertencia", "El audio no se pudo reproducir automáticamente. Presiona Play o revisa el enlace.");
+                });
+        }
+
+        function pauseTrack() {
+            audio.pause();
+            isPlaying = false;
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            saveState();
+        }
+
+        function nextTrack() {
+            pauseTrack();
+            loadTrack(currentTrackIndex + 1);
+            playTrack();
+        }
+
+        function prevTrack() {
+            pauseTrack();
+            loadTrack(currentTrackIndex - 1);
+            playTrack();
+        }
+
+        /** Avanza o retrocede el audio en la cantidad de segundos especificada. */
+        function skip(seconds) {
+            if (audio && !isNaN(audio.currentTime)) {
+                audio.currentTime = audio.currentTime + seconds;
+                saveState();
+            }
+        }
+        
+        function togglePlayPause() {
+            isPlaying ? pauseTrack() : playTrack();
+        }
+
+        /** Genera y copia el enlace al audio actual. */
+        function shareTrack() {
+            // Construye la URL base (pathname solo funciona en el contexto de Canvas)
+            const baseUrl = window.location.pathname;
+            // Agrega el parámetro trackIndex con el índice actual
+            const shareUrl = `${baseUrl}?trackIndex=${currentTrackIndex}`;
+            
+            // Intentar copiar al portapapeles
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(shareUrl)
+                    .then(() => {
+                        alertUser("Audio Compartido", `El enlace al audio "${trackNameEl.textContent}" ha sido copiado al portapapeles. ¡Compártelo!`);
+                    })
+                    .catch(err => {
+                        console.error('Error al copiar:', err);
+                        // Fallback para entornos restrictivos como iframes
+                        document.execCommand('copy', false, shareUrl);
+                        alertUser("Audio Compartido", `El enlace ha sido copiado al portapapeles (Índice ${currentTrackIndex}).`);
+                    });
+            } else {
+                // Fallback de compatibilidad
+                const textarea = document.createElement('textarea');
+                textarea.value = shareUrl;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alertUser("Audio Compartido", `El enlace ha sido copiado al portapapeles (Índice ${currentTrackIndex}).`);
+            }
+        }
+
+
+        // --- Mensajes de Usuario (Reemplazo de alert()) ---
+        function alertUser(title, message) {
+            // Implementación simple de un modal de mensaje en el DOM
+            let modal = document.getElementById('custom-modal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'custom-modal';
+                modal.className = 'fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50 p-4 hidden';
+                modal.innerHTML = `
+                    <div class="bg-gray-800 text-white p-6 rounded-xl shadow-2xl max-w-sm w-full">
+                        <h4 class="text-xl font-bold mb-3 border-b border-gray-700 pb-2" id="modal-title"></h4>
+                        <p id="modal-message" class="mb-4"></p>
+                        <button id="modal-close-btn" class="w-full bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2 px-4 rounded transition-colors">Cerrar</button>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+                document.getElementById('modal-close-btn').onclick = () => modal.classList.add('hidden');
+            }
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            modal.classList.remove('hidden');
+        }
+
+        // --- Inicialización y Eventos ---
+
+        /** Inicializa el reproductor y los eventos. */
+        function initializePlayer(initialVolume = 1, initialIndex = 0, initialTime = 0) {
+            audio = new Audio();
+            
+            // Establecer el volumen inicial
+            audio.volume = initialVolume;
+            volumeBar.value = initialVolume * 100;
+            volumeDisplay.textContent = `${Math.round(initialVolume * 100)}%`;
+
+            // Eventos del Reproductor
+            audio.addEventListener('timeupdate', () => {
+                if (!isNaN(audio.duration) && audio.duration > 0) {
+                    const percent = (audio.currentTime / audio.duration) * 100;
+                    seekBar.value = Math.min(percent, 100);
+                    currentTimeEl.textContent = formatTime(audio.currentTime);
+                }
+            });
+
+            audio.addEventListener('loadedmetadata', () => {
+                if (!isNaN(audio.duration)) {
+                    totalTimeEl.textContent = formatTime(audio.duration);
                     
-                    const savedIndex = state.currentTrackIndex;
-                    const savedTime = state.currentTime;
-                    const savedVolume = state.volume;
-
-                    // 1. Cargar Pista (si ha cambiado)
-                    if (savedIndex !== undefined && savedIndex !== currentTrackIndex) {
-                        loadTrack(savedIndex);
-                        // No reproducir automáticamente aquí, solo actualizar el índice.
-                        // La reproducción se maneja con el toggle/autoplay.
+                    // Reanudar la reproducción si hay una posición guardada
+                    if (initialTime > 1 && initialTime < audio.duration - 1) {
+                        audio.currentTime = initialTime;
+                        // Forzar una actualización de la barra de búsqueda
+                        seekBar.value = (initialTime / audio.duration) * 100; 
                     }
+                }
+            });
 
-                    // 2. Aplicar Volumen
-                    if (savedVolume !== undefined) {
-                        const volumeValue = Math.round(savedVolume * 100);
-                        volumeBar.value = volumeValue;
-                        handleVolumeChange(); // Aplica el volumen al objeto Audio y al display
-                    }
+            audio.addEventListener('ended', nextTrack);
+            audio.addEventListener('pause', saveState);
+            audio.addEventListener('error', (e) => {
+                console.error("Error en la carga del audio:", e);
+                trackNameEl.textContent = "Error de carga del audio. Verifique la URL.";
+                alertUser("Error de Audio", "No se pudo cargar la pista. Revise la URL y su conexión a Internet.");
+            });
 
-                    // 3. Aplicar Tiempo (solo si la pista es la misma y no estamos arrastrando)
-                    if (savedIndex === currentTrackIndex && savedTime !== undefined) {
-                        // Solo actualiza el tiempo si la diferencia es significativa
-                        if (audio && Math.abs(audio.currentTime - savedTime) > 1) {
-                             // console.log(`Restaurando tiempo a: ${formatTime(savedTime)}`);
-                             audio.currentTime = savedTime;
+            // Eventos del DOM
+            playPauseBtn.addEventListener('click', togglePlayPause);
+            prevBtn.addEventListener('click', prevTrack);
+            nextBtn.addEventListener('click', nextTrack);
+            skipBackwardBtn.addEventListener('click', () => skip(-5)); // Retroceder 5 segundos
+            skipForwardBtn.addEventListener('click', () => skip(5));  // Avanzar 5 segundos
+            shareAudioBtn.addEventListener('click', shareTrack);
+
+            seekBar.addEventListener('input', () => {
+                if (!isNaN(audio.duration) && audio.duration > 0) {
+                    const seekTime = (seekBar.value / 100) * audio.duration;
+                    audio.currentTime = seekTime;
+                }
+            });
+            
+            volumeBar.addEventListener('input', () => {
+                const newVolume = volumeBar.value / 100;
+                audio.volume = newVolume;
+                volumeDisplay.textContent = `${volumeBar.value}%`;
+                saveState();
+            });
+
+            // Cargar la pista inicial
+            loadTrack(initialIndex);
+        }
+
+        // --- Lógica de Firebase y Autenticación ---
+
+        /** Carga el estado del usuario o inicializa con los valores por defecto. */
+        async function loadUserState() {
+            // 1. Obtener el índice compartido de la URL (si existe)
+            const sharedIndex = getTrackIndexFromUrl();
+
+            // 2. Calcular el índice de inicio del día actual (índice por defecto)
+            currentStartIndex = calculateCurrentDayIndex();
+            
+            tracks = ALL_TRACKS; // La lista completa de tracks
+
+            const docRef = doc(db, `artifacts/${appId}/users/${userId}/${DB_COLLECTION}`, DB_DOC_ID);
+            
+            onSnapshot(docRef, (docSnap) => {
+                const data = docSnap.exists() ? docSnap.data() : null;
+                
+                let initialVolume = 1;
+                let initialTime = 0;
+                let initialIndex = currentStartIndex; // Valor por defecto
+
+                if (data) {
+                    // Cargar volumen guardado
+                    initialVolume = data.volume !== undefined ? data.volume : 1;
+                    
+                    // Lógica de índice:
+                    // 1. Prioridad: Índice compartido de la URL
+                    if (sharedIndex !== null) {
+                        initialIndex = sharedIndex;
+                        // El tiempo inicial se mantiene en 0 para una URL compartida
+                    } 
+                    // 2. Segunda prioridad: Índice guardado en Firestore (si es parte del día actual)
+                    else {
+                        const savedIndex = data.currentTrackIndex || 0;
+                        if (savedIndex >= currentStartIndex && savedIndex < currentStartIndex + TRACKS_PER_DAY) {
+                            initialIndex = savedIndex;
+                            initialTime = data.lastPlayedTime || 0;
+                        } 
+                        // 3. Si no es un audio de hoy, volvemos al Desayuno de hoy (currentStartIndex) y tiempo 0
+                        else if (savedIndex !== currentStartIndex) { 
+                            initialTime = 0; 
                         }
                     }
-                } else {
-                    console.log("No se encontró estado guardado. Usando defaults.");
-                    // Si no hay estado, cargamos la pista por defecto
-                    loadTrack(currentTrackIndex);
                 }
+                
+                // Si la aplicación se carga con un índice compartido, siempre se reinicia el tiempo para ese audio.
+                if (sharedIndex !== null) {
+                    initialTime = 0;
+                }
+
+                // Si no está inicializado, crea el objeto Audio
+                if (!audio) {
+                    initializePlayer(initialVolume, initialIndex, initialTime);
+                } else {
+                    // Si ya está inicializado, solo actualiza el estado
+                    currentTrackIndex = initialIndex;
+                    loadTrack(currentTrackIndex); 
+                    audio.volume = initialVolume;
+                    volumeBar.value = initialVolume * 100;
+                    volumeDisplay.textContent = `${Math.round(initialVolume * 100)}%`;
+                    if (initialTime > 1 && initialTime < audio.duration - 1) {
+                        audio.currentTime = initialTime;
+                    }
+                }
+                
+                // Si no había datos, guarda el estado inicial 
+                if (!data) saveState(); 
+                
+                renderPlaylist();
+
             }, (error) => {
-                console.error("Error al escuchar cambios en Firestore:", error);
+                console.error("Error al escuchar cambios en Firestore (usando valores por defecto):", error);
+                tracks = ALL_TRACKS;
+                const finalIndex = sharedIndex !== null ? sharedIndex : currentStartIndex;
+                if (!audio) initializePlayer(1, finalIndex, 0);
+                renderPlaylist();
+                alertUser("Error de Conexión", "No se pudo conectar a la base de datos para cargar el estado. Usando lista y día actual.");
             });
         }
         
-        // --- Eventos y Inicialización ---
-
-        // Configurar botones de control
-        playPauseBtn.addEventListener('click', togglePlayPause);
-        prevBtn.addEventListener('click', playPrevTrack);
-        nextBtn.addEventListener('click', playNextTrack);
-        skipBackwardBtn.addEventListener('click', () => skipTime(-5));
-        skipForwardBtn.addEventListener('click', () => skipTime(5));
-
-        // Eventos para la barra de búsqueda
-        seekBar.addEventListener('change', handleSeekChange);
-        // Marcar que el usuario está arrastrando para detener la actualización automática
-        seekBar.addEventListener('mousedown', () => seekBar.isDragging = true);
-        seekBar.addEventListener('mouseup', () => seekBar.isDragging = false);
-
-        // Eventos para el volumen
-        volumeBar.addEventListener('input', handleVolumeChange);
-
-        // Evento de Compartir
-        shareAudioBtn.addEventListener('click', () => {
-            if (currentTrackIndex !== -1) {
-                // Generar URL con el índice de la pista
-                const url = new URL(window.location.href);
-                url.searchParams.set('trackIndex', currentTrackIndex);
-                
-                // Usar la API del portapapeles (navigator.clipboard) o fallback
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(url.toString()).then(() => {
-                        showUserMessage("¡Enlace copiado al portapapeles!");
-                    }).catch(err => {
-                        console.error('Error al copiar el texto: ', err);
-                        // Fallback (menos amigable en algunos navegadores/iframes)
-                        try {
-                            const tempInput = document.createElement('input');
-                            document.body.appendChild(tempInput);
-                            tempInput.value = url.toString();
-                            tempInput.select();
-                            document.execCommand('copy');
-                            document.body.removeChild(tempInput);
-                            showUserMessage("¡Enlace copiado al portapapeles! (Método alternativo)");
-                        } catch (e) {
-                            showUserMessage("Error: No se pudo copiar el enlace automáticamente.");
-                        }
-                    });
-                } else {
-                     showUserMessage("Tu navegador no soporta la función de copia automática. El enlace generado es: " + url.toString());
-                }
-            } else {
-                showUserMessage("Por favor, selecciona una pista primero.");
-            }
-        });
-
-        // --- Función de Inicio ---
-        async function initializeApp() {
-            // 1. Inicializar Firebase
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-            
-            // Persistir la sesión (opcional, pero útil)
-            await setPersistence(auth, browserLocalPersistence);
-
-            // 2. Autenticación
+        /** Inicializa Firebase y autentica al usuario. */
+        async function initFirebase() {
             try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                await setPersistence(auth, browserLocalPersistence);
+
                 if (initialAuthToken) {
                     await signInWithCustomToken(auth, initialAuthToken);
                 } else {
                     await signInAnonymously(auth);
                 }
-            } catch (error) {
-                console.error("Error de autenticación Firebase:", error);
-                // Si la autenticación falla, usamos un ID aleatorio temporal
-                userId = crypto.randomUUID(); 
-            }
-
-            // 3. Obtener el ID de usuario y actualizar la UI
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    userId = user.uid;
-                    userIdEl.textContent = userId;
-                    
-                    // 4. Calcular el índice de rotación
-                    currentStartIndex = calculateCurrentDayIndex();
-                    
-                    // 5. Comprobar si hay un índice en la URL (enlace compartido)
-                    const urlIndex = getTrackIndexFromUrl();
-                    if (urlIndex !== null) {
-                        currentTrackIndex = urlIndex;
-                        // Si viene de un enlace, renderizamos y cargamos, pero no cargamos el estado guardado aún.
-                        renderPlaylists(); 
-                        loadTrack(currentTrackIndex);
-                        showUserMessage(`Cargada pista #${urlIndex + 1} desde enlace compartido.`);
-                        // Intentar reproducir automáticamente si se carga desde URL
-                        audio.play().then(() => updatePlayPauseButton(true)).catch(e => {
-                            // Silently fail or show a message if autoplay is blocked
-                        });
-                        
-                    } else {
-                        // Si NO viene de un enlace, cargar el estado guardado (esto llama a loadTrack dentro)
-                        renderPlaylists(); // Renderiza con el índice por defecto
+                
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        // Mostrar una versión corta del ID para la UI
+                        userIdEl.textContent = userId.substring(0, 10) + '...';
                         loadUserState();
+                    } else {
+                        console.error("Usuario no autenticado, usando modo predeterminado.");
+                        // Si falla la autenticación, todavía calculamos el día actual y cargamos la lista
+                        currentStartIndex = calculateCurrentDayIndex();
+                        const finalIndex = getTrackIndexFromUrl() || currentStartIndex;
+                        tracks = ALL_TRACKS;
+                        initializePlayer(1, finalIndex, 0);
+                        renderPlaylist();
                     }
+                });
 
-                } else {
-                    console.error("Usuario no autenticado, operando con ID por defecto/aleatorio.");
-                    userIdEl.textContent = userId; // Mostrar ID aleatorio
-                    
-                    // Aún necesitamos calcular el día y renderizar las listas
-                    currentStartIndex = calculateCurrentDayIndex();
-                    renderPlaylists();
-                    
-                    // Cargar la primera pista de hoy como default
-                    loadTrack(currentStartIndex);
-                }
-            });
+            } catch (error) {
+                console.error("Error en la inicialización de Firebase/Autenticación:", error);
+                userIdEl.textContent = "Error de Auth/DB";
+                currentStartIndex = calculateCurrentDayIndex();
+                const finalIndex = getTrackIndexFromUrl() || currentStartIndex;
+                tracks = ALL_TRACKS;
+                initializePlayer(1, finalIndex, 0);
+                renderPlaylist();
+            }
         }
 
-        initializeApp();
+        // Iniciar la aplicación al cargar la ventana
+        window.onload = initFirebase;
 
     </script>
 </body>
