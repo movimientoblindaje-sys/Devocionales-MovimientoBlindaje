@@ -8,6 +8,7 @@
 -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,10 +18,13 @@
     <!-- Font Inter para la estética -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #ffc61a; /* Fondo amarillo */
+            background-color: #ffc61a;
+            /* Fondo amarillo */
         }
+
         /* Estilos personalizados para la barra de progreso */
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
@@ -31,6 +35,7 @@
             cursor: pointer;
             margin-top: -6px;
         }
+
         input[type=range]::-moz-range-thumb {
             height: 16px;
             width: 16px;
@@ -39,31 +44,33 @@
             cursor: pointer;
         }
 
-        /* Estilo para el logo grande */
+        /* Estilo para el logo grande GRANDOR DEL LOGO */
         .large-logo {
-            height: 155px; /* Tamaño grande */
-            width: 400px; /* Tamaño grande */
+            height: 300px;
+            /* Tamaño grande */
+            width: 600px;
+            /* Tamaño grande */
         }
     </style>
 </head>
+
 <body class="p-4 md:p-8 min-h-screen">
 
     <!-- Logo y Título -->
     <header class="text-center mb-8">
         <!-- Logo con placeholder de fallback. Se añadió la clase large-logo -->
-        <img id="logo-img" 
-             src="logo-blindaje.png" 
-             onerror="this.src='https://placehold.co/155x400/000000/FFFFFF?text=BLINDAJE'"
-             alt="Logo Blindaje" 
-             class="mx-auto large-logo shadow-lg mb-4">
-        
-        <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-wider uppercase drop-shadow-lg">Devocional diario</h1>
+        <img id="logo-img" src="logo-blindaje.png"
+            onerror="this.src='https://placehold.co/160x160/000000/FFFFFF?text=BLINDAJE'" alt="Logo Blindaje"
+            class="mx-auto large-logo shadow-lg mb-4">
+
+        <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-wider uppercase drop-shadow-lg">Devocional
+            diario</h1>
         <p id="devotion-day-info" class="text-sm font-semibold text-gray-800 mt-2"></p>
     </header>
 
     <!-- Contenedor de Tarjetas: Apiladas verticalmente (flex-col) -->
     <main id="card-container" class="flex flex-col gap-6 max-w-4xl mx-auto">
-        
+
         <!-- Tarjeta 1: Reproductor Principal -->
         <section id="player-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
             <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Reproductor de Audio</h2>
@@ -78,50 +85,97 @@
                 <!-- Barra de Progreso -->
                 <div class="flex items-center space-x-2">
                     <span id="current-time" class="text-sm w-12 text-left">0:00</span>
-                    <input type="range" id="seek-bar" value="0" min="0" max="100" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer range-lg">
+                    <input type="range" id="seek-bar" value="0" min="0" max="100"
+                        class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer range-lg">
                     <span id="total-time" class="text-sm w-12 text-right">0:00</span>
                 </div>
-                
+
                 <!-- Controles de Reproducción -->
                 <div class="flex justify-center items-center space-x-4 md:space-x-6 pt-4">
-                    
+
                     <!-- Retroceder 5s -->
-                    <button id="skip-backward-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Retroceder 5 segundos">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h3a1 1 0 100-2H7zm4-2.586l3 3a1 1 0 010 1.414l-3 3A1 1 0 0110 12V8a1 1 0 011.414-.707z" clip-rule="evenodd"></path></svg>
+                    <button id="skip-backward-btn"
+                        class="text-white hover:text-yellow-400 p-2 rounded-full transition-all"
+                        aria-label="Retroceder 5 segundos">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h3a1 1 0 100-2H7zm4-2.586l3 3a1 1 0 010 1.414l-3 3A1 1 0 0110 12V8a1 1 0 011.414-.707z"
+                                clip-rule="evenodd"></path>
+                        </svg>
                     </button>
 
                     <!-- Anterior -->
-                    <button id="prev-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Pista Anterior">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-5-8a1 1 0 011-1h4.586l-1.293-1.293a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H6a1 1 0 01-1-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <button id="prev-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all"
+                        aria-label="Pista Anterior">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-5-8a1 1 0 011-1h4.586l-1.293-1.293a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H6a1 1 0 01-1-1z"
+                                clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
                     </button>
 
                     <!-- Reproducir / Pausar -->
-                    <button id="play-pause-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-4 rounded-full shadow-lg transition-all transform hover:scale-105" aria-label="Reproducir o Pausar">
-                        <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
-                        <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h1a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <button id="play-pause-btn"
+                        class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-4 rounded-full shadow-lg transition-all transform hover:scale-105"
+                        aria-label="Reproducir o Pausar">
+                        <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                                clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                        <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h1a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z"
+                                clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
                     </button>
 
                     <!-- Siguiente -->
-                    <button id="next-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Pista Siguiente">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    <button id="next-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all"
+                        aria-label="Pista Siguiente">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                                clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
                     </button>
-                    
+
                     <!-- Avanzar 5s -->
-                    <button id="skip-forward-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all" aria-label="Avanzar 5 segundos">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3-9a1 1 0 00-2 0v3a1 1 0 102 0V9zM7 8a1 1 0 011.414-.707l3 3a1 1 0 010 1.414l-3 3A1 1 0 017 12V8z" clip-rule="evenodd"></path></svg>
+                    <button id="skip-forward-btn"
+                        class="text-white hover:text-yellow-400 p-2 rounded-full transition-all"
+                        aria-label="Avanzar 5 segundos">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3-9a1 1 0 00-2 0v3a1 1 0 102 0V9zM7 8a1 1 0 011.414-.707l3 3a1 1 0 010 1.414l-3 3A1 1 0 017 12V8z"
+                                clip-rule="evenodd"></path>
+                        </svg>
                     </button>
                 </div>
 
                 <!-- Botón de Compartir Audio -->
-                <button id="share-audio-btn" class="w-full bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/40 font-semibold py-3 px-4 rounded-lg mt-4 transition-colors flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 13h3a3 3 0 000-6h-.025A5.56 5.56 0 0016 6.5 6.5 6.5 0 009.75 4.148 5.485 5.485 0 0110 6.5C10 9.047 8.163 11.233 5.766 11.758A7.03 7.03 0 0010 19a7.001 7.001 0 006.338-3.993 4.974 4.974 0 00-.776-3.873zM7 10a3 3 0 100-6 3 3 0 000 6z"></path></svg>
+                <button id="share-audio-btn"
+                    class="w-full bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/40 font-semibold py-3 px-4 rounded-lg mt-4 transition-colors flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M13 13h3a3 3 0 000-6h-.025A5.56 5.56 0 0016 6.5 6.5 6.5 0 009.75 4.148 5.485 5.485 0 0110 6.5C10 9.047 8.163 11.233 5.766 11.758A7.03 7.03 0 0010 19a7.001 7.001 0 006.338-3.993 4.974 4.974 0 00-.776-3.873zM7 10a3 3 0 100-6 3 3 0 000 6z">
+                        </path>
+                    </svg>
                     Compartir Audio
                 </button>
 
                 <!-- Control de Volumen -->
                 <div class="flex items-center space-x-2 pt-4">
-                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.673 8.327a1 1 0 010 3.346A5.008 5.008 0 0016 10a5.008 5.008 0 00-1.327-3.346z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
-                    <input type="range" id="volume-bar" value="100" min="0" max="100" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer range-sm">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.673 8.327a1 1 0 010 3.346A5.008 5.008 0 0016 10a5.008 5.008 0 00-1.327-3.346z"
+                            clip-rule="evenodd" fill-rule="evenodd"></path>
+                    </svg>
+                    <input type="range" id="volume-bar" value="100" min="0" max="100"
+                        class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer range-sm">
                     <span id="volume-display" class="text-sm w-8 text-right text-gray-400">100%</span>
                 </div>
             </div>
@@ -142,7 +196,7 @@
                 <!-- Los audios anteriores se renderizarán aquí -->
             </ul>
         </section>
-        
+
         <!-- Indicador de Usuario (Necesario para Firestore) -->
         <div class="text-center text-xs text-white/50 mt-4">
             ID de Usuario: <span id="user-id">Cargando...</span>
@@ -161,8 +215,8 @@
         // --- Configuración de Rotación Diaria ---
         const TRACKS_PER_DAY = 3;
         // La fecha de inicio del devocional. Asumimos el 2025-11-21 es el Día 1.
-        const START_DATE = new Date('2025-11-21T00:00:00'); 
-        
+        const START_DATE = new Date('2025-11-21T00:00:00');
+
         // Variables Globales
         let audio;
         let tracks = [];
@@ -173,17 +227,17 @@
         let userId = 'default-user';
         let appId;
         let currentStartIndex = 0; // Índice de la primera pista de "Audios de Hoy"
-        
+
         // --- Configuraciones Iniciales ---
 
         // 1. Configuración de Firebase y App ID
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         appId = typeof __app_id !== 'undefined' ? __app_id : 'devocional-diario-app';
-        
+
         const DB_COLLECTION = 'playlist_data';
         const DB_DOC_ID = 'user_state';
-        
+
         // 2. Definición de la Lista de Reproducción (URLs de Archive.org)
         const URLS = [
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-1-1-al-5.mp3",
@@ -253,7 +307,7 @@
             }
             return filename.replace(/-/g, ' ');
         }
-        
+
         // Estructura base de las pistas
         const ALL_TRACKS = URLS.map((url) => ({ name: extractTrackName(url), url }));
 
@@ -286,7 +340,7 @@
         function getTrackIndexFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
             const index = urlParams.get('trackIndex');
-            
+
             if (index !== null) {
                 const numIndex = parseInt(index, 10);
                 // Validación estricta
@@ -303,10 +357,10 @@
             const today = new Date();
             // Creamos una fecha solo con el día para ignorar la hora
             const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-            
+
             // Calculamos la diferencia en milisegundos
             const timeDiff = todayDateOnly.getTime() - START_DATE.getTime();
-            
+
             // Calculamos los días transcurridos (puede ser negativo si la fecha de inicio es futura)
             let daysElapsed = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 
@@ -322,7 +376,7 @@
                 devotionDayInfoEl.textContent = `Devocional Terminado (Día Final)`;
                 return maxIndex;
             }
-            
+
             devotionDayInfoEl.textContent = `Día de Devocional: ${dayIndex}`;
 
             return startIndex;
@@ -350,7 +404,7 @@
                 console.error("Error al guardar el estado en Firestore:", error);
             }
         }
-        
+
         /** Renderiza la lista de reproducción en las tarjetas. */
         function renderPlaylist() {
             dailyListEl.innerHTML = '';
@@ -358,14 +412,14 @@
 
             const archiveTracks = tracks.slice(0, currentStartIndex);
             const dailyTracks = tracks.slice(currentStartIndex, currentStartIndex + TRACKS_PER_DAY);
-            
+
             const dailyNames = ["Desayuno", "Almuerzo", "Cena"];
 
             // Renderizar audios de hoy
             dailyTracks.forEach((track, index) => {
                 const globalIndex = currentStartIndex + index;
                 const isCurrent = globalIndex === currentTrackIndex;
-                
+
                 // Asignar el nombre del momento del día
                 const trackDisplay = `${dailyNames[index]}: ${track.name}`;
 
@@ -375,16 +429,16 @@
 
             // Renderizar audios anteriores
             archiveTracks.forEach((track, index) => {
-                const isCurrent = index === currentTrackIndex; 
+                const isCurrent = index === currentTrackIndex;
                 const li = createPlaylistItem(index, track.name, isCurrent, true);
                 archiveListEl.appendChild(li);
             });
-            
+
             // Mensaje de finalización
             if (currentStartIndex >= ALL_TRACKS.length) {
-                 dailyListEl.innerHTML = `<li class="text-white/70 p-4">¡Felicidades! Has completado la lectura de Apocalipsis.</li>`;
+                dailyListEl.innerHTML = `<li class="text-white/70 p-4">¡Felicidades! Has completado la lectura de Apocalipsis.</li>`;
             } else if (ALL_TRACKS.length === 0) {
-                 dailyListEl.innerHTML = `<li class="text-red-400 p-4">Error: No se pudo cargar la lista de audios.</li>`;
+                dailyListEl.innerHTML = `<li class="text-red-400 p-4">Error: No se pudo cargar la lista de audios.</li>`;
             }
 
             // Actualizar botones de Prev/Next
@@ -395,39 +449,39 @@
         /** Helper para crear un elemento de la lista de reproducción. */
         function createPlaylistItem(index, name, isCurrent, isArchive = false) {
             const li = document.createElement('li');
-            
+
             // Estilo para el elemento de la lista
             li.className = `p-3 md:p-4 cursor-pointer transition-all rounded-md flex justify-between items-center 
                             ${isCurrent ? 'bg-yellow-600 font-bold hover:bg-yellow-700' : 'hover:bg-gray-800'}
                             ${isArchive ? 'text-white/80' : ''}`;
             li.setAttribute('data-index', index);
-            
+
             const nameSpan = document.createElement('span');
             nameSpan.textContent = name;
 
             // Icono de reproducción
             const playIconSvg = `<svg class="w-5 h-5 ml-2 ${isCurrent ? 'text-gray-900' : 'text-yellow-400'}" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>`;
-            
+
             li.innerHTML = nameSpan.outerHTML + playIconSvg;
 
             li.addEventListener('click', () => {
                 loadTrack(index);
                 playTrack();
             });
-            
+
             return li;
         }
 
         /** Carga una pista específica por índice. */
         function loadTrack(index) {
             if (ALL_TRACKS.length === 0) return;
-            
+
             // Asegura que el índice esté dentro del rango de la lista completa
             currentTrackIndex = (index % ALL_TRACKS.length + ALL_TRACKS.length) % ALL_TRACKS.length;
 
             const track = ALL_TRACKS[currentTrackIndex];
             audio.src = track.url;
-            
+
             // Nombre en el reproductor (le agrega Desayuno, Almuerzo, Cena si es de hoy)
             let displayTrackName = track.name;
             if (currentTrackIndex >= currentStartIndex && currentTrackIndex < currentStartIndex + TRACKS_PER_DAY) {
@@ -439,7 +493,7 @@
             trackNameEl.textContent = displayTrackName;
             totalTimeEl.textContent = '0:00';
             seekBar.value = 0;
-            
+
             // Pausar y preparar para la reproducción
             if (isPlaying) {
                 playIcon.classList.remove('hidden');
@@ -453,7 +507,7 @@
         // --- Funciones de Control del Reproductor ---
         function playTrack() {
             if (ALL_TRACKS.length === 0 || !audio.src) return;
-            
+
             if (audio.readyState === 0) {
                 audio.load();
             }
@@ -497,42 +551,77 @@
                 saveState();
             }
         }
-        
+
         function togglePlayPause() {
             isPlaying ? pauseTrack() : playTrack();
         }
 
-        /** Genera y copia el enlace al audio actual. */
+        /** Genera y copia el enlace al audio actual CORREGIDO */
         function shareTrack() {
-            // Construye la URL base (pathname solo funciona en el contexto de Canvas)
-            const baseUrl = window.location.pathname;
+            // Obtiene la URL completa actual de tu sitio web
+            const currentUrl = window.location.href.split('?')[0]; // Elimina parámetros existentes
             // Agrega el parámetro trackIndex con el índice actual
-            const shareUrl = `${baseUrl}?trackIndex=${currentTrackIndex}`;
+            const shareUrl = `${currentUrl}?trackIndex=${currentTrackIndex}`;
             
-            // Intentar copiar al portapapeles
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(shareUrl)
-                    .then(() => {
-                        alertUser("Audio Compartido", `El enlace al audio "${trackNameEl.textContent}" ha sido copiado al portapapeles. ¡Compártelo!`);
-                    })
-                    .catch(err => {
-                        console.error('Error al copiar:', err);
-                        // Fallback para entornos restrictivos como iframes
-                        document.execCommand('copy', false, shareUrl);
-                        alertUser("Audio Compartido", `El enlace ha sido copiado al portapapeles (Índice ${currentTrackIndex}).`);
-                    });
+            const trackName = trackNameEl.textContent;
+
+            // Intentar usar la Web Share API si está disponible
+            if (navigator.share) {
+                navigator.share({
+                    title: `Escucha: ${trackName}`,
+                    text: `Ven a escuchar "${trackName}" en mi app de devocionales`,
+                    url: shareUrl
+                })
+                .then(() => console.log('Compartido exitosamente'))
+                .catch((error) => {
+                    console.log('Error al compartir, usando fallback:', error);
+                    copyToClipboard(shareUrl, trackName);
+                });
             } else {
-                // Fallback de compatibilidad
-                const textarea = document.createElement('textarea');
-                textarea.value = shareUrl;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                alertUser("Audio Compartido", `El enlace ha sido copiado al portapapeles (Índice ${currentTrackIndex}).`);
+                // Fallback: copiar al portapapeles
+                copyToClipboard(shareUrl, trackName);
             }
         }
 
+        /** Función auxiliar para copiar al portapapeles */
+        function copyToClipboard(shareUrl, trackName) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(shareUrl)
+                    .then(() => {
+                        alertUser("Audio Compartido", `El enlace a "${trackName}" ha sido copiado al portapapeles. ¡Compártelo!`);
+                    })
+                    .catch(err => {
+                        console.error('Error al copiar:', err);
+                        // Fallback para navegadores más antiguos
+                        fallbackCopyToClipboard(shareUrl, trackName);
+                    });
+            } else {
+                fallbackCopyToClipboard(shareUrl, trackName);
+            }
+        }
+
+        /** Fallback para navegadores que no soportan clipboard API */
+        function fallbackCopyToClipboard(shareUrl, trackName) {
+            const textarea = document.createElement('textarea');
+            textarea.value = shareUrl;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textarea);
+                if (successful) {
+                    alertUser("Audio Compartido", `El enlace a "${trackName}" ha sido copiado al portapapeles. ¡Compártelo!`);
+                } else {
+                    alertUser("Compartir Audio", `URL para compartir: ${shareUrl}`);
+                }
+            } catch (err) {
+                document.body.removeChild(textarea);
+                alertUser("Compartir Audio", `URL para compartir: ${shareUrl}`);
+            }
+        }
 
         // --- Mensajes de Usuario (Reemplazo de alert()) ---
         function alertUser(title, message) {
@@ -562,7 +651,7 @@
         /** Inicializa el reproductor y los eventos. */
         function initializePlayer(initialVolume = 1, initialIndex = 0, initialTime = 0) {
             audio = new Audio();
-            
+
             // Establecer el volumen inicial
             audio.volume = initialVolume;
             volumeBar.value = initialVolume * 100;
@@ -580,12 +669,12 @@
             audio.addEventListener('loadedmetadata', () => {
                 if (!isNaN(audio.duration)) {
                     totalTimeEl.textContent = formatTime(audio.duration);
-                    
+
                     // Reanudar la reproducción si hay una posición guardada
                     if (initialTime > 1 && initialTime < audio.duration - 1) {
                         audio.currentTime = initialTime;
                         // Forzar una actualización de la barra de búsqueda
-                        seekBar.value = (initialTime / audio.duration) * 100; 
+                        seekBar.value = (initialTime / audio.duration) * 100;
                     }
                 }
             });
@@ -612,7 +701,7 @@
                     audio.currentTime = seekTime;
                 }
             });
-            
+
             volumeBar.addEventListener('input', () => {
                 const newVolume = volumeBar.value / 100;
                 audio.volume = newVolume;
@@ -633,14 +722,14 @@
 
             // 2. Calcular el índice de inicio del día actual (índice por defecto)
             currentStartIndex = calculateCurrentDayIndex();
-            
+
             tracks = ALL_TRACKS; // La lista completa de tracks
 
             const docRef = doc(db, `artifacts/${appId}/users/${userId}/${DB_COLLECTION}`, DB_DOC_ID);
-            
+
             onSnapshot(docRef, (docSnap) => {
                 const data = docSnap.exists() ? docSnap.data() : null;
-                
+
                 let initialVolume = 1;
                 let initialTime = 0;
                 let initialIndex = currentStartIndex; // Valor por defecto
@@ -648,27 +737,27 @@
                 if (data) {
                     // Cargar volumen guardado
                     initialVolume = data.volume !== undefined ? data.volume : 1;
-                    
+
                     // Lógica de índice:
                     // 1. Prioridad: Índice compartido de la URL
                     if (sharedIndex !== null) {
                         initialIndex = sharedIndex;
                         // El tiempo inicial se mantiene en 0 para una URL compartida
-                    } 
+                    }
                     // 2. Segunda prioridad: Índice guardado en Firestore (si es parte del día actual)
                     else {
                         const savedIndex = data.currentTrackIndex || 0;
                         if (savedIndex >= currentStartIndex && savedIndex < currentStartIndex + TRACKS_PER_DAY) {
                             initialIndex = savedIndex;
                             initialTime = data.lastPlayedTime || 0;
-                        } 
+                        }
                         // 3. Si no es un audio de hoy, volvemos al Desayuno de hoy (currentStartIndex) y tiempo 0
-                        else if (savedIndex !== currentStartIndex) { 
-                            initialTime = 0; 
+                        else if (savedIndex !== currentStartIndex) {
+                            initialTime = 0;
                         }
                     }
                 }
-                
+
                 // Si la aplicación se carga con un índice compartido, siempre se reinicia el tiempo para ese audio.
                 if (sharedIndex !== null) {
                     initialTime = 0;
@@ -680,7 +769,7 @@
                 } else {
                     // Si ya está inicializado, solo actualiza el estado
                     currentTrackIndex = initialIndex;
-                    loadTrack(currentTrackIndex); 
+                    loadTrack(currentTrackIndex);
                     audio.volume = initialVolume;
                     volumeBar.value = initialVolume * 100;
                     volumeDisplay.textContent = `${Math.round(initialVolume * 100)}%`;
@@ -688,10 +777,10 @@
                         audio.currentTime = initialTime;
                     }
                 }
-                
+
                 // Si no había datos, guarda el estado inicial 
-                if (!data) saveState(); 
-                
+                if (!data) saveState();
+
                 renderPlaylist();
 
             }, (error) => {
@@ -703,7 +792,7 @@
                 alertUser("Error de Conexión", "No se pudo conectar a la base de datos para cargar el estado. Usando lista y día actual.");
             });
         }
-        
+
         /** Inicializa Firebase y autentica al usuario. */
         async function initFirebase() {
             try {
@@ -718,7 +807,7 @@
                 } else {
                     await signInAnonymously(auth);
                 }
-                
+
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
                         userId = user.uid;
@@ -752,4 +841,5 @@
 
     </script>
 </body>
+
 </html>
