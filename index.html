@@ -46,9 +46,9 @@
 
         /* Estilo para el logo grande GRANDOR DEL LOGO */
         .large-logo {
-            height: 200px;
+            height: 300px;
             /* Tamaño grande */
-            width: 500px;
+            width: 600px;
             /* Tamaño grande */
         }
     </style>
@@ -214,8 +214,8 @@
 
         // --- Configuración de Rotación Diaria ---
         const TRACKS_PER_DAY = 3;
-        // La fecha de inicio del devocional. Asumimos el 2025-11-22 es el Día 1.
-        const START_DATE = new Date('2025-11-22T00:00:00');
+        // La fecha de inicio del devocional. Jueves 20 de noviembre como Día 1
+        const START_DATE = new Date('2025-11-20T00:00:00');
 
         // Variables Globales
         let audio;
@@ -351,24 +351,42 @@
             return null;
         }
 
+        /** Calcula el número de días hábiles (excluyendo sábados y domingos) entre dos fechas */
+        function getBusinessDaysCount(startDate, endDate) {
+            let count = 0;
+            const current = new Date(startDate);
+            
+            // Aseguramos que comparamos solo las fechas (sin horas)
+            current.setHours(0, 0, 0, 0);
+            const end = new Date(endDate);
+            end.setHours(0, 0, 0, 0);
+            
+            while (current <= end) {
+                const dayOfWeek = current.getDay();
+                // Excluir sábado (6) y domingo (0)
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    count++;
+                }
+                current.setDate(current.getDate() + 1);
+            }
+            return count;
+        }
 
-        /** Calcula el índice inicial de los audios de hoy basado en la fecha. */
+        /** Calcula el índice inicial de los audios de hoy basado en la fecha, excluyendo fines de semana. */
         function calculateCurrentDayIndex() {
             const today = new Date();
             // Creamos una fecha solo con el día para ignorar la hora
             const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            const startDateOnly = new Date(START_DATE.getFullYear(), START_DATE.getMonth(), START_DATE.getDate());
 
-            // Calculamos la diferencia en milisegundos
-            const timeDiff = todayDateOnly.getTime() - START_DATE.getTime();
+            // Calculamos días hábiles transcurridos (excluyendo sábados y domingos)
+            let businessDaysElapsed = getBusinessDaysCount(startDateOnly, todayDateOnly) - 1;
 
-            // Calculamos los días transcurridos (puede ser negativo si la fecha de inicio es futura)
-            let daysElapsed = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            // Si businessDaysElapsed es negativo, el devocional aún no comienza (usamos el día 0)
+            if (businessDaysElapsed < 0) businessDaysElapsed = 0;
 
-            // Si daysElapsed es negativo, el devocional aún no comienza (usamos el día 0)
-            if (daysElapsed < 0) daysElapsed = 0;
-
-            const dayIndex = daysElapsed + 1;
-            const startIndex = daysElapsed * TRACKS_PER_DAY;
+            const dayIndex = businessDaysElapsed + 1;
+            const startIndex = businessDaysElapsed * TRACKS_PER_DAY;
 
             // Asegura que el índice no exceda el límite superior de la lista completa
             if (startIndex >= ALL_TRACKS.length) {
@@ -438,7 +456,7 @@
             if (currentStartIndex >= ALL_TRACKS.length) {
                 dailyListEl.innerHTML = `<li class="text-white/70 p-4">¡Felicidades! Has completado la lectura de Apocalipsis.</li>`;
             } else if (ALL_TRACKS.length === 0) {
-                dailyListEl.innerHTML = `<li class="text-red-400 p-4">Error: No se pudo cargar la lista de audios.</li>`;
+                dailyListEl.innerHTML = `<li class="text-red-400 p-4">Error: No se puede cargar la lista de audios.</li>`;
             }
 
             // Actualizar botones de Prev/Next
@@ -534,13 +552,39 @@
 
         function nextTrack() {
             pauseTrack();
-            loadTrack(currentTrackIndex + 1);
+            
+            const currentDayStart = currentStartIndex;
+            const currentDayEnd = currentStartIndex + TRACKS_PER_DAY - 1;
+            
+            let nextIndex;
+            
+            // Si es el ÚLTIMO audio del día actual, vuelve al Audio 1 (Apocalipsis 1:1-5)
+            if (currentTrackIndex >= currentDayEnd) {
+                nextIndex = 0; // Vuelve al Audio 1 - Apocalipsis 1:1-5
+            } else {
+                nextIndex = currentTrackIndex + 1; // Siguiente audio normal del día
+            }
+            
+            loadTrack(nextIndex);
             playTrack();
         }
 
         function prevTrack() {
             pauseTrack();
-            loadTrack(currentTrackIndex - 1);
+            
+            const currentDayStart = currentStartIndex;
+            const currentPositionInDay = currentTrackIndex - currentStartIndex;
+            
+            let prevIndex;
+            
+            // Si es el PRIMER audio del día, ve al Audio 1
+            if (currentPositionInDay <= 0) {
+                prevIndex = 0; // Audio 1 - Apocalipsis 1:1-5
+            } else {
+                prevIndex = currentTrackIndex - 1; // Audio anterior del día
+            }
+            
+            loadTrack(prevIndex);
             playTrack();
         }
 
@@ -679,7 +723,20 @@
                 }
             });
 
-            audio.addEventListener('ended', nextTrack);
+            audio.addEventListener('ended', function() {
+                const currentDayStart = currentStartIndex;
+                const currentDayEnd = currentStartIndex + TRACKS_PER_DAY - 1;
+                
+                if (currentTrackIndex >= currentDayEnd) {
+                    // Si es el último audio del día, vuelve al Audio 1
+                    loadTrack(0); // Audio 1 - Apocalipsis 1:1-5
+                    playTrack();
+                } else {
+                    // Si no es el último, sigue al siguiente del día
+                    nextTrack();
+                }
+            });
+
             audio.addEventListener('pause', saveState);
             audio.addEventListener('error', (e) => {
                 console.error("Error en la carga del audio:", e);
