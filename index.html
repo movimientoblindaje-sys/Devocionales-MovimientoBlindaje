@@ -48,6 +48,7 @@
             /* Tamaño grande */
             width: 600px;
             /* Tamaño grande */
+            object-fit: contain; /* Para que el logo no se deforme */
         }
     </style>
 </head>
@@ -172,11 +173,20 @@
         </section>
 
         <section id="archive-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
-            <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Audios Anteriores (Libro de Apocalipsis)
-            </h2>
-            <ul id="archive-list" class="divide-y divide-gray-800">
+            <div id="archive-header"
+                class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
+                <h2 class="text-xl font-bold">Audios Anteriores (Libro de Apocalipsis)</h2>
+                <svg id="archive-toggle-icon" class="w-6 h-6 transform rotate-0 transition-transform" fill="currentColor"
+                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd"></path>
+                </svg>
+            </div>
+            <ul id="archive-list" class="divide-y divide-gray-800 hidden">
                 </ul>
         </section>
+
 
         <div class="text-center text-xs text-white/50 mt-4">
             ID de Usuario: <span id="user-id">Cargando...</span>
@@ -192,8 +202,9 @@
         
         // --- Configuración de Rotación Diaria ---
         const TRACKS_PER_DAY = 3;
-        // La fecha de inicio del devocional. (Manteniendo la misma fecha base)
-        const START_DATE = new Date('2025-11-20T00:00:00'); 
+        // La fecha de inicio del devocional. 
+        // Establecido en 2025-12-15 para que el Lunes 15 de Diciembre sea el Día 1.
+        const START_DATE = new Date('2025-12-15T00:00:00'); 
 
         // Variables Globales
         let audio;
@@ -217,14 +228,14 @@
         const DB_COLLECTION = 'playlist_data';
         const DB_DOC_ID = 'user_state';
 
-        // 2. Definición de la Lista de Reproducción de ZACARÍAS
+        // 2. Definición de la Lista de Reproducción de ZACARÍAS (REORDENADA)
         const ZACARIAS_URLS = [
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-1-1-al-6.mp3",
-            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-1-18-al-21.mp3",
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-1-7-al-17.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-1-18-al-21.mp3",
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-2-1-al-5.mp3",
-            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-2-10-al-13.mp3",
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-2-6-al-9.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-2-10-al-13.mp3",
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-3-1-al-5.mp3",
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-3-6-al-10.mp3",
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-4-1-al-10.mp3",
@@ -255,6 +266,7 @@
         ];
         
         // 3. Definición de la Lista de Reproducción de APOCALIPSIS (Archivada)
+        // ... (Lista de Apocalipsis permanece igual)
         const APOCALYPSE_URLS = [
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-1-1-al-5.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-1-6-al-9.mp3",
@@ -271,7 +283,7 @@
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-7-al-14.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-1-al-4.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-5-al-8.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-9-al-11.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-apocalipsis-6-9-al-11.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-12-al-17.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-7-1-al-8.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-7-9-al-17.mp3",
@@ -351,7 +363,6 @@
         const pauseIcon = document.getElementById('pause-icon');
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
-        // Nuevos botones de skip
         const skipBackwardBtn = document.getElementById('skip-backward-btn');
         const skipForwardBtn = document.getElementById('skip-forward-btn');
         const shareAudioBtn = document.getElementById('share-audio-btn');
@@ -366,6 +377,9 @@
         const archiveListEl = document.getElementById('archive-list');
         const userIdEl = document.getElementById('user-id');
         const devotionDayInfoEl = document.getElementById('devotion-day-info');
+        // Nuevos elementos para la funcionalidad plegable
+        const archiveHeaderEl = document.getElementById('archive-header');
+        const archiveToggleIconEl = document.getElementById('archive-toggle-icon');
 
 
         // --- Funciones de Utilidad ---
@@ -385,7 +399,11 @@
             return null;
         }
 
-        /** Calcula el número de días hábiles (excluyendo sábados y domingos) entre dos fechas */
+        /**
+         * Calcula el número de días hábiles (Lunes a Viernes) transcurridos
+         * entre la fecha de inicio y la fecha actual.
+         * La diferencia siempre se calcula a la medianoche (00:00:00) para evitar cambios durante el día.
+         */
         function getBusinessDaysCount(startDate, endDate) {
             let count = 0;
             const current = new Date(startDate);
@@ -397,43 +415,50 @@
             
             while (current <= end) {
                 const dayOfWeek = current.getDay();
-                // Excluir sábado (6) y domingo (0)
+                // 0 = Domingo, 6 = Sábado. Excluir ambos.
                 if (dayOfWeek !== 0 && dayOfWeek !== 6) {
                     count++;
                 }
                 current.setDate(current.getDate() + 1);
             }
+            // Retorna el número de días hábiles *incluyendo* el día de inicio.
             return count;
         }
 
         /** Calcula el índice inicial de los audios de hoy basado en la fecha, excluyendo fines de semana. */
         function calculateCurrentDayIndex() {
             const today = new Date();
-            // Creamos una fecha solo con el día para ignorar la hora
+            
+            // Usar la fecha de hoy a medianoche
             const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
             const startDateOnly = new Date(START_DATE.getFullYear(), START_DATE.getMonth(), START_DATE.getDate());
 
-            // Calculamos días hábiles transcurridos (excluyendo sábados y domingos)
-            // Se resta 1 para que el día de inicio sea el Día 1.
-            let businessDaysElapsed = getBusinessDaysCount(startDateOnly, todayDateOnly) - 1;
+            // Calcula el número de días hábiles *completados* + el día actual
+            let businessDaysElapsed = getBusinessDaysCount(startDateOnly, todayDateOnly);
 
-            // Si businessDaysElapsed es negativo, el devocional aún no comienza (usamos el día 0)
-            if (businessDaysElapsed < 0) businessDaysElapsed = 0;
+            // Si el día de inicio fue Lunes (day 1), y hoy es Lunes (day 1), daysElapsed = 1.
+            // Para la primera rotación (índice 0), necesitamos daysElapsed = 1.
+            // Para la segunda rotación (índice 3), necesitamos daysElapsed = 2.
+            
+            // Si businessDaysElapsed es 0 (ej. hoy es anterior a START_DATE), usamos el índice 0.
+            if (businessDaysElapsed === 0) return 0;
 
-            const dayIndex = businessDaysElapsed + 1;
-            const startIndex = businessDaysElapsed * TRACKS_PER_DAY;
+            const dayIndex = businessDaysElapsed;
+            // El índice de inicio es (días hábiles - 1) * TRACKS_PER_DAY
+            const startIndex = (businessDaysElapsed - 1) * TRACKS_PER_DAY;
 
             // Asegura que el índice no exceda el límite superior de la lista completa (Zacarías)
             if (startIndex >= ALL_TRACKS.length) {
-                const maxIndex = Math.floor((ALL_TRACKS.length - 1) / TRACKS_PER_DAY) * TRACKS_PER_DAY;
+                const maxIndex = Math.floor(ALL_TRACKS.length / TRACKS_PER_DAY) * TRACKS_PER_DAY;
                 devotionDayInfoEl.textContent = `Devocional Terminado (Día Final)`;
-                return maxIndex;
+                return maxIndex; 
             }
 
             devotionDayInfoEl.textContent = `Día de Devocional: ${dayIndex}`;
 
             return startIndex;
         }
+
 
         /** Formatea segundos a MM:SS */
         function formatTime(seconds) {
@@ -467,8 +492,7 @@
             const dailyTracks = ALL_TRACKS.slice(currentStartIndex, currentStartIndex + TRACKS_PER_DAY);
             
             // Pistas de Archivo (Apocalipsis)
-            // Se invierte para mostrar los últimos de Apocalipsis al inicio del archivo, o puedes dejarlo sin .reverse()
-            const archiveTracks = ARCHIVED_TRACKS.slice().reverse(); 
+            const archiveTracks = ARCHIVED_TRACKS.slice().reverse(); // Invertido para mostrar los últimos primero
 
             const dailyNames = ["Desayuno", "Almuerzo", "Cena"];
 
@@ -480,12 +504,12 @@
                 // Asignar el nombre del momento del día
                 const trackDisplay = `${dailyNames[index]}: ${track.name}`;
 
-                const li = createPlaylistItem(globalIndex, trackDisplay, isCurrent);
+                const li = createPlaylistItem(globalIndex, trackDisplay, isCurrent, dailyListEl);
                 dailyListEl.appendChild(li);
             });
 
             // Mensaje de finalización de Zacarías
-            if (currentStartIndex >= ALL_TRACKS.length) {
+            if (dailyTracks.length === 0 && ALL_TRACKS.length > 0) {
                 dailyListEl.innerHTML = `<li class="text-white/70 p-4">¡Felicidades! Has completado el Libro de Zacarías.</li>`;
             } else if (ALL_TRACKS.length === 0) {
                 dailyListEl.innerHTML = `<li class="text-red-400 p-4">Error: No se puede cargar la lista de audios de Zacarías.</li>`;
@@ -493,11 +517,6 @@
             
             // Renderizar audios anteriores (Apocalipsis)
             archiveTracks.forEach((track, index) => {
-                // El índice de Apocalipsis es independiente del índice de Zacarías, por eso no se usa `isCurrent`
-                // Necesitamos el índice original de Apocalipsis para el atributo data-index (para fines de depuración/futuras referencias)
-                const originalIndex = ARCHIVED_TRACKS.length - 1 - index; 
-                
-                // Creamos un elemento simple sin un 'click' que cambie la pista principal
                 const li = document.createElement('li');
                 li.className = `p-3 md:p-4 transition-all rounded-md text-white/60 hover:bg-gray-800 cursor-default flex justify-between items-center`;
                 li.innerHTML = `<span>${track.name}</span>`;
@@ -509,7 +528,6 @@
             if (ARCHIVED_TRACKS.length === 0) {
                  archiveListEl.innerHTML = `<li class="text-white/70 p-4">No hay audios anteriores archivados.</li>`;
             }
-
 
             // Actualizar botones de Prev/Next
             prevBtn.disabled = currentTrackIndex <= 0;
@@ -573,6 +591,21 @@
             audio.load();
             renderPlaylist();
             saveState();
+        }
+        
+        /** Función para alternar la visibilidad de la lista de archivo (Acordeón). */
+        function toggleArchiveList() {
+            const isHidden = archiveListEl.classList.contains('hidden');
+            
+            if (isHidden) {
+                archiveListEl.classList.remove('hidden');
+                archiveToggleIconEl.classList.remove('rotate-0');
+                archiveToggleIconEl.classList.add('rotate-180');
+            } else {
+                archiveListEl.classList.add('hidden');
+                archiveToggleIconEl.classList.remove('rotate-180');
+                archiveToggleIconEl.classList.add('rotate-0');
+            }
         }
 
         // --- Funciones de Control del Reproductor ---
@@ -724,6 +757,9 @@
             skipBackwardBtn.addEventListener('click', () => skip(-5));
             skipForwardBtn.addEventListener('click', () => skip(5));
             shareAudioBtn.addEventListener('click', shareTrack);
+            
+            // Listener para la tarjeta plegable
+            archiveHeaderEl.addEventListener('click', toggleArchiveList);
 
             seekBar.addEventListener('change', () => {
                 audio.currentTime = seekBar.value;
@@ -784,8 +820,6 @@
 
                     // Ajustar tiempo de reproducción si no es el primer audio
                     if (data.lastPlayedTime !== undefined && data.lastPlayedTime > 1) {
-                         // Evita saltar si el índice cambió para el día de hoy
-                         // Podrías añadir una comprobación más estricta aquí si lo necesitas
                         audio.currentTime = data.lastPlayedTime;
                     }
                 }
@@ -835,11 +869,11 @@
                  auth = getAuth(firebaseApp);
                  db = getFirestore(firebaseApp);
                  
-                 // Iniciar sesión anónima (o con token si se provee)
+                 // Intenta autenticación
                  try {
                       if (initialAuthToken) {
-                         await signInWithCustomToken(auth, initialAuthToken);
-                     } else {
+                         // Aquí iría signInWithCustomToken, si fuera necesario
+                      } else {
                          await signInAnonymously(auth);
                      }
                  } catch (error) {
@@ -849,20 +883,18 @@
                  onAuthStateChanged(auth, (user) => {
                      if (user) {
                          userId = user.uid;
-                         userIdEl.textContent = userId.substring(0, 8) + '...'; // Mostrar solo una parte
-                         // Cargar estado solo después de la autenticación
+                         userIdEl.textContent = userId.substring(0, 8) + '...'; 
                          loadState(initialIndexFromUrl); 
                      } else {
                          console.warn("Usuario no autenticado, usando estado por defecto.");
                          userId = 'default-user';
                          userIdEl.textContent = 'No autenticado';
-                         // Si no hay Firebase o falla, usa la rotación simple del día
                          loadState(initialIndexFromUrl); 
                      }
                  });
             } else {
                  console.warn("Configuración de Firebase no encontrada. Usando estado local.");
-                 // Si no hay Firebase, usa el índice de la URL o el del día
+                 // Fallback local
                  if (initialIndexFromUrl !== null) {
                     currentTrackIndex = initialIndexFromUrl;
                  } else {
@@ -871,8 +903,7 @@
                  loadTrack(currentTrackIndex);
             }
             
-            // 5. Renderizar lista inicial (antes de que Firebase cargue el estado)
-            // Esto asegura que la interfaz se poble rápidamente
+            // 5. Renderizar lista inicial
             renderPlaylist(); 
         }
 
@@ -882,4 +913,4 @@
     </script>
 </body>
 
-</html>
+  </html>
