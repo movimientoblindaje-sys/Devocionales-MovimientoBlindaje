@@ -46,17 +46,20 @@
                 </div>
 
                 <div class="flex justify-center items-center space-x-4 md:space-x-6 pt-4">
-                    <button id="skip-backward-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h3a1 1 0 100-2H7zm4-2.586l3 3a1 1 0 010 1.414l-3 3A1 1 0 0110 12V8a1 1 0 011.414-.707z"></path></svg></button>
-                    <button id="prev-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-5-8a1 1 0 011-1h4.586l-1.293-1.293a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H6a1 1 0 01-1-1z"></path></svg></button>
+                    <button id="skip-backward-btn" title="Retroceder 5s" class="text-white hover:text-yellow-400 p-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h3a1 1 0 100-2H7zm4-2.586l3 3a1 1 0 010 1.414l-3 3A1 1 0 0110 12V8a1 1 0 011.414-.707z"></path></svg></button>
+                    <button id="prev-btn" title="Anterior" class="text-white hover:text-yellow-400 p-2"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-5-8a1 1 0 011-1h4.586l-1.293-1.293a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H6a1 1 0 01-1-1z"></path></svg></button>
                     <button id="play-pause-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-4 rounded-full shadow-lg transition-all transform hover:scale-105">
                         <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg>
                         <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h1a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z"></path></svg>
                     </button>
-                    <button id="next-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg></button>
-                    <button id="skip-forward-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3-9a1 1 0 00-2 0v3a1 1 0 102 0V9zM7 8a1 1 0 011.414-.707l3 3a1 1 0 010 1.414l-3 3A1 1 0 017 12V8z"></path></svg></button>
+                    <button id="next-btn" title="Siguiente" class="text-white hover:text-yellow-400 p-2"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg></button>
+                    <button id="skip-forward-btn" title="Adelantar 5s" class="text-white hover:text-yellow-400 p-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3-9a1 1 0 00-2 0v3a1 1 0 102 0V9zM7 8a1 1 0 011.414-.707l3 3a1 1 0 010 1.414l-3 3A1 1 0 017 12V8z"></path></svg></button>
                 </div>
 
-                <button id="share-audio-btn" class="w-full bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/40 font-semibold py-3 px-4 rounded-lg mt-4 transition-colors">Compartir Audio</button>
+                <button id="share-audio-btn" class="w-full bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/40 font-semibold py-3 px-4 rounded-lg mt-4 transition-colors flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+                    Compartir Reproductor
+                </button>
 
                 <div class="flex items-center space-x-2 pt-4">
                     <input type="range" id="volume-bar" value="100" min="0" max="100" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer">
@@ -66,13 +69,13 @@
         </section>
 
         <section id="daily-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl border-l-4 border-yellow-500">
-            <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Lecturas de Hoy</h2>
+            <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2 flex items-center gap-2"><span>📅</span> Lecturas de Hoy (Zacarías)</h2>
             <ul id="daily-list" class="divide-y divide-gray-800"></ul>
         </section>
 
         <section id="past-zacarias-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
             <div id="past-zacarias-header" class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
-                <h2 class="text-xl font-bold">Zacarías: Archivo Pasado</h2>
+                <h2 class="text-xl font-bold flex items-center gap-2"><span>📚</span> Zacarías: Archivo Pasado</h2>
                 <svg id="past-toggle-icon" class="w-6 h-6 transform rotate-0 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"></path></svg>
             </div>
             <ul id="past-zacarias-list" class="divide-y divide-gray-800 hidden"></ul>
@@ -80,7 +83,7 @@
 
         <section id="archive-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
             <div id="archive-header" class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
-                <h2 class="text-xl font-bold">Apocalipsis: Archivo Completo</h2>
+                <h2 class="text-xl font-bold flex items-center gap-2"><span>📜</span> Apocalipsis: Archivo Completo</h2>
                 <svg id="archive-toggle-icon" class="w-6 h-6 transform rotate-0 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"></path></svg>
             </div>
             <ul id="archive-list" class="divide-y divide-gray-800 hidden"></ul>
@@ -89,8 +92,7 @@
     </main>
 
     <script>
-        // --- BASE DE DATOS COMPLETA ---
-        const START_DATE = new Date('2025-12-16T00:00:00'); // CORREGIDO AL 16 DE DICIEMBRE
+        const START_DATE = new Date('2025-12-16T00:00:00'); 
         const TRACKS_PER_DAY = 3;
 
         const ZACARIAS_URLS = [
@@ -142,16 +144,54 @@
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-3-14-al-22.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-4-1-al-11.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-1-al-6.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-7-al-14.mp3"
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-7-al-14.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-1-al-4.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-5-al-8.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-9-al-11.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-12-al-17.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-7-1-al-8.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-7-9-al-17.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-8-1-al-5.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-8-6-al-13.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-9-1-al-12.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-9-13-al-21.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-10-1-al-11.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-11-1-al-6.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-11-7-al-14.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-11-15-al-19.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-12-1-al-12.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-12-13-al-18.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-13-1-al-10.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-13-11-al-18.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-14-1-al-5.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-14-6-al-13.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-14-14-al-20.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-15-1-al-4.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-15-5-al-8.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-16-1-al-9.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-16-10-al-14.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-16-15-al-21.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-17-1-al-6.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-17-7-al-13.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-17-14-al-18.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-18-1-al-8.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-18-9-al-20.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-18-21-al-24.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-19-1-al-10.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-19-11-al-21.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-1-al-6.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-7-al-10.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-11-al-15.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-21-1-al-7.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-21-8-al-27.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-22-1-al-6.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-22-7-al-21.mp3"
         ];
 
-        // --- VARIABLES DE ESTADO ---
         let audio = new Audio();
         let currentTrackIndex = -1;
         let currentStartIndex = 0;
-        let isPlaying = false;
 
-        // --- ELEMENTOS DOM ---
         const dailyListEl = document.getElementById('daily-list');
         const pastZacariasListEl = document.getElementById('past-zacarias-list');
         const archiveListEl = document.getElementById('archive-list');
@@ -164,7 +204,6 @@
         const totalTimeEl = document.getElementById('total-time');
         const volumeBar = document.getElementById('volume-bar');
 
-        // --- LÓGICA DE DÍAS HÁBILES ---
         function getBusinessDaysCount(startDate, endDate) {
             let count = 0;
             const cur = new Date(startDate.getTime());
@@ -172,14 +211,12 @@
             const end = new Date(endDate.getTime());
             end.setHours(0,0,0,0);
             while (cur <= end) {
-                const dayOfWeek = cur.getDay();
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) count++;
+                if (cur.getDay() !== 0 && cur.getDay() !== 6) count++;
                 cur.setDate(cur.getDate() + 1);
             }
             return count;
         }
 
-        // --- FUNCIONES DEL REPRODUCTOR ---
         function formatName(url) {
             return decodeURIComponent(url.split('/').pop().replace('.mp3', '')).replace(/-/g, ' ');
         }
@@ -189,57 +226,47 @@
             trackNameEl.textContent = name;
             currentTrackIndex = index;
             audio.play();
-            isPlaying = true;
             playIcon.classList.add('hidden');
             pauseIcon.classList.remove('hidden');
         }
 
         function handleNext() {
-            // BLOQUEO DE AVANCE: Si es el último de hoy (la Cena)
             const lastOfToday = currentStartIndex + 2;
             if (currentTrackIndex !== -1 && currentTrackIndex >= lastOfToday) {
                 audio.pause();
-                isPlaying = false;
                 playIcon.classList.remove('hidden');
                 pauseIcon.classList.add('hidden');
-                alert("Has completado las lecturas de hoy. ¡Mañana más!");
+                alert("Has completado las lecturas de hoy.");
             } else if (currentTrackIndex !== -1 && ZACARIAS_URLS[currentTrackIndex + 1]) {
                 const nextIdx = currentTrackIndex + 1;
                 playAudio(ZACARIAS_URLS[nextIdx], formatName(ZACARIAS_URLS[nextIdx]), nextIdx);
             }
         }
 
-        // --- RENDERIZADO DE LISTAS ---
         function render() {
             const today = new Date();
             const businessDays = getBusinessDaysCount(START_DATE, today);
-            currentStartIndex = (businessDays - 1) * TRACKS_PER_DAY;
+            currentStartIndex = Math.max(0, (businessDays - 1) * TRACKS_PER_DAY);
             
-            document.getElementById('devotion-day-info').textContent = `Día Hábil: ${businessDays}`;
+            document.getElementById('devotion-day-info').textContent = `Blindaje - Día Hábil: ${businessDays}`;
 
-            // 1. Tarjeta de HOY
             dailyListEl.innerHTML = '';
             const moments = ["Desayuno", "Almuerzo", "Cena"];
             for (let i = 0; i < 3; i++) {
                 const idx = currentStartIndex + i;
                 if (ZACARIAS_URLS[idx]) {
-                    const li = createLi(`${moments[i]}: ${formatName(ZACARIAS_URLS[idx])}`, ZACARIAS_URLS[idx], idx);
-                    dailyListEl.appendChild(li);
+                    dailyListEl.appendChild(createLi(`${moments[i]}: ${formatName(ZACARIAS_URLS[idx])}`, ZACARIAS_URLS[idx], idx));
                 }
             }
 
-            // 2. Tarjeta ZACARIAS PASADOS (Historial)
             pastZacariasListEl.innerHTML = '';
             for (let i = currentStartIndex - 1; i >= 0; i--) {
-                const li = createLi(formatName(ZACARIAS_URLS[i]), ZACARIAS_URLS[i], i);
-                pastZacariasListEl.appendChild(li);
+                pastZacariasListEl.appendChild(createLi(formatName(ZACARIAS_URLS[i]), ZACARIAS_URLS[i], i));
             }
 
-            // 3. Tarjeta APOCALIPSIS (Archivo fijo)
             archiveListEl.innerHTML = '';
             APOCALYPSE_URLS.forEach(url => {
-                const li = createLi(formatName(url), url, -1);
-                archiveListEl.appendChild(li);
+                archiveListEl.appendChild(createLi(formatName(url), url, -1));
             });
         }
 
@@ -251,18 +278,10 @@
             return li;
         }
 
-        // --- CONTROLES EVENTOS ---
         playPauseBtn.onclick = () => {
             if (!audio.src) return;
-            if (audio.paused) {
-                audio.play();
-                playIcon.classList.add('hidden');
-                pauseIcon.classList.remove('hidden');
-            } else {
-                audio.pause();
-                playIcon.classList.remove('hidden');
-                pauseIcon.classList.add('hidden');
-            }
+            if (audio.paused) { audio.play(); playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); }
+            else { audio.pause(); playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); }
         };
 
         audio.onended = handleNext;
@@ -274,11 +293,9 @@
             }
         };
 
-        // Salto 5s
         document.getElementById('skip-backward-btn').onclick = () => audio.currentTime -= 5;
         document.getElementById('skip-forward-btn').onclick = () => audio.currentTime += 5;
 
-        // Barra de progreso y tiempo
         audio.ontimeupdate = () => {
             if (audio.duration) {
                 seekBar.value = (audio.currentTime / audio.duration) * 100;
@@ -291,22 +308,25 @@
             }
         };
         seekBar.oninput = () => audio.currentTime = (seekBar.value / 100) * audio.duration;
+        volumeBar.oninput = () => { audio.volume = volumeBar.value / 100; document.getElementById('volume-display').textContent = volumeBar.value + '%'; };
 
-        // Volumen
-        volumeBar.oninput = () => {
-            audio.volume = volumeBar.value / 100;
-            document.getElementById('volume-display').textContent = volumeBar.value + '%';
+        // FUNCIÓN DE COMPARTIR MEJORADA
+        document.getElementById('share-audio-btn').onclick = async () => {
+            const shareData = {
+                title: 'Devocional Diario - Blindaje',
+                text: `Escucha el devocional de hoy: "${trackNameEl.textContent}" en nuestro reproductor oficial.`,
+                url: window.location.href // Comparte el enlace del reproductor
+            };
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    await navigator.clipboard.writeText(window.location.href);
+                    alert("Enlace del reproductor copiado al portapapeles.");
+                }
+            } catch (err) { console.log("Error compartiendo", err); }
         };
 
-        // Compartir
-        document.getElementById('share-audio-btn').onclick = () => {
-            if (audio.src) {
-                navigator.clipboard.writeText(audio.src);
-                alert("Enlace copiado al portapapeles");
-            }
-        };
-
-        // Lógica de Plegables
         function setupToggle(headerId, listId, iconId) {
             document.getElementById(headerId).onclick = () => {
                 const list = document.getElementById(listId);
