@@ -8,60 +8,24 @@
 -->
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devocional Diario - Reproductor</title>
+    <title>Devocional Diario - Movimiento Blindaje</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #ffc61a;
-            /* Fondo amarillo */
-        }
-
-        /* Estilos personalizados para la barra de progreso */
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-            margin-top: -6px;
-        }
-
-        input[type=range]::-moz-range-thumb {
-            height: 16px;
-            width: 16px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-        }
-
-        /* Estilo para el logo grande GRANDOR DEL LOGO */
-        .large-logo {
-            height: 300px;
-            /* Tamaño grande */
-            width: 600px;
-            /* Tamaño grande */
-            object-fit: contain; /* Para que el logo no se deforme */
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #ffc61a; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: white; cursor: pointer; margin-top: -6px; }
+        input[type=range]::-moz-range-thumb { height: 16px; width: 16px; border-radius: 50%; background: white; cursor: pointer; }
+        .large-logo { height: 300px; width: 600px; object-fit: contain; }
     </style>
 </head>
-
 <body class="p-4 md:p-8 min-h-screen">
 
     <header class="text-center mb-8">
-        <img id="logo-img" src="logo-blindaje.png"
-            onerror="this.src='https://placehold.co/160x160/000000/FFFFFF?text=BLINDAJE'" alt="Logo Blindaje"
-            class="mx-auto large-logo shadow-lg mb-4">
-
-        <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-wider uppercase drop-shadow-lg">Devocional
-            diario</h1>
+        <img id="logo-img" src="logo-blindaje.png" onerror="this.src='https://placehold.co/160x160/000000/FFFFFF?text=BLINDAJE'" alt="Logo Blindaje" class="mx-auto large-logo shadow-lg mb-4">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-wider uppercase drop-shadow-lg">Devocional diario</h1>
         <p id="devotion-day-info" class="text-sm font-semibold text-gray-800 mt-2"></p>
     </header>
 
@@ -69,98 +33,33 @@
 
         <section id="player-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
             <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Reproductor de Audio</h2>
-
             <div class="space-y-4">
                 <div class="text-center mb-6">
-                    <p id="track-name" class="text-2xl font-semibold truncate">Cargando...</p>
+                    <p id="track-name" class="text-2xl font-semibold truncate">Seleccione un audio</p>
                     <p id="track-artist" class="text-sm text-gray-400">Blindaje Espiritual</p>
                 </div>
 
                 <div class="flex items-center space-x-2">
                     <span id="current-time" class="text-sm w-12 text-left">0:00</span>
-                    <input type="range" id="seek-bar" value="0" min="0" max="100"
-                        class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer range-lg">
+                    <input type="range" id="seek-bar" value="0" min="0" max="100" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer range-lg">
                     <span id="total-time" class="text-sm w-12 text-right">0:00</span>
                 </div>
 
                 <div class="flex justify-center items-center space-x-4 md:space-x-6 pt-4">
-
-                    <button id="skip-backward-btn"
-                        class="text-white hover:text-yellow-400 p-2 rounded-full transition-all"
-                        aria-label="Retroceder 5 segundos">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h3a1 1 0 100-2H7zm4-2.586l3 3a1 1 0 010 1.414l-3 3A1 1 0 0110 12V8a1 1 0 011.414-.707z"
-                                clip-rule="evenodd"></path>
-                        </svg>
+                    <button id="skip-backward-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h3a1 1 0 100-2H7zm4-2.586l3 3a1 1 0 010 1.414l-3 3A1 1 0 0110 12V8a1 1 0 011.414-.707z" clip-rule="evenodd"></path></svg></button>
+                    <button id="prev-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-5-8a1 1 0 011-1h4.586l-1.293-1.293a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H6a1 1 0 01-1-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></button>
+                    <button id="play-pause-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-4 rounded-full shadow-lg transition-all transform hover:scale-105">
+                        <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                        <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h1a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
                     </button>
-
-                    <button id="prev-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all"
-                        aria-label="Pista Anterior">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm-5-8a1 1 0 011-1h4.586l-1.293-1.293a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H6a1 1 0 01-1-1z"
-                                clip-rule="evenodd" fill-rule="evenodd"></path>
-                        </svg>
-                    </button>
-
-                    <button id="play-pause-btn"
-                        class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-4 rounded-full shadow-lg transition-all transform hover:scale-105"
-                        aria-label="Reproducir o Pausar">
-                        <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                                clip-rule="evenodd" fill-rule="evenodd"></path>
-                        </svg>
-                        <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h1a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z"
-                                clip-rule="evenodd" fill-rule="evenodd"></path>
-                        </svg>
-                    </button>
-
-                    <button id="next-btn" class="text-white hover:text-yellow-400 p-2 rounded-full transition-all"
-                        aria-label="Pista Siguiente">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                                clip-rule="evenodd" fill-rule="evenodd"></path>
-                        </svg>
-                    </button>
-
-                    <button id="skip-forward-btn"
-                        class="text-white hover:text-yellow-400 p-2 rounded-full transition-all"
-                        aria-label="Avanzar 5 segundos">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3-9a1 1 0 00-2 0v3a1 1 0 102 0V9zM7 8a1 1 0 011.414-.707l3 3a1 1 0 010 1.414l-3 3A1 1 0 017 12V8z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
+                    <button id="next-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></button>
+                    <button id="skip-forward-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3-9a1 1 0 00-2 0v3a1 1 0 102 0V9zM7 8a1 1 0 011.414-.707l3 3a1 1 0 010 1.414l-3 3A1 1 0 017 12V8z" clip-rule="evenodd"></path></svg></button>
                 </div>
 
-                <button id="share-audio-btn"
-                    class="w-full bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/40 font-semibold py-3 px-4 rounded-lg mt-4 transition-colors flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M13 13h3a3 3 0 000-6h-.025A5.56 5.56 0 0016 6.5 6.5 6.5 0 009.75 4.148 5.485 5.485 0 0110 6.5C10 9.047 8.163 11.233 5.766 11.758A7.03 7.03 0 0010 19a7.001 7.001 0 006.338-3.993 4.974 4.974 0 00-.776-3.873zM7 10a3 3 0 100-6 3 3 0 000 6z">
-                        </path>
-                    </svg>
-                    Compartir Audio
-                </button>
+                <button id="share-audio-btn" class="w-full bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/40 font-semibold py-3 px-4 rounded-lg mt-4 transition-colors">Compartir Audio</button>
 
                 <div class="flex items-center space-x-2 pt-4">
-                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.673 8.327a1 1 0 010 3.346A5.008 5.008 0 0016 10a5.008 5.008 0 00-1.327-3.346z"
-                            clip-rule="evenodd" fill-rule="evenodd"></path>
-                    </svg>
-                    <input type="range" id="volume-bar" value="100" min="0" max="100"
-                        class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer range-sm">
+                    <input type="range" id="volume-bar" value="100" min="0" max="100" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer range-sm">
                     <span id="volume-display" class="text-sm w-8 text-right text-gray-400">100%</span>
                 </div>
             </div>
@@ -168,67 +67,32 @@
 
         <section id="daily-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
             <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Audios de Hoy (Libro de Zacarías)</h2>
-            <ul id="daily-list" class="divide-y divide-gray-800">
-                </ul>
+            <ul id="daily-list" class="divide-y divide-gray-800"></ul>
+        </section>
+
+        <section id="past-zacarias-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
+            <div id="past-zacarias-header" class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
+                <h2 class="text-xl font-bold">Audios Pasados (Libro de Zacarías)</h2>
+                <svg id="past-toggle-icon" class="w-6 h-6 transform rotate-0 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </div>
+            <ul id="past-zacarias-list" class="divide-y divide-gray-800 hidden"></ul>
         </section>
 
         <section id="archive-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
-            <div id="archive-header"
-                class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
-                <h2 class="text-xl font-bold">Audios Anteriores (Libro de Apocalipsis)</h2>
-                <svg id="archive-toggle-icon" class="w-6 h-6 transform rotate-0 transition-transform" fill="currentColor"
-                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clip-rule="evenodd"></path>
-                </svg>
+            <div id="archive-header" class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
+                <h2 class="text-xl font-bold">Archivo (Libro de Apocalipsis)</h2>
+                <svg id="archive-toggle-icon" class="w-6 h-6 transform rotate-0 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
             </div>
-            <ul id="archive-list" class="divide-y divide-gray-800 hidden">
-                </ul>
+            <ul id="archive-list" class="divide-y divide-gray-800 hidden"></ul>
         </section>
-
-
-        <div class="text-center text-xs text-white/50 mt-4">
-            ID de Usuario: <span id="user-id">Cargando...</span>
-        </div>
 
     </main>
 
     <script type="module">
-        // Importaciones de Firebase (necesarias para la persistencia)
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        
-        // --- Configuración de Rotación Diaria ---
+        // --- CONFIGURACIÓN DE DATOS ---
+        const START_DATE = new Date('2025-12-15T00:00:00');
         const TRACKS_PER_DAY = 3;
-        // La fecha de inicio del devocional. 
-        // Establecido en 2025-12-16 para que el Martes 16 de Diciembre sea el Día 1.
-        const START_DATE = new Date('2025-12-16T00:00:00'); 
 
-        // Variables Globales
-        let audio;
-        let ALL_TRACKS = []; // Ahora contendrá Zacarías
-        let ARCHIVED_TRACKS = []; // Ahora contendrá Apocalipsis
-        let currentTrackIndex = 0;
-        let isPlaying = false;
-        let auth;
-        let db;
-        let userId = 'default-user';
-        let appId;
-        let currentStartIndex = 0; // Índice de la primera pista de "Audios de Hoy"
-
-        // --- Configuraciones Iniciales ---
-
-        // 1. Configuración de Firebase y App ID
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        appId = typeof __app_id !== 'undefined' ? __app_id : 'devocional-diario-app';
-
-        const DB_COLLECTION = 'playlist_data';
-        const DB_DOC_ID = 'user_state';
-
-        // 2. Definición de la Lista de Reproducción de ZACARÍAS (REORDENADA)
         const ZACARIAS_URLS = [
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-1-1-al-6.mp3",
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-1-7-al-17.mp3",
@@ -264,9 +128,7 @@
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-14-1-al-11.mp3",
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-14-12-al-21.mp3"
         ];
-        
-        // 3. Definición de la Lista de Reproducción de APOCALIPSIS (Archivada)
-        // ... (Lista de Apocalipsis permanece igual)
+
         const APOCALYPSE_URLS = [
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-1-1-al-5.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-1-6-al-9.mp3",
@@ -280,637 +142,196 @@
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-3-14-al-22.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-4-1-al-11.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-1-al-6.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-7-al-14.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-1-al-4.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-5-al-8.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-apocalipsis-6-9-al-11.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-12-al-17.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-7-1-al-8.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-7-9-al-17.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-8-1-al-5.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-8-6-al-13.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-9-1-al-12.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-9-13-al-21.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-10-1-al-11.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-11-1-al-6.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-11-7-al-14.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-11-15-al-19.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-12-1-al-12.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-12-13-al-18.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-13-1-al-10.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-13-11-al-18.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-14-1-al-5.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-14-6-al-13.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-14-14-al-20.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-15-1-al-4.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-15-5-al-8.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-16-1-al-9.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-16-10-al-14.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-16-15-al-21.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-17-1-al-6.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-17-7-al-13.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-17-14-al-18.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-18-1-al-8.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-18-9-al-20.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-18-21-al-24.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-19-1-al-10.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-19-11-al-21.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-1-al-6.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-7-al-10.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-11-al-15.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-21-1-al-7.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-21-8-al-27.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-22-1-al-6.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-22-7-al-21.mp3"
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-7-al-14.mp3"
         ];
 
+        // --- VARIABLES DE ESTADO ---
+        let audio = new Audio();
+        let currentTrackIndex = -1; 
+        let currentStartIndex = 0;
+        let isPlaying = false;
 
-        // Función para extraer el nombre de la URL de Zacarías
-        function extractZacariasName(url) {
-            const parts = url.split('/');
-            const filename = parts[parts.length - 1].replace(/.mp3$/, '');
-            // Formato: Zacarías-1-1-al-6
-            const nameMatch = filename.match(/Zacar%C3%ADas-(\d+)-(\d+)-al-(\d+)/);
-            if (nameMatch) {
-                // Formato: Zacarías [Capítulo]:[Versículo Inicial]-[Versículo Final]
-                return `Zacarías ${nameMatch[1]}:${nameMatch[2]}-${nameMatch[3]}`;
-            }
-            // Fallback si el formato no coincide
-            return filename.replace(/-/g, ' ').replace(/%20/g, ' ');
-        }
-        
-        // Función para extraer el nombre de la URL de Apocalipsis (manteniendo la lógica original)
-        function extractApocalypseName(url) {
-            const parts = url.split('/');
-            const filename = parts[parts.length - 1].replace(/.mp3$/, '');
-            const nameMatch = filename.match(/Libro-de-Apocalipsis-(\d+)-(\d+)-al-(\d+)/);
-            if (nameMatch) {
-                return `Apocalipsis ${nameMatch[1]}:${nameMatch[2]}-${nameMatch[3]}`;
-            }
-            return filename.replace(/-/g, ' ');
-        }
-
-        // Estructura de las pistas (Zacarías como principal)
-        ALL_TRACKS = ZACARIAS_URLS.map((url) => ({ name: extractZacariasName(url), url, book: 'Zacarías' }));
-
-        // Estructura de las pistas (Apocalipsis como archivo)
-        ARCHIVED_TRACKS = APOCALYPSE_URLS.map((url) => ({ name: extractApocalypseName(url), url, book: 'Apocalipsis' }));
-
-
-        // --- Elementos del DOM ---
+        // --- ELEMENTOS ---
+        const dailyListEl = document.getElementById('daily-list');
+        const pastZacariasListEl = document.getElementById('past-zacarias-list');
+        const archiveListEl = document.getElementById('archive-list');
+        const trackNameEl = document.getElementById('track-name');
         const playPauseBtn = document.getElementById('play-pause-btn');
         const playIcon = document.getElementById('play-icon');
         const pauseIcon = document.getElementById('pause-icon');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const skipBackwardBtn = document.getElementById('skip-backward-btn');
-        const skipForwardBtn = document.getElementById('skip-forward-btn');
-        const shareAudioBtn = document.getElementById('share-audio-btn');
-
-        const trackNameEl = document.getElementById('track-name');
+        const seekBar = document.getElementById('seek-bar');
         const currentTimeEl = document.getElementById('current-time');
         const totalTimeEl = document.getElementById('total-time');
-        const seekBar = document.getElementById('seek-bar');
         const volumeBar = document.getElementById('volume-bar');
-        const volumeDisplay = document.getElementById('volume-display');
-        const dailyListEl = document.getElementById('daily-list');
-        const archiveListEl = document.getElementById('archive-list');
-        const userIdEl = document.getElementById('user-id');
-        const devotionDayInfoEl = document.getElementById('devotion-day-info');
-        // Nuevos elementos para la funcionalidad plegable
-        const archiveHeaderEl = document.getElementById('archive-header');
-        const archiveToggleIconEl = document.getElementById('archive-toggle-icon');
 
-
-        // --- Funciones de Utilidad ---
-
-        /** Obtiene el índice de pista si viene como parámetro en la URL. */
-        function getTrackIndexFromUrl() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const index = urlParams.get('trackIndex');
-
-            if (index !== null) {
-                const numIndex = parseInt(index, 10);
-                // Validación estricta
-                if (!isNaN(numIndex) && numIndex >= 0 && numIndex < ALL_TRACKS.length) {
-                    return numIndex;
-                }
-            }
-            return null;
-        }
-
-        /**
-         * Calcula el número de días hábiles (Lunes a Viernes) transcurridos
-         * entre la fecha de inicio y la fecha actual.
-         * La diferencia siempre se calcula a la medianoche (00:00:00) para evitar cambios durante el día.
-         */
+        // --- LÓGICA DE TIEMPO ---
         function getBusinessDaysCount(startDate, endDate) {
             let count = 0;
-            const current = new Date(startDate);
-            
-            // Aseguramos que comparamos solo las fechas (sin horas)
-            current.setHours(0, 0, 0, 0);
-            const end = new Date(endDate);
-            end.setHours(0, 0, 0, 0);
-            
-            while (current <= end) {
-                const dayOfWeek = current.getDay();
-                // 0 = Domingo, 6 = Sábado. Excluir ambos.
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-                    count++;
-                }
-                current.setDate(current.getDate() + 1);
+            const cur = new Date(startDate.getTime());
+            cur.setHours(0,0,0,0);
+            const end = new Date(endDate.getTime());
+            end.setHours(0,0,0,0);
+
+            while (cur <= end) {
+                const dayOfWeek = cur.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) count++;
+                cur.setDate(cur.getDate() + 1);
             }
-            // Retorna el número de días hábiles *incluyendo* el día de inicio.
             return count;
         }
 
-        /** Calcula el índice inicial de los audios de hoy basado en la fecha, excluyendo fines de semana. */
-        function calculateCurrentDayIndex() {
-            const today = new Date();
-            
-            // Usar la fecha de hoy a medianoche
-            const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-            const startDateOnly = new Date(START_DATE.getFullYear(), START_DATE.getMonth(), START_DATE.getDate());
-
-            // Calcula el número de días hábiles *completados* + el día actual
-            let businessDaysElapsed = getBusinessDaysCount(startDateOnly, todayDateOnly);
-
-            // Si el día de inicio fue Lunes (day 1), y hoy es Lunes (day 1), daysElapsed = 1.
-            // Para la primera rotación (índice 0), necesitamos daysElapsed = 1.
-            // Para la segunda rotación (índice 3), necesitamos daysElapsed = 2.
-            
-            // Si businessDaysElapsed es 0 (ej. hoy es anterior a START_DATE), usamos el índice 0.
-            if (businessDaysElapsed === 0) return 0;
-
-            const dayIndex = businessDaysElapsed;
-            // El índice de inicio es (días hábiles - 1) * TRACKS_PER_DAY
-            const startIndex = (businessDaysElapsed - 1) * TRACKS_PER_DAY;
-
-            // Asegura que el índice no exceda el límite superior de la lista completa (Zacarías)
-            if (startIndex >= ALL_TRACKS.length) {
-                const maxIndex = Math.floor(ALL_TRACKS.length / TRACKS_PER_DAY) * TRACKS_PER_DAY;
-                devotionDayInfoEl.textContent = `Devocional Terminado (Día Final)`;
-                return maxIndex; 
-            }
-
-            devotionDayInfoEl.textContent = `Día de Devocional: ${dayIndex}`;
-
-            return startIndex;
+        // --- FUNCIONES DEL REPRODUCTOR ---
+        function extractName(url) {
+            let name = decodeURIComponent(url.split('/').pop().replace('.mp3', ''));
+            return name.replace(/-/g, ' ').replace(/%20/g, ' ');
         }
 
-
-        /** Formatea segundos a MM:SS */
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = Math.floor(seconds % 60);
-            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        function loadTrack(url, name, index = -1) {
+            audio.src = url;
+            trackNameEl.textContent = name;
+            currentTrackIndex = index;
+            audio.load();
         }
 
-        /** Persiste el estado actual (índice, volumen) a Firestore. */
-        async function saveState() {
-            if (!db || !userId) return;
-            try {
-                const docRef = doc(db, `artifacts/${appId}/users/${userId}/${DB_COLLECTION}`, DB_DOC_ID);
-                await setDoc(docRef, {
-                    currentTrackIndex: currentTrackIndex,
-                    volume: audio ? audio.volume : 1,
-                    lastPlayedTime: (audio && !isNaN(audio.currentTime)) ? audio.currentTime : 0
-                }, { merge: true });
-                // console.log("Estado guardado correctamente.");
-            } catch (error) {
-                console.error("Error al guardar el estado en Firestore:", error);
+        function togglePlay() {
+            if (!audio.src) return;
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
             }
         }
 
-        /** Renderiza la lista de reproducción en las tarjetas. */
-        function renderPlaylist() {
-            dailyListEl.innerHTML = '';
-            archiveListEl.innerHTML = '';
-
-            // Pistas del día (Zacarías)
-            const dailyTracks = ALL_TRACKS.slice(currentStartIndex, currentStartIndex + TRACKS_PER_DAY);
-            
-            // Pistas de Archivo (Apocalipsis)
-            const archiveTracks = ARCHIVED_TRACKS.slice().reverse(); // Invertido para mostrar los últimos primero
-
-            const dailyNames = ["Desayuno", "Almuerzo", "Cena"];
-
-            // Renderizar audios de hoy (Zacarías)
-            dailyTracks.forEach((track, index) => {
-                const globalIndex = currentStartIndex + index;
-                const isCurrent = globalIndex === currentTrackIndex;
-
-                // Asignar el nombre del momento del día
-                const trackDisplay = `${dailyNames[index]}: ${track.name}`;
-
-                const li = createPlaylistItem(globalIndex, trackDisplay, isCurrent, dailyListEl);
-                dailyListEl.appendChild(li);
+        function playTrack() {
+            audio.play().then(() => {
+                isPlaying = true;
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
             });
+        }
 
-            // Mensaje de finalización de Zacarías
-            if (dailyTracks.length === 0 && ALL_TRACKS.length > 0) {
-                dailyListEl.innerHTML = `<li class="text-white/70 p-4">¡Felicidades! Has completado el Libro de Zacarías.</li>`;
-            } else if (ALL_TRACKS.length === 0) {
-                dailyListEl.innerHTML = `<li class="text-red-400 p-4">Error: No se puede cargar la lista de audios de Zacarías.</li>`;
+        // --- RESTRICCIÓN DE AVANCE ---
+        function handleNext() {
+            // Si el audio es de Zacarías y es el último de hoy (Cena)
+            const lastOfToday = currentStartIndex + 2;
+            if (currentTrackIndex !== -1 && currentTrackIndex >= lastOfToday) {
+                audio.pause();
+                isPlaying = false;
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+                alert("Has terminado el devocional de hoy. ¡Mañana habrá nuevos audios!");
+            } else if (currentTrackIndex !== -1 && currentTrackIndex < ZACARIAS_URLS.length - 1) {
+                // Avanzar al siguiente si existe
+                const nextIdx = currentTrackIndex + 1;
+                loadTrack(ZACARIAS_URLS[nextIdx], extractName(ZACARIAS_URLS[nextIdx]), nextIdx);
+                playTrack();
             }
-            
-            // Renderizar audios anteriores (Apocalipsis)
-            archiveTracks.forEach((track, index) => {
-                const li = document.createElement('li');
-                li.className = `p-3 md:p-4 transition-all rounded-md text-white/60 hover:bg-gray-800 cursor-default flex justify-between items-center`;
-                li.innerHTML = `<span>${track.name}</span>`;
+        }
 
+        // --- RENDERIZADO ---
+        function render() {
+            const today = new Date();
+            const businessDays = getBusinessDaysCount(START_DATE, today);
+            currentStartIndex = (businessDays - 1) * TRACKS_PER_DAY;
+            
+            document.getElementById('devotion-day-info').textContent = `Día Hábil: ${businessDays}`;
+
+            // 1. Hoy
+            dailyListEl.innerHTML = '';
+            const moments = ["Desayuno", "Almuerzo", "Cena"];
+            for (let i = 0; i < 3; i++) {
+                const idx = currentStartIndex + i;
+                if (ZACARIAS_URLS[idx]) {
+                    const li = createItem(`${moments[i]}: ${extractName(ZACARIAS_URLS[idx])}`, ZACARIAS_URLS[idx], idx);
+                    dailyListEl.appendChild(li);
+                }
+            }
+
+            // 2. Pasados Zacarías (Orden descendente para ver los más recientes arriba)
+            pastZacariasListEl.innerHTML = '';
+            for (let i = currentStartIndex - 1; i >= 0; i--) {
+                const li = createItem(extractName(ZACARIAS_URLS[i]), ZACARIAS_URLS[i], i);
+                pastZacariasListEl.appendChild(li);
+            }
+
+            // 3. Apocalipsis
+            archiveListEl.innerHTML = '';
+            APOCALYPSE_URLS.forEach(url => {
+                const li = createItem(extractName(url), url, -1);
                 archiveListEl.appendChild(li);
             });
-            
-            // Si la lista de archivo está vacía
-            if (ARCHIVED_TRACKS.length === 0) {
-                 archiveListEl.innerHTML = `<li class="text-white/70 p-4">No hay audios anteriores archivados.</li>`;
-            }
-
-            // Actualizar botones de Prev/Next
-            prevBtn.disabled = currentTrackIndex <= 0;
-            nextBtn.disabled = currentTrackIndex >= ALL_TRACKS.length - 1;
         }
 
-        /** Helper para crear un elemento de la lista de reproducción. */
-        function createPlaylistItem(index, name, isCurrent) {
+        function createItem(label, url, index) {
             const li = document.createElement('li');
-
-            // Estilo para el elemento de la lista
-            li.className = `p-3 md:p-4 cursor-pointer transition-all rounded-md flex justify-between items-center 
-                            ${isCurrent ? 'bg-yellow-600 font-bold hover:bg-yellow-700' : 'hover:bg-gray-800'}
-                            text-white`;
-            li.setAttribute('data-index', index);
-
-            const nameSpan = document.createElement('span');
-            nameSpan.textContent = name;
-
-            // Icono de reproducción
-            const iconColor = isCurrent ? 'text-gray-900' : 'text-yellow-400';
-            const playIconSvg = `<svg class="w-5 h-5 ml-2 ${iconColor}" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>`;
-
-            li.innerHTML = nameSpan.outerHTML + playIconSvg;
-
-            li.addEventListener('click', () => {
-                loadTrack(index);
+            li.className = "p-4 flex justify-between items-center cursor-pointer hover:bg-gray-800 transition-colors";
+            li.innerHTML = `<span>${label}</span><svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>`;
+            li.onclick = () => {
+                loadTrack(url, label, index);
                 playTrack();
-            });
-
+            };
             return li;
         }
 
-        /** Carga una pista específica por índice. */
-        function loadTrack(index) {
-            if (ALL_TRACKS.length === 0) return;
-
-            // Asegura que el índice esté dentro del rango de la lista completa (Zacarías)
-            currentTrackIndex = (index % ALL_TRACKS.length + ALL_TRACKS.length) % ALL_TRACKS.length;
-
-            const track = ALL_TRACKS[currentTrackIndex];
-            audio.src = track.url;
-
-            // Nombre en el reproductor (le agrega Desayuno, Almuerzo, Cena si es de hoy)
-            let displayTrackName = track.name;
-            if (currentTrackIndex >= currentStartIndex && currentTrackIndex < currentStartIndex + TRACKS_PER_DAY) {
-                const dailyIndex = currentTrackIndex - currentStartIndex;
-                const dailyNames = ["Desayuno", "Almuerzo", "Cena"];
-                displayTrackName = `${dailyNames[dailyIndex]}: ${track.name}`;
+        // --- EVENTOS ---
+        playPauseBtn.onclick = togglePlay;
+        audio.onplay = () => { isPlaying = true; playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); };
+        audio.onpause = () => { isPlaying = false; playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); };
+        audio.onended = handleNext;
+        document.getElementById('next-btn').onclick = handleNext;
+        document.getElementById('prev-btn').onclick = () => {
+            if (currentTrackIndex > 0) {
+                const prevIdx = currentTrackIndex - 1;
+                loadTrack(ZACARIAS_URLS[prevIdx], extractName(ZACARIAS_URLS[prevIdx]), prevIdx);
+                playTrack();
             }
+        };
 
-            trackNameEl.textContent = displayTrackName;
-            totalTimeEl.textContent = '0:00';
-            seekBar.value = 0;
-
-            // Pausar y preparar para la reproducción
-            if (isPlaying) {
-                playIcon.classList.remove('hidden');
-                pauseIcon.classList.add('hidden');
-            }
-            audio.load();
-            renderPlaylist();
-            saveState();
-        }
-        
-        /** Función para alternar la visibilidad de la lista de archivo (Acordeón). */
-        function toggleArchiveList() {
-            const isHidden = archiveListEl.classList.contains('hidden');
-            
-            if (isHidden) {
-                archiveListEl.classList.remove('hidden');
-                archiveToggleIconEl.classList.remove('rotate-0');
-                archiveToggleIconEl.classList.add('rotate-180');
-            } else {
-                archiveListEl.classList.add('hidden');
-                archiveToggleIconEl.classList.remove('rotate-180');
-                archiveToggleIconEl.classList.add('rotate-0');
-            }
-        }
-
-        // --- Funciones de Control del Reproductor ---
-        function playTrack() {
-            if (ALL_TRACKS.length === 0 || !audio.src) return;
-
-            if (audio.readyState === 0) {
-                audio.load();
-            }
-
-            audio.play()
-                .then(() => {
-                    isPlaying = true;
-                    playIcon.classList.add('hidden');
-                    pauseIcon.classList.remove('hidden');
-                })
-                .catch(error => {
-                    console.error("Error al intentar reproducir el audio:", error);
-                    // alertUser("Advertencia", "El audio no se pudo reproducir automáticamente. Presiona Play o revisa el enlace.");
-                });
-        }
-
-        function pauseTrack() {
-            audio.pause();
-            isPlaying = false;
-            playIcon.classList.remove('hidden');
-            pauseIcon.classList.add('hidden');
-            saveState();
-        }
-
-        function nextTrack() {
-            pauseTrack();
-            
-            let nextIndex = currentTrackIndex + 1;
-            
-            // Si llega al final de Zacarías, regresa al primer audio (índice 0)
-            if (nextIndex >= ALL_TRACKS.length) {
-                nextIndex = 0; 
-            }
-            
-            loadTrack(nextIndex);
-            playTrack();
-        }
-
-        function prevTrack() {
-            pauseTrack();
-            
-            let prevIndex = currentTrackIndex - 1;
-            
-            // Si está en el primer audio (índice 0), va al último audio de Zacarías
-            if (prevIndex < 0) {
-                prevIndex = ALL_TRACKS.length - 1; 
-            }
-            
-            loadTrack(prevIndex);
-            playTrack();
-        }
-
-
-        /** Avanza o retrocede el audio en la cantidad de segundos especificada. */
-        function skip(seconds) {
-            if (audio && !isNaN(audio.currentTime)) {
-                audio.currentTime = audio.currentTime + seconds;
-                saveState();
-            }
-        }
-
-        function togglePlayPause() {
-            isPlaying ? pauseTrack() : playTrack();
-        }
-
-        /** Genera y copia el enlace al audio actual CORREGIDO */
-        function shareTrack() {
-            // Obtiene la URL completa actual de tu sitio web
-            const currentUrl = window.location.href.split('?')[0]; // Elimina parámetros existentes
-            // Agrega el parámetro trackIndex con el índice actual
-            const shareUrl = `${currentUrl}?trackIndex=${currentTrackIndex}`;
-            
-            const trackName = trackNameEl.textContent;
-
-            // Intentar usar la Web Share API si está disponible
-            if (navigator.share) {
-                navigator.share({
-                    title: `Escucha: ${trackName}`,
-                    text: `Ven a escuchar "${trackName}" en mi app de devocionales`,
-                    url: shareUrl
-                })
-                .then(() => console.log('Compartido exitosamente'))
-                .catch((error) => {
-                    // Fallback a copiar al portapapeles si la Web Share API falla
-                    copyToClipboard(shareUrl, trackName);
-                });
-            } else {
-                // Fallback para navegadores que no soportan Web Share API
-                copyToClipboard(shareUrl, trackName);
-            }
-        }
-        
-        function copyToClipboard(text, trackName) {
-             if (navigator.clipboard) {
-                 navigator.clipboard.writeText(text)
-                     .then(() => alert(`¡Enlace copiado! Puedes compartir: "${trackName}"`))
-                     .catch(err => console.error('Error al copiar:', err));
-             } else {
-                 // Método antiguo (menos elegante)
-                 const textarea = document.createElement('textarea');
-                 textarea.value = text;
-                 document.body.appendChild(textarea);
-                 textarea.select();
-                 document.execCommand('copy');
-                 document.body.removeChild(textarea);
-                 alert(`¡Enlace copiado! Puedes compartir: "${trackName}"`);
-             }
-        }
-
-
-        // --- Manejadores de Eventos del Reproductor ---
-
-        function setupAudioListeners() {
-            audio.addEventListener('loadedmetadata', () => {
+        // Seek Bar
+        audio.ontimeupdate = () => {
+            if (!isNaN(audio.duration)) {
+                seekBar.value = (audio.currentTime / audio.duration) * 100;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
                 totalTimeEl.textContent = formatTime(audio.duration);
-                seekBar.max = audio.duration;
-            });
-
-            audio.addEventListener('timeupdate', () => {
-                if (!audio.seeking) {
-                    currentTimeEl.textContent = formatTime(audio.currentTime);
-                    seekBar.value = audio.currentTime;
-                }
-            });
-
-            audio.addEventListener('ended', () => {
-                saveState(); // Guardar el estado final de la pista
-                nextTrack(); // Pasar a la siguiente pista automáticamente
-            });
-            
-            // Guardar el estado (posición de reproducción) cada 10 segundos
-            setInterval(() => {
-                if (isPlaying) {
-                    saveState();
-                }
-            }, 10000); 
-        }
-
-        function setupControlListeners() {
-            playPauseBtn.addEventListener('click', togglePlayPause);
-            prevBtn.addEventListener('click', prevTrack);
-            nextBtn.addEventListener('click', nextTrack);
-            skipBackwardBtn.addEventListener('click', () => skip(-5));
-            skipForwardBtn.addEventListener('click', () => skip(5));
-            shareAudioBtn.addEventListener('click', shareTrack);
-            
-            // Listener para la tarjeta plegable
-            archiveHeaderEl.addEventListener('click', toggleArchiveList);
-
-            seekBar.addEventListener('change', () => {
-                audio.currentTime = seekBar.value;
-                saveState();
-            });
-            
-            seekBar.addEventListener('input', () => {
-                currentTimeEl.textContent = formatTime(seekBar.value);
-            });
-
-            volumeBar.addEventListener('input', () => {
-                audio.volume = volumeBar.value / 100;
-                volumeDisplay.textContent = `${volumeBar.value}%`;
-                saveState();
-            });
-        }
-
-        // --- Inicialización y Persistencia de Estado ---
-
-        /** Carga el estado guardado desde Firestore. */
-        function loadState(initialIndexFromUrl) {
-            if (!db || !userId) {
-                console.warn("Firestore no inicializado o ID de usuario no disponible.");
-                // Si la URL tiene un índice, usarlo como fallback
-                if (initialIndexFromUrl !== null) {
-                    currentTrackIndex = initialIndexFromUrl;
-                } else {
-                    currentTrackIndex = currentStartIndex; // Iniciar en el primer audio del día
-                }
-                loadTrack(currentTrackIndex);
-                return;
             }
-
-            const docRef = doc(db, `artifacts/${appId}/users/${userId}/${DB_COLLECTION}`, DB_DOC_ID);
-
-            onSnapshot(docRef, (docSnap) => {
-                let stateLoaded = false;
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    
-                    // Solo cargar el estado si la URL no indica una pista específica
-                    if (initialIndexFromUrl === null) {
-                        currentTrackIndex = data.currentTrackIndex !== undefined ? data.currentTrackIndex : currentStartIndex;
-                    } else {
-                        currentTrackIndex = initialIndexFromUrl;
-                    }
-
-                    // Ajustar volumen
-                    if (data.volume !== undefined) {
-                        audio.volume = data.volume;
-                        volumeBar.value = data.volume * 100;
-                        volumeDisplay.textContent = `${volumeBar.value}%`;
-                    }
-                    
-                    // Cargar pista
-                    loadTrack(currentTrackIndex);
-                    stateLoaded = true;
-
-                    // Ajustar tiempo de reproducción si no es el primer audio
-                    if (data.lastPlayedTime !== undefined && data.lastPlayedTime > 1) {
-                        audio.currentTime = data.lastPlayedTime;
-                    }
-                }
-                
-                if (!stateLoaded && initialIndexFromUrl !== null) {
-                    // Si no había estado guardado, pero la URL tiene índice
-                    currentTrackIndex = initialIndexFromUrl;
-                    loadTrack(currentTrackIndex);
-                } else if (!stateLoaded && ALL_TRACKS.length > 0) {
-                    // Si no había estado y no hay índice en URL, ir al primer audio del día
-                    currentTrackIndex = currentStartIndex;
-                    loadTrack(currentStartIndex);
-                }
-            }, (error) => {
-                console.error("Error al escuchar el estado:", error);
-                // Fallback si Firebase falla
-                 if (initialIndexFromUrl !== null) {
-                    currentTrackIndex = initialIndexFromUrl;
-                } else {
-                    currentTrackIndex = currentStartIndex; 
-                }
-                loadTrack(currentTrackIndex);
-            });
+        };
+        seekBar.oninput = () => { audio.currentTime = (seekBar.value / 100) * audio.duration; };
+        
+        function formatTime(secs) {
+            const m = Math.floor(secs / 60);
+            const s = Math.floor(secs % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        /** Inicialización Principal. */
-        async function init() {
-            if (ALL_TRACKS.length === 0) {
-                 trackNameEl.textContent = 'Error: Lista de audios no definida.';
-                 return;
-            }
+        // Volumen
+        volumeBar.oninput = () => { audio.volume = volumeBar.value / 100; document.getElementById('volume-display').textContent = volumeBar.value + '%'; };
 
-            // 1. Inicializar Audio
-            audio = new Audio();
-            setupAudioListeners();
-            setupControlListeners();
-            
-            // 2. Calcular índice del día
-            currentStartIndex = calculateCurrentDayIndex();
-            
-            // 3. Obtener índice de la URL (si existe)
-            const initialIndexFromUrl = getTrackIndexFromUrl();
+        // Botones de salto
+        document.getElementById('skip-backward-btn').onclick = () => audio.currentTime -= 5;
+        document.getElementById('skip-forward-btn').onclick = () => audio.currentTime += 5;
 
-            // 4. Inicializar Firebase (si la configuración está presente)
-            if (Object.keys(firebaseConfig).length > 0) {
-                 const firebaseApp = initializeApp(firebaseConfig);
-                 auth = getAuth(firebaseApp);
-                 db = getFirestore(firebaseApp);
-                 
-                 // Intenta autenticación
-                 try {
-                      if (initialAuthToken) {
-                         // Aquí iría signInWithCustomToken, si fuera necesario
-                      } else {
-                         await signInAnonymously(auth);
-                     }
-                 } catch (error) {
-                     console.error("Error de autenticación:", error);
-                 }
-
-                 onAuthStateChanged(auth, (user) => {
-                     if (user) {
-                         userId = user.uid;
-                         userIdEl.textContent = userId.substring(0, 8) + '...'; 
-                         loadState(initialIndexFromUrl); 
-                     } else {
-                         console.warn("Usuario no autenticado, usando estado por defecto.");
-                         userId = 'default-user';
-                         userIdEl.textContent = 'No autenticado';
-                         loadState(initialIndexFromUrl); 
-                     }
-                 });
-            } else {
-                 console.warn("Configuración de Firebase no encontrada. Usando estado local.");
-                 // Fallback local
-                 if (initialIndexFromUrl !== null) {
-                    currentTrackIndex = initialIndexFromUrl;
-                 } else {
-                    currentTrackIndex = currentStartIndex; 
-                 }
-                 loadTrack(currentTrackIndex);
-            }
-            
-            // 5. Renderizar lista inicial
-            renderPlaylist(); 
+        // Plegables
+        function setupToggle(headerId, listId, iconId) {
+            document.getElementById(headerId).onclick = () => {
+                const list = document.getElementById(listId);
+                const icon = document.getElementById(iconId);
+                list.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            };
         }
+        setupToggle('past-zacarias-header', 'past-zacarias-list', 'past-toggle-icon');
+        setupToggle('archive-header', 'archive-list', 'archive-toggle-icon');
 
-        // Ejecutar inicialización
-        init();
+        // Compartir
+        document.getElementById('share-audio-btn').onclick = () => {
+            if (audio.src) {
+                navigator.clipboard.writeText(audio.src);
+                alert("Enlace del audio copiado al portapapeles");
+            }
+        };
 
+        // Iniciar
+        render();
     </script>
 </body>
-
-  </html>
+</html>
