@@ -32,33 +32,47 @@
     <main id="card-container" class="flex flex-col gap-6 max-w-4xl mx-auto">
 
         <section id="player-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
-            <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Reproductor de Audio</h2>
+            <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2 text-yellow-500 uppercase">Reproductor</h2>
             <div class="space-y-4">
                 <div class="text-center mb-6">
-                    <p id="track-name" class="text-2xl font-semibold truncate">Seleccione un audio</p>
+                    <p id="track-name" class="text-2xl font-semibold truncate px-2">Seleccione un audio</p>
                     <p id="track-artist" class="text-sm text-gray-400">Blindaje Espiritual</p>
                 </div>
 
                 <div class="flex items-center space-x-2">
                     <span id="current-time" class="text-sm w-12 text-left">0:00</span>
-                    <input type="range" id="seek-bar" value="0" min="0" max="100" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer range-lg">
+                    <input type="range" id="seek-bar" value="0" min="0" max="100" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
                     <span id="total-time" class="text-sm w-12 text-right">0:00</span>
                 </div>
 
-                <div class="flex justify-center items-center space-x-4 md:space-x-6 pt-4">
-                    <button id="skip-backward-btn" title="Retroceder 5s" class="text-white hover:text-yellow-400 p-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h3a1 1 0 100-2H7zm4-2.586l3 3a1 1 0 010 1.414l-3 3A1 1 0 0110 12V8a1 1 0 011.414-.707z"></path></svg></button>
-                    <button id="prev-btn" title="Anterior" class="text-white hover:text-yellow-400 p-2"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-5-8a1 1 0 011-1h4.586l-1.293-1.293a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H6a1 1 0 01-1-1z"></path></svg></button>
-                    <button id="play-pause-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-4 rounded-full shadow-lg transition-all transform hover:scale-105">
-                        <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg>
-                        <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h1a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z"></path></svg>
+                <div class="flex justify-center items-center space-x-4 md:space-x-8 pt-4">
+                    <button id="skip-backward-btn" title="Retroceder 5s" class="text-gray-400 hover:text-yellow-500 transition-colors">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M8.445 14.832A1 1 0 0010 14V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"></path></svg>
                     </button>
-                    <button id="next-btn" title="Siguiente" class="text-white hover:text-yellow-400 p-2"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"></path></svg></button>
-                    <button id="skip-forward-btn" title="Adelantar 5s" class="text-white hover:text-yellow-400 p-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3-9a1 1 0 00-2 0v3a1 1 0 102 0V9zM7 8a1 1 0 011.414-.707l3 3a1 1 0 010 1.414l-3 3A1 1 0 017 12V8z"></path></svg></button>
+                    <button id="prev-btn" title="Anterior" class="text-white hover:text-yellow-500 transition-colors">
+                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-5-8a1 1 0 011-1h4.586l-1.293-1.293a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H6a1 1 0 01-1-1z"></path></svg>
+                    </button>
+                    
+                    <button id="play-pause-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-5 rounded-full shadow-2xl transition-all transform active:scale-90">
+                        <svg id="play-icon" class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.269l9.333-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path>
+                        </svg>
+                        <svg id="pause-icon" class="w-12 h-12 hidden" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+
+                    <button id="next-btn" title="Siguiente" class="text-white hover:text-yellow-500 transition-colors">
+                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4z"></path></svg>
+                    </button>
+                    <button id="skip-forward-btn" title="Adelantar 5s" class="text-gray-400 hover:text-yellow-500 transition-colors">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M11.555 5.168A1 1 0 0010 6v8a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4z"></path></svg>
+                    </button>
                 </div>
 
-                <button id="share-audio-btn" class="w-full bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/40 font-semibold py-3 px-4 rounded-lg mt-4 transition-colors flex justify-center items-center gap-2">
+                <button id="share-audio-btn" class="w-full bg-yellow-500/10 text-yellow-500 border border-yellow-500/30 hover:bg-yellow-500 hover:text-black font-bold py-3 px-4 rounded-lg mt-4 transition-all flex justify-center items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
-                    Compartir Reproductor
+                    COMPARTIR ESTE AUDIO
                 </button>
 
                 <div class="flex items-center space-x-2 pt-4">
@@ -68,30 +82,31 @@
             </div>
         </section>
 
-        <section id="daily-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl border-l-4 border-yellow-500">
-            <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2 flex items-center gap-2"><span>📅</span> Lecturas de Hoy (Zacarías)</h2>
+        <section class="bg-gray-900 text-white p-6 rounded-xl shadow-2xl border-l-4 border-yellow-500">
+            <h2 class="text-xl font-bold mb-4 border-b border-gray-800 pb-2">Lecturas de Hoy (Zacarías)</h2>
             <ul id="daily-list" class="divide-y divide-gray-800"></ul>
         </section>
 
-        <section id="past-zacarias-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
-            <div id="past-zacarias-header" class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
-                <h2 class="text-xl font-bold flex items-center gap-2"><span>📚</span> Zacarías: Archivo Pasado</h2>
+        <section class="bg-gray-900 text-white p-6 rounded-xl shadow-2xl">
+            <div id="past-zacarias-header" class="flex justify-between items-center cursor-pointer pb-2">
+                <h2 class="text-xl font-bold">📚 Zacarías: Archivo Pasado</h2>
                 <svg id="past-toggle-icon" class="w-6 h-6 transform rotate-0 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"></path></svg>
             </div>
-            <ul id="past-zacarias-list" class="divide-y divide-gray-800 hidden"></ul>
+            <ul id="past-zacarias-list" class="divide-y divide-gray-800 hidden mt-4 border-t border-gray-800"></ul>
         </section>
 
-        <section id="archive-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
-            <div id="archive-header" class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
-                <h2 class="text-xl font-bold flex items-center gap-2"><span>📜</span> Apocalipsis: Archivo Completo</h2>
+        <section class="bg-gray-900 text-white p-6 rounded-xl shadow-2xl">
+            <div id="archive-header" class="flex justify-between items-center cursor-pointer pb-2">
+                <h2 class="text-xl font-bold">📜 Apocalipsis: Archivo Completo</h2>
                 <svg id="archive-toggle-icon" class="w-6 h-6 transform rotate-0 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"></path></svg>
             </div>
-            <ul id="archive-list" class="divide-y divide-gray-800 hidden"></ul>
+            <ul id="archive-list" class="divide-y divide-gray-800 hidden mt-4 border-t border-gray-800"></ul>
         </section>
 
     </main>
 
     <script>
+        // --- BASE DE DATOS Y CONFIGURACIÓN ---
         const START_DATE = new Date('2025-12-16T00:00:00'); 
         const TRACKS_PER_DAY = 3;
 
@@ -188,6 +203,7 @@
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-22-7-al-21.mp3"
         ];
 
+        // --- ESTADO DEL REPRODUCTOR ---
         let audio = new Audio();
         let currentTrackIndex = -1;
         let currentStartIndex = 0;
@@ -204,6 +220,7 @@
         const totalTimeEl = document.getElementById('total-time');
         const volumeBar = document.getElementById('volume-bar');
 
+        // --- LÓGICA DE NEGOCIO ---
         function getBusinessDaysCount(startDate, endDate) {
             let count = 0;
             const cur = new Date(startDate.getTime());
@@ -221,13 +238,15 @@
             return decodeURIComponent(url.split('/').pop().replace('.mp3', '')).replace(/-/g, ' ');
         }
 
-        function playAudio(url, name, index = -1) {
+        function playAudio(url, name, index = -1, startNow = true) {
             audio.src = url;
             trackNameEl.textContent = name;
             currentTrackIndex = index;
-            audio.play();
-            playIcon.classList.add('hidden');
-            pauseIcon.classList.remove('hidden');
+            if(startNow) {
+                audio.play();
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            }
         }
 
         function handleNext() {
@@ -247,9 +266,9 @@
             const today = new Date();
             const businessDays = getBusinessDaysCount(START_DATE, today);
             currentStartIndex = Math.max(0, (businessDays - 1) * TRACKS_PER_DAY);
-            
-            document.getElementById('devotion-day-info').textContent = `Blindaje - Día Hábil: ${businessDays}`;
+            document.getElementById('devotion-day-info').textContent = `Día Hábil: ${businessDays}`;
 
+            // Audios de hoy
             dailyListEl.innerHTML = '';
             const moments = ["Desayuno", "Almuerzo", "Cena"];
             for (let i = 0; i < 3; i++) {
@@ -259,13 +278,17 @@
                 }
             }
 
+            // Historial Zacarías
             pastZacariasListEl.innerHTML = '';
             for (let i = currentStartIndex - 1; i >= 0; i--) {
                 pastZacariasListEl.appendChild(createLi(formatName(ZACARIAS_URLS[i]), ZACARIAS_URLS[i], i));
             }
 
+            // Archivo Apocalipsis
             archiveListEl.innerHTML = '';
-            APOCALYPSE_URLS.forEach(url => {
+            APOCALYPSE_URLS.forEach((url, i) => {
+                // Para Apocalipsis usamos un prefijo "A" para diferenciar el índice si fuera necesario, 
+                // pero por simplicidad mantendremos el flujo de Zacarías como prioridad de índice.
                 archiveListEl.appendChild(createLi(formatName(url), url, -1));
             });
         }
@@ -278,10 +301,55 @@
             return li;
         }
 
+        // --- COMPARTIR CON PARÁMETROS DE URL ---
+        document.getElementById('share-audio-btn').onclick = async () => {
+            if (currentTrackIndex === -1) {
+                alert("Primero selecciona un audio para compartir.");
+                return;
+            }
+
+            // Construir la URL con el trackIndex
+            const baseUrl = window.location.origin + window.location.pathname;
+            const shareUrl = `${baseUrl}?trackIndex=${currentTrackIndex}`;
+
+            const shareData = {
+                title: 'Devocional Diario - Blindaje',
+                text: `Escucha el devocional de hoy: "${trackNameEl.textContent}"`,
+                url: shareUrl
+            };
+
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    await navigator.clipboard.writeText(shareUrl);
+                    alert("Enlace con audio seleccionado copiado al portapapeles.");
+                }
+            } catch (err) { console.log("Error al compartir", err); }
+        };
+
+        // --- CARGA AUTOMÁTICA POR URL ---
+        function checkUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            const trackIdx = params.get('trackIndex');
+            if (trackIdx !== null && ZACARIAS_URLS[trackIdx]) {
+                const idx = parseInt(trackIdx);
+                playAudio(ZACARIAS_URLS[idx], formatName(ZACARIAS_URLS[idx]), idx, false);
+            }
+        }
+
+        // --- CONTROLES BÁSICOS ---
         playPauseBtn.onclick = () => {
             if (!audio.src) return;
-            if (audio.paused) { audio.play(); playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); }
-            else { audio.pause(); playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); }
+            if (audio.paused) { 
+                audio.play(); 
+                playIcon.classList.add('hidden'); 
+                pauseIcon.classList.remove('hidden'); 
+            } else { 
+                audio.pause(); 
+                playIcon.classList.remove('hidden'); 
+                pauseIcon.classList.add('hidden'); 
+            }
         };
 
         audio.onended = handleNext;
@@ -307,28 +375,16 @@
                 totalTimeEl.textContent = `${dm}:${ds < 10 ? '0' : ''}${ds}`;
             }
         };
-        seekBar.oninput = () => audio.currentTime = (seekBar.value / 100) * audio.duration;
-        volumeBar.oninput = () => { audio.volume = volumeBar.value / 100; document.getElementById('volume-display').textContent = volumeBar.value + '%'; };
 
-        // FUNCIÓN DE COMPARTIR MEJORADA
-        document.getElementById('share-audio-btn').onclick = async () => {
-            const shareData = {
-                title: 'Devocional Diario - Blindaje',
-                text: `Escucha el devocional de hoy: "${trackNameEl.textContent}" en nuestro reproductor oficial.`,
-                url: window.location.href // Comparte el enlace del reproductor
-            };
-            try {
-                if (navigator.share) {
-                    await navigator.share(shareData);
-                } else {
-                    await navigator.clipboard.writeText(window.location.href);
-                    alert("Enlace del reproductor copiado al portapapeles.");
-                }
-            } catch (err) { console.log("Error compartiendo", err); }
+        seekBar.oninput = () => audio.currentTime = (seekBar.value / 100) * audio.duration;
+        volumeBar.oninput = () => { 
+            audio.volume = volumeBar.value / 100; 
+            document.getElementById('volume-display').textContent = volumeBar.value + '%'; 
         };
 
-        function setupToggle(headerId, listId, iconId) {
-            document.getElementById(headerId).onclick = () => {
+        // Acordeones
+        function setupToggle(headId, listId, iconId) {
+            document.getElementById(headId).onclick = () => {
                 const list = document.getElementById(listId);
                 const icon = document.getElementById(iconId);
                 list.classList.toggle('hidden');
@@ -338,7 +394,9 @@
         setupToggle('past-zacarias-header', 'past-zacarias-list', 'past-toggle-icon');
         setupToggle('archive-header', 'archive-list', 'archive-toggle-icon');
 
+        // Inicialización
         render();
+        checkUrlParams();
     </script>
 </body>
 </html>
