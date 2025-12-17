@@ -17,7 +17,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #ffc61a; }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: white; cursor: pointer; margin-top: -6px; }
-        input[type=range]::-moz-range-thumb { height: 16px; width: 16px; border-radius: 50%; background: white; cursor: pointer; }
         .large-logo { height: 300px; width: 600px; object-fit: contain; }
     </style>
 </head>
@@ -26,73 +25,68 @@
     <header class="text-center mb-8">
         <img id="logo-img" src="logo-blindaje.png" onerror="this.src='https://placehold.co/160x160/000000/FFFFFF?text=BLINDAJE'" alt="Logo Blindaje" class="mx-auto large-logo shadow-lg mb-4">
         <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-wider uppercase drop-shadow-lg">Devocional diario</h1>
-        <p id="devotion-day-info" class="text-sm font-semibold text-gray-800 mt-2"></p>
+        <p id="devotion-day-info" class="text-sm font-semibold text-gray-800 mt-2 tracking-widest uppercase"></p>
     </header>
 
-    <main id="card-container" class="flex flex-col gap-6 max-w-4xl mx-auto">
+    <main class="flex flex-col gap-6 max-w-4xl mx-auto">
+        
+        <section class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
+            <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2 text-yellow-500 uppercase tracking-wider">Reproductor</h2>
+            <div class="text-center mb-6">
+                <p id="track-name" class="text-2xl font-semibold truncate px-2">Selecciona un audio para comenzar</p>
+                <p class="text-sm text-gray-400 mt-1">Blindaje Espiritual</p>
+            </div>
+            
+            <div class="flex items-center space-x-2">
+                <span id="current-time" class="text-xs w-10 text-gray-400">0:00</span>
+                <input type="range" id="seek-bar" value="0" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                <span id="total-time" class="text-xs w-10 text-gray-400">0:00</span>
+            </div>
 
-        <section id="player-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
-            <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Reproductor de Audio</h2>
-            <div class="space-y-4">
-                <div class="text-center mb-6">
-                    <p id="track-name" class="text-2xl font-semibold truncate">Seleccione un audio</p>
-                    <p id="track-artist" class="text-sm text-gray-400">Blindaje Espiritual</p>
-                </div>
-
-                <div class="flex items-center space-x-2">
-                    <span id="current-time" class="text-sm w-12 text-left">0:00</span>
-                    <input type="range" id="seek-bar" value="0" min="0" max="100" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer range-lg">
-                    <span id="total-time" class="text-sm w-12 text-right">0:00</span>
-                </div>
-
-                <div class="flex justify-center items-center space-x-4 md:space-x-6 pt-4">
-                    <button id="skip-backward-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 000 2h3a1 1 0 100-2H7zm4-2.586l3 3a1 1 0 010 1.414l-3 3A1 1 0 0110 12V8a1 1 0 011.414-.707z" clip-rule="evenodd"></path></svg></button>
-                    <button id="prev-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm-5-8a1 1 0 011-1h4.586l-1.293-1.293a1 1 0 011.414-1.414l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L10.586 11H6a1 1 0 01-1-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></button>
-                    <button id="play-pause-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-4 rounded-full shadow-lg transition-all transform hover:scale-105">
-                        <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
-                        <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h1a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
-                    </button>
-                    <button id="next-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></button>
-                    <button id="skip-forward-btn" class="text-white hover:text-yellow-400 p-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3-9a1 1 0 00-2 0v3a1 1 0 102 0V9zM7 8a1 1 0 011.414-.707l3 3a1 1 0 010 1.414l-3 3A1 1 0 017 12V8z" clip-rule="evenodd"></path></svg></button>
-                </div>
-
-                <button id="share-audio-btn" class="w-full bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/40 font-semibold py-3 px-4 rounded-lg mt-4 transition-colors">Compartir Audio</button>
-
-                <div class="flex items-center space-x-2 pt-4">
-                    <input type="range" id="volume-bar" value="100" min="0" max="100" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer range-sm">
-                    <span id="volume-display" class="text-sm w-8 text-right text-gray-400">100%</span>
-                </div>
+            <div class="flex justify-center items-center space-x-8 pt-6">
+                <button id="prev-btn" class="text-gray-400 hover:text-yellow-500 transition-colors">
+                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M8.445 14.832A1 1 0 0010 14V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4zM16.445 14.832A1 1 0 0018 14V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"/></svg>
+                </button>
+                <button id="play-pause-btn" class="bg-yellow-500 text-black p-5 rounded-full shadow-xl transform hover:scale-110 transition-all active:scale-95">
+                    <svg id="play-icon" class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
+                    <svg id="pause-icon" class="w-12 h-12 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h1a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z"/></svg>
+                </button>
+                <button id="next-btn" class="text-gray-400 hover:text-yellow-500 transition-colors">
+                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4zM11.555 5.168A1 1 0 0010 6v8a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4z"/></svg>
+                </button>
             </div>
         </section>
 
-        <section id="daily-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
-            <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Audios de Hoy (Libro de Zacarías)</h2>
+        <section class="bg-gray-900 text-white p-6 rounded-xl shadow-2xl border-l-4 border-yellow-500">
+            <h2 class="text-xl font-bold mb-4 border-b border-gray-800 pb-2 flex items-center">
+                <span class="mr-2">📅</span> Audios de Hoy (Zacarías)
+            </h2>
             <ul id="daily-list" class="divide-y divide-gray-800"></ul>
         </section>
 
-        <section id="past-zacarias-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
-            <div id="past-zacarias-header" class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
-                <h2 class="text-xl font-bold">Audios Pasados (Libro de Zacarías)</h2>
-                <svg id="past-toggle-icon" class="w-6 h-6 transform rotate-0 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        <section class="bg-gray-900 text-white p-6 rounded-xl shadow-2xl">
+            <div id="past-zac-header" class="flex justify-between items-center cursor-pointer group">
+                <h2 class="text-xl font-bold flex items-center group-hover:text-yellow-500 transition-colors">
+                    <span class="mr-2">📚</span> Zacarías: Audios Pasados
+                </h2>
+                <span id="past-zac-icon" class="text-yellow-500 transform transition-transform">▼</span>
             </div>
-            <ul id="past-zacarias-list" class="divide-y divide-gray-800 hidden"></ul>
+            <ul id="past-zac-list" class="divide-y divide-gray-800 hidden mt-4 border-t border-gray-800"></ul>
         </section>
 
-        <section id="archive-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
-            <div id="archive-header" class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
-                <h2 class="text-xl font-bold">Archivo (Libro de Apocalipsis)</h2>
-                <svg id="archive-toggle-icon" class="w-6 h-6 transform rotate-0 transition-transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        <section class="bg-gray-900 text-white p-6 rounded-xl shadow-2xl">
+            <div id="apoc-header" class="flex justify-between items-center cursor-pointer group">
+                <h2 class="text-xl font-bold flex items-center group-hover:text-yellow-500 transition-colors">
+                    <span class="mr-2">📜</span> Apocalipsis: Archivo
+                </h2>
+                <span id="apoc-icon" class="text-yellow-500 transform transition-transform">▼</span>
             </div>
-            <ul id="archive-list" class="divide-y divide-gray-800 hidden"></ul>
+            <ul id="apoc-list" class="divide-y divide-gray-800 hidden mt-4 border-t border-gray-800"></ul>
         </section>
-
     </main>
 
-    <script type="module">
-        // --- CONFIGURACIÓN DE DATOS ---
-        const START_DATE = new Date('2025-12-16T00:00:00');
-        const TRACKS_PER_DAY = 3;
-
+    <script>
+        // --- BASE DE DATOS DE ENLACES ---
         const ZACARIAS_URLS = [
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-1-1-al-6.mp3",
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-1-7-al-17.mp3",
@@ -129,7 +123,7 @@
             "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-14-12-al-21.mp3"
         ];
 
-        const APOCALYPSE_URLS = [
+        const APOC_URLS = [
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-1-1-al-5.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-1-6-al-9.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-1-9-al-20.mp3",
@@ -142,197 +136,150 @@
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-3-14-al-22.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-4-1-al-11.mp3",
             "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-1-al-6.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-7-al-14.mp3",
-            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-1-al-4.mp3
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-7-al-14.mp3"
         ];
 
-        // --- VARIABLES DE ESTADO ---
+        // --- CONFIGURACIÓN LÓGICA ---
+        const START_DATE = new Date('2025-12-15T00:00:00');
+        const TRACKS_PER_DAY = 3;
+
         let audio = new Audio();
-        let currentTrackIndex = -1; 
-        let currentStartIndex = 0;
-        let isPlaying = false;
+        let currentIdx = -1;
+        let todayStartIdx = 0;
 
-        // --- ELEMENTOS ---
-        const dailyListEl = document.getElementById('daily-list');
-        const pastZacariasListEl = document.getElementById('past-zacarias-list');
-        const archiveListEl = document.getElementById('archive-list');
-        const trackNameEl = document.getElementById('track-name');
-        const playPauseBtn = document.getElementById('play-pause-btn');
-        const playIcon = document.getElementById('play-icon');
-        const pauseIcon = document.getElementById('pause-icon');
-        const seekBar = document.getElementById('seek-bar');
-        const currentTimeEl = document.getElementById('current-time');
-        const totalTimeEl = document.getElementById('total-time');
-        const volumeBar = document.getElementById('volume-bar');
-
-        // --- LÓGICA DE TIEMPO ---
-        function getBusinessDaysCount(startDate, endDate) {
+        // --- FUNCIONES ---
+        function getBusinessDaysCount(start, end) {
             let count = 0;
-            const cur = new Date(startDate.getTime());
+            let cur = new Date(start.getTime());
             cur.setHours(0,0,0,0);
-            const end = new Date(endDate.getTime());
-            end.setHours(0,0,0,0);
-
-            while (cur <= end) {
-                const dayOfWeek = cur.getDay();
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) count++;
+            let target = new Date(end.getTime());
+            target.setHours(0,0,0,0);
+            while (cur <= target) {
+                if (cur.getDay() !== 0 && cur.getDay() !== 6) count++;
                 cur.setDate(cur.getDate() + 1);
             }
             return count;
         }
 
-        // --- FUNCIONES DEL REPRODUCTOR ---
-        function extractName(url) {
-            let name = decodeURIComponent(url.split('/').pop().replace('.mp3', ''));
-            return name.replace(/-/g, ' ').replace(/%20/g, ' ');
+        function formatName(url) {
+            return decodeURIComponent(url.split('/').pop().replace('.mp3', '')).replace(/-/g, ' ');
         }
 
-        function loadTrack(url, name, index = -1) {
+        function playAudio(url, name, index) {
             audio.src = url;
-            trackNameEl.textContent = name;
-            currentTrackIndex = index;
-            audio.load();
+            document.getElementById('track-name').innerText = name;
+            currentIdx = index;
+            audio.play();
+            document.getElementById('play-icon').classList.add('hidden');
+            document.getElementById('pause-icon').classList.remove('hidden');
         }
 
-        function togglePlay() {
-            if (!audio.src) return;
-            if (isPlaying) {
-                audio.pause();
-            } else {
-                audio.play();
-            }
-        }
-
-        function playTrack() {
-            audio.play().then(() => {
-                isPlaying = true;
-                playIcon.classList.add('hidden');
-                pauseIcon.classList.remove('hidden');
-            });
-        }
-
-        // --- RESTRICCIÓN DE AVANCE ---
-        function handleNext() {
-            // Si el audio es de Zacarías y es el último de hoy (Cena)
-            const lastOfToday = currentStartIndex + 2;
-            if (currentTrackIndex !== -1 && currentTrackIndex >= lastOfToday) {
-                audio.pause();
-                isPlaying = false;
-                playIcon.classList.remove('hidden');
-                pauseIcon.classList.add('hidden');
-                alert("Has terminado el devocional de hoy. ¡Mañana habrá nuevos audios!");
-            } else if (currentTrackIndex !== -1 && currentTrackIndex < ZACARIAS_URLS.length - 1) {
-                // Avanzar al siguiente si existe
-                const nextIdx = currentTrackIndex + 1;
-                loadTrack(ZACARIAS_URLS[nextIdx], extractName(ZACARIAS_URLS[nextIdx]), nextIdx);
-                playTrack();
-            }
-        }
-
-        // --- RENDERIZADO ---
-        function render() {
-            const today = new Date();
-            const businessDays = getBusinessDaysCount(START_DATE, today);
-            currentStartIndex = (businessDays - 1) * TRACKS_PER_DAY;
-            
-            document.getElementById('devotion-day-info').textContent = `Día Hábil: ${businessDays}`;
-
-            // 1. Hoy
-            dailyListEl.innerHTML = '';
-            const moments = ["Desayuno", "Almuerzo", "Cena"];
-            for (let i = 0; i < 3; i++) {
-                const idx = currentStartIndex + i;
-                if (ZACARIAS_URLS[idx]) {
-                    const li = createItem(`${moments[i]}: ${extractName(ZACARIAS_URLS[idx])}`, ZACARIAS_URLS[idx], idx);
-                    dailyListEl.appendChild(li);
-                }
-            }
-
-            // 2. Pasados Zacarías (Orden descendente para ver los más recientes arriba)
-            pastZacariasListEl.innerHTML = '';
-            for (let i = currentStartIndex - 1; i >= 0; i--) {
-                const li = createItem(extractName(ZACARIAS_URLS[i]), ZACARIAS_URLS[i], i);
-                pastZacariasListEl.appendChild(li);
-            }
-
-            // 3. Apocalipsis
-            archiveListEl.innerHTML = '';
-            APOCALYPSE_URLS.forEach(url => {
-                const li = createItem(extractName(url), url, -1);
-                archiveListEl.appendChild(li);
-            });
-        }
-
-        function createItem(label, url, index) {
+        function createLi(label, url, index) {
             const li = document.createElement('li');
-            li.className = "p-4 flex justify-between items-center cursor-pointer hover:bg-gray-800 transition-colors";
-            li.innerHTML = `<span>${label}</span><svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>`;
-            li.onclick = () => {
-                loadTrack(url, label, index);
-                playTrack();
-            };
+            li.className = "p-4 flex justify-between items-center cursor-pointer hover:bg-gray-800 transition-colors group";
+            li.innerHTML = `
+                <span class="group-hover:text-yellow-500">${label}</span>
+                <svg class="w-5 h-5 text-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/>
+                </svg>`;
+            li.onclick = () => playAudio(url, label, index);
             return li;
         }
 
-        // --- EVENTOS ---
-        playPauseBtn.onclick = togglePlay;
-        audio.onplay = () => { isPlaying = true; playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); };
-        audio.onpause = () => { isPlaying = false; playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden'); };
-        audio.onended = handleNext;
-        document.getElementById('next-btn').onclick = handleNext;
-        document.getElementById('prev-btn').onclick = () => {
-            if (currentTrackIndex > 0) {
-                const prevIdx = currentTrackIndex - 1;
-                loadTrack(ZACARIAS_URLS[prevIdx], extractName(ZACARIAS_URLS[prevIdx]), prevIdx);
-                playTrack();
-            }
-        };
+        function init() {
+            const today = new Date();
+            const businessDays = getBusinessDaysCount(START_DATE, today);
+            todayStartIdx = (businessDays - 1) * TRACKS_PER_DAY;
+            document.getElementById('devotion-day-info').innerText = `Blindaje Espiritual - Día Hábil ${businessDays}`;
 
-        // Seek Bar
-        audio.ontimeupdate = () => {
-            if (!isNaN(audio.duration)) {
-                seekBar.value = (audio.currentTime / audio.duration) * 100;
-                currentTimeEl.textContent = formatTime(audio.currentTime);
-                totalTimeEl.textContent = formatTime(audio.duration);
+            const moments = ["Desayuno", "Almuerzo", "Cena"];
+
+            // Render Hoy
+            const dList = document.getElementById('daily-list');
+            dList.innerHTML = '';
+            for(let i=0; i<3; i++) {
+                let idx = todayStartIdx + i;
+                if(ZACARIAS_URLS[idx]) {
+                    dList.appendChild(createLi(`${moments[i]}: ${formatName(ZACARIAS_URLS[idx])}`, ZACARIAS_URLS[idx], idx));
+                }
             }
-        };
-        seekBar.oninput = () => { audio.currentTime = (seekBar.value / 100) * audio.duration; };
-        
-        function formatTime(secs) {
-            const m = Math.floor(secs / 60);
-            const s = Math.floor(secs % 60);
-            return `${m}:${s < 10 ? '0' : ''}${s}`;
+
+            // Render Pasados Zacarías (Orden inverso para ver últimos primero)
+            const pList = document.getElementById('past-zac-list');
+            pList.innerHTML = '';
+            for(let i = todayStartIdx - 1; i >= 0; i--) {
+                pList.appendChild(createLi(formatName(ZACARIAS_URLS[i]), ZACARIAS_URLS[i], i));
+            }
+
+            // Render Apocalipsis
+            const aList = document.getElementById('apoc-list');
+            aList.innerHTML = '';
+            APOC_URLS.forEach(url => aList.appendChild(createLi(formatName(url), url, -1)));
         }
 
-        // Volumen
-        volumeBar.oninput = () => { audio.volume = volumeBar.value / 100; document.getElementById('volume-display').textContent = volumeBar.value + '%'; };
+        // --- CONTROLES Y EVENTOS ---
+        document.getElementById('play-pause-btn').onclick = () => {
+            if(!audio.src) return;
+            if(audio.paused) { 
+                audio.play(); 
+                document.getElementById('play-icon').classList.add('hidden');
+                document.getElementById('pause-icon').classList.remove('hidden');
+            } else { 
+                audio.pause(); 
+                document.getElementById('play-icon').classList.remove('hidden');
+                document.getElementById('pause-icon').classList.add('hidden');
+            }
+        };
 
-        // Botones de salto
-        document.getElementById('skip-backward-btn').onclick = () => audio.currentTime -= 5;
-        document.getElementById('skip-forward-btn').onclick = () => audio.currentTime += 5;
+        audio.onended = () => {
+            // BLOQUEO: Si es la "Cena" (índice 2 del bloque de hoy), detenerse
+            if(currentIdx !== -1 && currentIdx >= todayStartIdx + 2) {
+                document.getElementById('play-icon').classList.remove('hidden');
+                document.getElementById('pause-icon').classList.add('hidden');
+                alert("Has completado las lecturas de hoy.");
+            } else if (currentIdx !== -1 && ZACARIAS_URLS[currentIdx+1]) {
+                let next = currentIdx + 1;
+                playAudio(ZACARIAS_URLS[next], formatName(ZACARIAS_URLS[next]), next);
+            }
+        };
 
-        // Plegables
-        function setupToggle(headerId, listId, iconId) {
-            document.getElementById(headerId).onclick = () => {
+        document.getElementById('next-btn').onclick = () => {
+            if(currentIdx !== -1 && currentIdx < todayStartIdx + 2 && ZACARIAS_URLS[currentIdx+1]) {
+                let next = currentIdx + 1;
+                playAudio(ZACARIAS_URLS[next], formatName(ZACARIAS_URLS[next]), next);
+            }
+        };
+
+        document.getElementById('prev-btn').onclick = () => {
+            if(currentIdx > 0) {
+                let prev = currentIdx - 1;
+                playAudio(ZACARIAS_URLS[prev], formatName(ZACARIAS_URLS[prev]), prev);
+            }
+        };
+
+        // Plegables con icono animado
+        function setupToggle(headId, listId, iconId) {
+            document.getElementById(headId).onclick = () => {
                 const list = document.getElementById(listId);
                 const icon = document.getElementById(iconId);
                 list.classList.toggle('hidden');
                 icon.classList.toggle('rotate-180');
             };
         }
-        setupToggle('past-zacarias-header', 'past-zacarias-list', 'past-toggle-icon');
-        setupToggle('archive-header', 'archive-list', 'archive-toggle-icon');
+        setupToggle('past-zac-header', 'past-zac-list', 'past-zac-icon');
+        setupToggle('apoc-header', 'apoc-list', 'apoc-icon');
 
-        // Compartir
-        document.getElementById('share-audio-btn').onclick = () => {
-            if (audio.src) {
-                navigator.clipboard.writeText(audio.src);
-                alert("Enlace del audio copiado al portapapeles");
+        // Seekbar
+        audio.ontimeupdate = () => {
+            if(audio.duration) {
+                document.getElementById('seek-bar').value = (audio.currentTime / audio.duration) * 100;
+                document.getElementById('current-time').innerText = Math.floor(audio.currentTime / 60) + ":" + String(Math.floor(audio.currentTime % 60)).padStart(2, '0');
+                document.getElementById('total-time').innerText = Math.floor(audio.duration / 60) + ":" + String(Math.floor(audio.duration % 60)).padStart(2, '0');
             }
         };
+        document.getElementById('seek-bar').oninput = (e) => audio.currentTime = (e.target.value / 100) * audio.duration;
 
-        // Iniciar
-        render();
+        init();
     </script>
 </body>
 </html>
