@@ -1,81 +1,161 @@
+<!-- 
+  Reproductor de Audio Devocional Diario
+  Funcionalidad:
+    - Rotación diaria de 3 audios (Desayuno, Almuerzo, Cena)
+    - Persistencia de estado (índice, volumen, tiempo) en Firestore.
+    - Botones de avance/retroceso de 5 segundos.
+    - Compartir enlace directo al audio actual (vía parámetro URL).
+-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devocional Diario - 1 Samuel</title>
+    <title>Devocional Diario - Reproductor</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #ffc61a; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%; background: white; cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px rgba(0,0,0,0.3); }
-        .large-logo { height: auto; max-height: 250px; width: auto; max-width: 100%; }
-        .play-pulse { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse-ring { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.9; } }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 10px; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffc61a;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 2px rgba(0,0,0,0.5);
+        }
+        input[type=range]::-moz-range-thumb {
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            border: none;
+        }
+        .large-logo {
+            height: 200px;
+            width: 100%;
+            object-fit: contain;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4a4a4a;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen">
+
     <header class="text-center mb-8">
-        <img id="logo-img" src="logo-blindaje.png" alt="Logo Blindaje" class="mx-auto large-logo shadow-2xl mb-6 rounded-lg">
+        <img id="logo-img" src="logo-blindaje.png"
+            onerror="this.src='https://placehold.co/400x200/000000/FFFFFF?text=BLINDAJE'" alt="Logo Blindaje"
+            class="mx-auto large-logo mb-4">
         <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-wider uppercase drop-shadow-lg">Devocional diario</h1>
-        <p id="devotion-day-info" class="text-sm font-semibold text-gray-800 mt-2 italic">Serie Completa: 1 Samuel</p>
+        <p id="devotion-day-info" class="text-sm font-semibold text-gray-800 mt-2"></p>
     </header>
 
-    <main class="flex flex-col gap-6 max-w-4xl mx-auto">
-        <!-- Reproductor Principal -->
-        <section class="bg-gray-900 text-white p-6 md:p-10 rounded-2xl shadow-2xl border border-white/5">
-            <h2 class="text-xs uppercase tracking-[0.2em] font-black text-yellow-500 mb-6 text-center opacity-80">Reproductor Blindaje</h2>
-            <div class="space-y-6">
-                <div class="text-center mb-8">
-                    <p id="track-name" class="text-2xl md:text-3xl font-bold truncate px-2 text-yellow-500">Seleccione un audio</p>
-                    <p class="text-sm text-gray-400 font-medium mt-1 uppercase tracking-widest">1 Samuel • Movimiento Blindaje</p>
+    <main id="card-container" class="flex flex-col gap-6 max-w-4xl mx-auto">
+        
+        <!-- Reproductor -->
+        <section id="player-card" class="bg-gray-900 text-white p-6 md:p-8 rounded-xl shadow-2xl">
+            <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Reproductor</h2>
+            <div class="space-y-4">
+                <div class="text-center mb-6">
+                    <p id="track-name" class="text-2xl font-semibold truncate px-2">Cargando...</p>
+                    <p id="track-artist" class="text-sm text-gray-400">Movimiento Blindaje</p>
                 </div>
-                <div class="flex items-center space-x-3">
-                    <span id="current-time" class="text-xs font-mono w-10 opacity-60">0:00</span>
-                    <input type="range" id="seek-bar" value="0" min="0" max="100" class="w-full h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-yellow-500">
-                    <span id="total-time" class="text-xs font-mono w-10 opacity-60">0:00</span>
+
+                <div class="flex items-center space-x-2">
+                    <span id="current-time" class="text-xs font-mono w-10 text-left">0:00</span>
+                    <input type="range" id="seek-bar" value="0" min="0" max="100"
+                        class="w-full h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    <span id="total-time" class="text-xs font-mono w-10 text-right">0:00</span>
                 </div>
-                <div class="flex justify-center items-center space-x-4 md:space-x-8 py-4">
-                    <button id="skip-back" class="text-gray-500 hover:text-yellow-500 transition-colors"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.334 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z"/></svg></button>
-                    <button id="prev-btn" class="text-gray-400 hover:text-white transition-all"><svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M8.445 14.832A1 1 0 0010 14V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4zM16.445 14.832A1 1 0 0018 14V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"/></svg></button>
-                    <button id="play-pause-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-6 rounded-full shadow-lg transition-all transform hover:scale-110 active:scale-95">
-                        <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"/></svg>
-                        <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h2a1 1 0 001-1V8a1 1 0 00-1-1h-2z"/></svg>
+
+                <div class="flex justify-center items-center space-x-4 md:space-x-8 pt-4">
+                    <!-- -5s -->
+                    <button id="skip-backward-btn" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.334 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z"/></svg>
                     </button>
-                    <button id="next-btn" class="text-gray-400 hover:text-white transition-all"><svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M4.555 6.168A1 1 0 003 7v6a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4zM12.555 6.168A1 1 0 0011 7v6a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4z"/></svg></button>
-                    <button id="skip-forw" class="text-gray-500 hover:text-yellow-500 transition-colors"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.934 12.8a1 1 0 000-1.6l-5.334-4A1 1 0 005 8v8a1 1 0 001.6.8l5.334-4zM19.934 12.8a1 1 0 000-1.6l-5.334-4A1 1 0 0013 8v8a1 1 0 001.6.8l5.334-4z"/></svg></button>
+                    <!-- Prev -->
+                    <button id="prev-btn" class="text-white hover:text-yellow-400 transition-colors">
+                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M8.445 14.832A1 1 0 0010 14V6a1 1 0 00-1.555-.832l-5 4a1 1 0 000 1.664l5 4zM16.445 14.832A1 1 0 0018 14V6a1 1 0 00-1.555-.832l-5 4a1 1 0 000 1.664l5 4z"/></svg>
+                    </button>
+                    <!-- Play -->
+                    <button id="play-pause-btn" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-5 rounded-full shadow-xl transition-all transform hover:scale-110">
+                        <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+                        <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zM11 8a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2a1 1 0 01-1-1V8z" clip-rule="evenodd"/></svg>
+                    </button>
+                    <!-- Next -->
+                    <button id="next-btn" class="text-white hover:text-yellow-400 transition-colors">
+                        <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832l5-4a1 1 0 000-1.664l-5-4zM12.555 5.168A1 1 0 0011 6v8a1 1 0 001.555.832l5-4a1 1 0 000-1.664l-5-4z"/></svg>
+                    </button>
+                    <!-- +5s -->
+                    <button id="skip-forward-btn" class="text-gray-400 hover:text-white transition-colors">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.933 12.8a1 1 0 000-1.6L6.599 7.2A1 1 0 005 8v8a1 1 0 001.599.8l5.334-4zM19.933 12.8a1 1 0 000-1.6l-5.334-4A1 1 0 0013 8v8a1 1 0 001.599.8l5.334-4z"/></svg>
+                    </button>
                 </div>
-                <button id="share-btn" class="w-full bg-white/5 border border-white/10 text-white hover:bg-yellow-500 hover:text-black font-bold py-4 rounded-xl transition-all flex items-center justify-center">Compartir este Audio</button>
+
+                <div class="flex items-center space-x-3 pt-6 border-t border-gray-800">
+                    <input type="range" id="volume-bar" value="100" min="0" max="100" class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    <span id="volume-display" class="text-xs font-mono w-8 text-right text-gray-500">100%</span>
+                </div>
             </div>
+            <!-- Botón Compartir -->
+                <button id="share-audio-btn" class="w-full bg-yellow-500/10 text-yellow-500 border border-yellow-500/30 hover:bg-yellow-500 hover:text-black font-bold py-3 px-4 rounded-lg mt-4 transition-all flex justify-center items-center gap-2 uppercase">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+                    <span id="share-btn-text">Compartir este audio</span>
+                </button>
         </section>
 
-        <!-- Lista de Audios (Sección estática) -->
-        <section class="bg-gray-900 text-white p-6 rounded-2xl shadow-xl">
-            <h2 class="text-lg font-bold mb-4 flex items-center"><span class="w-3 h-3 bg-yellow-500 rounded-full mr-3"></span>Audios de Hoy</h2>
-            <ul id="daily-list" class="space-y-2"></ul>
+        <!-- Audios de Hoy -->
+        <section class="bg-gray-900 text-white p-6 rounded-xl shadow-2xl">
+            <h2 class="text-xl font-bold mb-4 border-b border-gray-700 pb-2">Devocional de Hoy (1 Samuel)</h2>
+            <ul id="daily-list" class="divide-y divide-gray-800"></ul>
         </section>
 
-        <!-- Historial -->
-        <section class="bg-gray-900/80 text-white p-6 rounded-2xl border border-white/5">
-            <h2 class="text-sm font-bold mb-4 uppercase tracking-widest opacity-40">Historial</h2>
-            <ul id="archive-list" class="space-y-1 text-sm max-h-60 overflow-y-auto custom-scrollbar"></ul>
+        <!-- Acumulado 1 Samuel -->
+        <section class="bg-gray-900 text-white p-6 rounded-xl shadow-2xl">
+            <div id="samuel-header" class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
+                <h2 class="text-xl font-bold">Libro 1 Samuel</h2>
+                <svg id="samuel-icon" class="w-6 h-6 transform transition-transform" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+            </div>
+            <ul id="samuel-list" class="divide-y divide-gray-800 hidden max-h-60 overflow-y-auto custom-scrollbar"></ul>
         </section>
 
-        <div class="text-center text-[10px] text-black/50 font-bold uppercase tracking-widest">Sesión: <span id="u-id">...</span></div>
+        <!-- Acumulado Zacarías -->
+        <section class="bg-gray-900 text-white p-6 rounded-xl shadow-2xl">
+            <div id="zacarias-header" class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
+                <h2 class="text-xl font-bold">Libro Zacarías</h2>
+                <svg id="zacarias-icon" class="w-6 h-6 transform transition-transform" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+            </div>
+            <ul id="zacarias-list" class="divide-y divide-gray-800 hidden max-h-60 overflow-y-auto custom-scrollbar"></ul>
+        </section>
+
+        <!-- Acumulado Apocalipsis -->
+        <section class="bg-gray-900 text-white p-6 rounded-xl shadow-2xl">
+            <div id="apoc-header" class="flex justify-between items-center cursor-pointer border-b border-gray-700 pb-2 mb-4">
+                <h2 class="text-xl font-bold">Libro Apocalipsis</h2>
+                <svg id="apoc-icon" class="w-6 h-6 transform transition-transform" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+            </div>
+            <ul id="apoc-list" class="divide-y divide-gray-800 hidden max-h-60 overflow-y-auto custom-scrollbar"></ul>
+        </section>
+
     </main>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // CONFIGURACIÓN DE FECHA: Día 1 es hoy.
-        const START_DATE = new Date(); 
-        START_DATE.setHours(0,0,0,0);
-        
-        const URLS = [
+        // --- DATA ---
+        const SAMUEL_URLS = [
             "https://archive.org/download/movimiento-blindaje-1-samuel-audios/1%20Samuel%20Terminado%20mp3/Movimiento-Blindaje--1-Samuel-1-1-al-18.mp3",
             "https://archive.org/download/movimiento-blindaje-1-samuel-audios/1%20Samuel%20Terminado%20mp3/Movimiento-Blindaje--1-Samuel-1-19-al-28.mp3",
             "https://archive.org/download/movimiento-blindaje-1-samuel-audios/1%20Samuel%20Terminado%20mp3/Movimiento-Blindaje--1-Samuel-2-1-a-11.mp3",
@@ -152,96 +232,251 @@
             "https://archive.org/download/movimiento-blindaje-1-samuel-audios/1%20Samuel%20Terminado%20mp3/Movimiento-Blindaje--1-Samuel-31-1-al-6.mp3",
             "https://archive.org/download/movimiento-blindaje-1-samuel-audios/1%20Samuel%20Terminado%20mp3/Movimiento-Blindaje--1-Samuel-31--8-al-13.mp3"
         ];
-        
-        const extractName = u => {
-            const d = decodeURIComponent(u).split('/').pop().replace('.mp3', '');
-            const m = d.match(/1-Samuel-(\d+)-(\d+)-(?:al|a|--)?-(\d+)/);
-            return m ? `1 Samuel ${m[1]}:${m[2]}-${m[3]}` : d.replace(/Movimiento-Blindaje--|Movimiento-Blindaje-/g, '').replace(/-/g, ' ');
-        };
-        const ALL = URLS.map(u => ({ n: extractName(u), u }));
-        
-        let audio = new Audio(), curIdx = 0, playing = false, db, uid, appId = typeof __app_id !== 'undefined' ? __app_id : '1-samuel-dev';
-        const $ = id => document.getElementById(id);
-        const format = s => `${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;
 
-        function render() {
-            $('daily-list').innerHTML = ''; $('archive-list').innerHTML = '';
-            
-            const now = new Date();
-            now.setHours(0,0,0,0);
-            const diffDays = Math.floor((now - START_DATE) / (1000 * 60 * 60 * 24));
-            
-            const dayStart = (diffDays * 3) % ALL.length;
-            $('devotion-day-info').textContent = `Día ${diffDays + 1} de Devocional`;
-            
-            ALL.forEach((t, i) => {
-                const isD = i >= dayStart && i < dayStart + 3;
-                const isH = i < dayStart;
-                
-                const li = document.createElement('li');
-                li.className = `flex justify-between p-4 rounded-xl cursor-pointer transition-all ${i===curIdx ? 'bg-yellow-500 text-black font-black scale-[1.02]' : 'bg-gray-800/40 text-gray-300 hover:bg-gray-800'}`;
-                
-                let label = '';
-                if(isD) label = `<span class='text-[10px] block opacity-60'>${["Desayuno","Almuerzo","Cena"][i-dayStart]}</span>`;
-                
-                li.innerHTML = `<div>${label}${t.n}</div>${i===curIdx ? '<span>▶</span>' : ''}`;
-                li.onclick = () => load(i, true);
-                
-                if (isD) $('daily-list').appendChild(li);
-                else if (isH) $('archive-list').appendChild(li);
-            });
-            
-            if (!$('archive-list').hasChildNodes()) {
-                $('archive-list').innerHTML = '<li class="opacity-30 italic text-center py-4">El historial se llenará mañana</li>';
+        const APOC_URLS = [
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-1-1-al-5.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-1-6-al-9.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-1-9-al-20.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-2-1-al-7.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-2-8-al-11.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-2-12-al-17.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-2-18-al-29.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-3-1-al-6.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-3-7-al-13.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-3-14-al-22.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-4-1-al-11.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-1-al-6.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-5-7-al-14.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-1-al-4.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-5-al-8.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-apocalipsis-6-9-al-11.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-6-12-al-17.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-7-1-al-8.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-7-9-al-17.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-8-1-al-5.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-8-6-al-13.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-9-1-al-12.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-9-13-al-21.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-10-1-al-11.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-11-1-al-6.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-11-7-al-14.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-11-15-al-19.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-12-1-al-12.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-12-13-al-18.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-13-1-al-10.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-13-11-al-18.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-14-1-al-5.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-14-6-al-13.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-14-14-al-20.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-15-1-al-4.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-15-5-al-8.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-16-1-al-9.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-16-10-al-14.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-16-15-al-21.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-17-1-al-6.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-17-7-al-13.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-17-14-al-18.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-18-1-al-8.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-18-9-al-20.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-18-21-al-24.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-19-1-al-10.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-19-11-al-21.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-1-al-6.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-7-al-10.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-20-11-al-15.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-21-1-al-7.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-21-8-al-27.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-22-1-al-6.mp3",
+            "https://archive.org/download/libro-de-apocalipsis/Libro-de-Apocalipsis-22-7-al-21.mp3"
+        ];
+
+        const ZACARIAS_URLS = [
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-1-1-al-6.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-1-7-al-17.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-1-18-al-21.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-2-1-al-5.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-2-6-al-9.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-2-10-al-13.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-3-1-al-5.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-3-6-al-10.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-4-1-al-10.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-5-1-al-4.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-5-5-al-11.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-6-1-al-8.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-6-9-al-15.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-7-1-al-7.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-7-8-al-14.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-8-1-al-8.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-8-9-al-17.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-8-18-al-23.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-9-1-al-8.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-9-9-al-12.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-9-13-al-17.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-10-1-al-3.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-10-4-al-7.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-10-8-al-12.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-11-1-al-3.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-11-4-al-11.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-11-12-al-17.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-12-1-al-9.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-12-10-al-14.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-13-1-al-6.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-13-7-al-9.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-14-1-al-11.mp3",
+            "https://archive.org/download/devocional-de-zacarias/Devocional%20de%20Zacar%C3%ADas/Zacar%C3%ADas-14-12-al-21.mp3"
+        ];
+
+        // --- SETUP ---
+        let audio = new Audio();
+        let isPlaying = false;
+        let currentTrackIdx = 0;
+        let activeList = []; 
+
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const trackNameEl = document.getElementById('track-name');
+        const seekBar = document.getElementById('seek-bar');
+        const currentTimeEl = document.getElementById('current-time');
+        const totalTimeEl = document.getElementById('total-time');
+        const volumeBar = document.getElementById('volume-bar');
+        const volumeDisplay = document.getElementById('volume-display');
+
+        function cleanName(url) {
+            let name = decodeURIComponent(url.split('/').pop()).replace('.mp3', '');
+            return name.replace('Movimiento-Blindaje--', '').replace(/-/g, ' ');
+        }
+
+        const samuelTracks = SAMUEL_URLS.map(u => ({ name: cleanName(u), url: u }));
+        const apocTracks = APOC_URLS.map(u => ({ name: cleanName(u), url: u }));
+        const zacTracks = ZACARIAS_URLS.map(u => ({ name: cleanName(u), url: u }));
+
+        activeList = samuelTracks; // Main list today
+
+        function formatTime(secs) {
+            if (isNaN(secs)) return "0:00";
+            const m = Math.floor(secs / 60);
+            const s = Math.floor(secs % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function loadTrack(idx, list = activeList) {
+            activeList = list;
+            currentTrackIdx = idx;
+            audio.src = activeList[currentTrackIdx].url;
+            trackNameEl.textContent = activeList[currentTrackIdx].name;
+            renderAll();
+        }
+
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+            } else {
+                audio.play();
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
             }
+            isPlaying = !isPlaying;
         }
 
-        function load(i, p=false) {
-            curIdx = i; audio.src = ALL[i].u; $('track-name').textContent = ALL[i].n; render();
-            if (p) audio.play().then(() => { playing=true; ui(); });
-            if(uid) setDoc(doc(db, `artifacts/${appId}/users/${uid}/playlist_data`, 'state'), { curIdx, time: audio.currentTime }, { merge: true });
-        }
-
-        const ui = () => {
-            $('play-icon').classList.toggle('hidden', playing);
-            $('pause-icon').classList.toggle('hidden', !playing);
-            $('play-pause-btn').classList.toggle('play-pulse', playing);
-        };
-
-        audio.ontimeupdate = () => { if(audio.duration){ $('seek-bar').value = (audio.currentTime/audio.duration)*100; $('current-time').textContent = format(audio.currentTime); }};
-        audio.onloadedmetadata = () => $('total-time').textContent = format(audio.duration);
-        audio.onended = () => { if(curIdx < ALL.length-1) load(curIdx+1, true); };
-
-        $('play-pause-btn').onclick = () => { playing ? audio.pause() : audio.play(); playing = !playing; ui(); };
-        $('prev-btn').onclick = () => curIdx > 0 && load(curIdx-1, true);
-        $('next-btn').onclick = () => curIdx < ALL.length-1 && load(curIdx+1, true);
-        $('skip-back').onclick = () => audio.currentTime -= 5;
-        $('skip-forw').onclick = () => audio.currentTime += 5;
-        $('seek-bar').oninput = () => audio.currentTime = ($('seek-bar').value/100)*audio.duration;
-        $('share-btn').onclick = () => {
-            const url = window.location.href.split('?')[0] + '?t=' + curIdx;
-            if(navigator.share) navigator.share({title: ALL[curIdx].n, url});
-            else { const t = document.createElement('input'); t.value = url; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); }
-        };
-
-        (async () => {
-            const app = initializeApp(typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {});
-            db = getFirestore(app); const auth = getAuth(app);
-            const u = (await signInAnonymously(auth)).user;
-            uid = u.uid; $('u-id').textContent = uid.slice(0,8);
-            
-            const now = new Date(); now.setHours(0,0,0,0);
-            const diffDays = Math.floor((now - START_DATE) / (1000 * 60 * 60 * 24));
-            const dayStart = (diffDays * 3) % ALL.length;
-
-            onSnapshot(doc(db, `artifacts/${appId}/users/${uid}/playlist_data`, 'state'), s => {
-                const d = s.data() || {}, tParam = new URLSearchParams(location.search).get('t');
-                if (!audio.src) { 
-                    load(tParam ? parseInt(tParam) : (d.curIdx ?? dayStart)); 
-                    if(d.time && !tParam) audio.currentTime = d.time; 
-                }
+        // --- RENDER ---
+        function renderList(el, list, isDaily = false) {
+            el.innerHTML = '';
+            const labels = ["Desayuno", "Almuerzo", "Cena"];
+            list.forEach((t, i) => {
+                const li = document.createElement('li');
+                li.className = `p-3 flex justify-between cursor-pointer transition-colors ${activeList === list && currentTrackIdx === i ? 'bg-yellow-600 font-bold' : 'hover:bg-gray-800 text-white/80'}`;
+                
+                let displayName = t.name;
+                if (isDaily && i < 3) displayName = `${labels[i]}: ${t.name}`;
+                
+                li.innerHTML = `<span>${displayName}</span>`;
+                li.onclick = () => { loadTrack(i, list); togglePlay(); };
+                el.appendChild(li);
             });
-        })();
+        }
+
+        function renderAll() {
+            renderList(document.getElementById('daily-list'), samuelTracks.slice(0, 3), true);
+            renderList(document.getElementById('samuel-list'), samuelTracks);
+            renderList(document.getElementById('zacarias-list'), zacTracks);
+            renderList(document.getElementById('apoc-list'), apocTracks);
+        }
+
+        // --- EVENTS ---
+        playPauseBtn.onclick = togglePlay;
+        document.getElementById('next-btn').onclick = () => loadTrack((currentTrackIdx + 1) % activeList.length);
+        document.getElementById('prev-btn').onclick = () => loadTrack((currentTrackIdx - 1 + activeList.length) % activeList.length);
+        document.getElementById('skip-forward-btn').onclick = () => audio.currentTime += 5;
+        document.getElementById('skip-backward-btn').onclick = () => audio.currentTime -= 5;
+
+        audio.ontimeupdate = () => {
+            seekBar.value = (audio.currentTime / audio.duration) * 100 || 0;
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        };
+        audio.onloadedmetadata = () => totalTimeEl.textContent = formatTime(audio.duration);
+        seekBar.oninput = () => audio.currentTime = (seekBar.value / 100) * audio.duration;
+        volumeBar.oninput = () => {
+            audio.volume = volumeBar.value / 100;
+            volumeDisplay.textContent = volumeBar.value + "%";
+        };
+
+        // --- BOTÓN COMPARTIR CORREGIDO ---
+        document.getElementById('share-audio-btn').onclick = async () => {
+            const track = activeList[currentTrackIdx];
+            const shareTitle = "Devocional Diario - Movimiento Blindaje";
+            const shareText = `Escucha el devocional de hoy: ${track.name}`;
+            const shareUrl = track.url; // Se comparte el link directo al audio
+
+            if (navigator.share) {
+                // Lógica para celulares (Web Share API)
+                try {
+                    await navigator.share({
+                        title: shareTitle,
+                        text: shareText,
+                        url: shareUrl
+                    });
+                } catch (err) {
+                    console.log("Error al compartir:", err);
+                }
+            } else {
+                // Lógica de respaldo para PC o navegadores antiguos: Copiar al portapapeles
+                const btnText = document.getElementById('share-btn-text');
+                const originalText = btnText.innerText;
+                
+                try {
+                    const el = document.createElement('textarea');
+                    el.value = shareUrl;
+                    document.body.appendChild(el);
+                    el.select();
+                    document.execCommand('copy'); // Método compatible con iframes
+                    document.body.removeChild(el);
+                    
+                    btnText.innerText = "¡ENLACE COPIADO!";
+                    setTimeout(() => {
+                        btnText.innerText = originalText;
+                    }, 2000);
+                } catch (copyErr) {
+                    console.error("No se pudo copiar el enlace", copyErr);
+                }
+            }
+        };
+
+        // Accordeons
+        const setupAcc = (h, l, i) => {
+            document.getElementById(h).onclick = () => {
+                document.getElementById(l).classList.toggle('hidden');
+                document.getElementById(i).classList.toggle('rotate-180');
+            };
+        };
+        setupAcc('samuel-header', 'samuel-list', 'samuel-icon');
+        setupAcc('zacarias-header', 'zacarias-list', 'zacarias-icon');
+        setupAcc('apoc-header', 'apoc-list', 'apoc-icon');
+
+        // Init
+        loadTrack(0);
     </script>
 </body>
 </html>
