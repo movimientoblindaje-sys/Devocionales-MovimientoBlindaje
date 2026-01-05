@@ -38,7 +38,6 @@
             onerror="this.src='https://placehold.co/400x200/000000/FFFFFF?text=BLINDAJE'" alt="Logo Blindaje"
             class="mx-auto h-32 md:h-44 object-contain mb-4">
         <h1 class="text-3xl md:text-5xl font-extrabold tracking-wider uppercase drop-shadow-lg text-black">Devocional diario</h1>
-        <!-- Se eliminó la etiqueta de conteo de días por solicitud -->
     </header>
 
     <main class="flex flex-col gap-6 max-w-4xl mx-auto">
@@ -59,7 +58,6 @@
                     <span id="total-time" class="text-xs font-mono w-10 text-gray-400">0:00</span>
                 </div>
 
-                <!-- Controles con Iconos Modernos -->
                 <div class="flex justify-center items-center space-x-4 md:space-x-8 pt-4">
                     <button id="prev-btn" class="text-white hover:text-yellow-400 transition-transform active:scale-90">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,7 +90,7 @@
 
             <button id="share-audio-btn" class="w-full bg-yellow-500 text-black font-black py-4 px-4 rounded-lg mt-6 transition-all flex justify-center items-center gap-2 uppercase hover:bg-yellow-400 active:scale-95 shadow-lg">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
-                <span id="share-btn-text">Compartir este audio</span>
+                <span id="share-btn-text">Copiar enlace del audio</span>
             </button>
         </section>
 
@@ -120,8 +118,12 @@
     </main>
 
     <script type="module">
-        // FECHA DE INICIO: Ajustado para que hoy (Día 1) sean los primeros audios
-        const START_DATE = new Date(); 
+        /**
+         * LÓGICA DE FECHA Y PAUSA:
+         * Inicio: Viernes 2 de Enero de 2026.
+         * Pausa: Sábados y Domingos no se avanza el plan.
+         */
+        const START_DATE = new Date(2026, 0, 2); 
         
         const RAW_URLS = [
             "https://archive.org/download/movimiento-blindaje-1-samuel-audios/1%20Samuel%20Terminado%20mp3/Movimiento-Blindaje--1-Samuel-1-1-al-18.mp3",
@@ -141,17 +143,26 @@
             "https://archive.org/download/movimiento-blindaje-1-samuel-audios/1%20Samuel%20Terminado%20mp3/Movimiento-Blindaje--1-Samuel-6-19-al-21.mp3"
         ];
 
-        const getPlanDay = () => {
-            const now = new Date();
+        const getStudyDaysPassed = () => {
             const start = new Date(START_DATE);
+            const today = new Date();
             start.setHours(0,0,0,0);
-            now.setHours(0,0,0,0);
-            const diff = Math.floor((now - start) / (1000 * 60 * 60 * 24));
-            return Math.max(0, diff);
+            today.setHours(0,0,0,0);
+            if (today < start) return 0;
+            let studyDays = 0;
+            let current = new Date(start);
+            while (current < today) {
+                const dayOfWeek = current.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    studyDays++;
+                }
+                current.setDate(current.getDate() + 1);
+            }
+            return studyDays;
         };
 
-        const planDay = getPlanDay();
-        const currentDailyStartIdx = planDay * 3;
+        const studyDay = getStudyDaysPassed();
+        const currentDailyStartIdx = studyDay * 3;
 
         const cleanName = (url) => {
             let n = decodeURIComponent(url.split('/').pop()).replace('.mp3', '');
@@ -159,8 +170,10 @@
         };
 
         const allTracks = RAW_URLS.map((u, i) => ({ id: i, name: cleanName(u), url: u }));
+        
         let dailyTracks = allTracks.slice(currentDailyStartIdx, currentDailyStartIdx + 3);
-        if (dailyTracks.length === 0) dailyTracks = allTracks.slice(0, 3);
+        if (dailyTracks.length === 0) dailyTracks = allTracks.slice(-3);
+
         const historyTracks = allTracks.slice(0, currentDailyStartIdx);
 
         let audio = new Audio();
@@ -248,7 +261,8 @@
         };
         audio.onloadedmetadata = () => totalTimeEl.textContent = formatTime(audio.duration);
         audio.onended = () => {
-            if (currentTrack.id === (currentDailyStartIdx + 2)) {
+            const lastDailyId = dailyTracks[dailyTracks.length - 1].id;
+            if (currentTrack.id === lastDailyId) {
                 isPlaying = false;
                 playIcon.classList.remove('hidden');
                 pauseIcon.classList.add('hidden');
@@ -263,30 +277,39 @@
             document.getElementById('volume-display').textContent = volumeBar.value + "%";
         };
 
+        // ACCIÓN DEL BOTÓN COMPARTIR CORREGIDA
         document.getElementById('share-audio-btn').onclick = async () => {
-            // Se comparte la URL de la web con el parámetro del audio
-            const shareUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}?track=${currentTrack.id}`;
-            const shareText = `Escucha el devocional: ${currentTrack.name}`;
+            if (!currentTrack) return;
             
+            // 1. Generar la URL con el track ID
+            const baseUrl = window.location.href.split('?')[0];
+            const shareUrl = `${baseUrl}?track=${currentTrack.id}`;
+            
+            // 2. Intentar compartir nativamente (especialmente en móviles)
             if (navigator.share) {
-                try { 
-                    await navigator.share({ 
-                        title: 'Devocional Blindaje', 
-                        text: shareText, 
-                        url: shareUrl 
-                    }); 
-                } catch(e) {}
-            } else {
-                const dummy = document.createElement('input');
-                document.body.appendChild(dummy);
-                dummy.value = shareUrl;
-                dummy.select();
-                document.execCommand('copy');
-                document.body.removeChild(dummy);
-                const btnText = document.getElementById('share-btn-text');
-                btnText.innerText = "¡ENLACE COPIADO!";
-                setTimeout(() => btnText.innerText = "Compartir este audio", 2000);
+                try {
+                    await navigator.share({
+                        title: 'Devocional Blindaje',
+                        text: `Escucha: ${currentTrack.name}`,
+                        url: shareUrl
+                    });
+                    return; // Si funcionó el menú nativo, salimos
+                } catch (e) {
+                    console.log("Compartir nativo falló o fue cancelado");
+                }
             }
+
+            // 3. Fallback: Copiar al portapapeles y avisar al usuario
+            const dummy = document.createElement('input');
+            document.body.appendChild(dummy);
+            dummy.value = shareUrl;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+
+            const btnText = document.getElementById('share-btn-text');
+            btnText.innerText = "¡ENLACE COPIADO!";
+            setTimeout(() => btnText.innerText = "Copiar enlace del audio", 2500);
         };
 
         const historyToggle = document.getElementById('history-toggle');
@@ -309,8 +332,11 @@
             const trackIdParam = params.get('track');
             if (trackIdParam !== null) {
                 const tId = parseInt(trackIdParam);
-                if (tId < allTracks.length) loadTrack(allTracks[tId]);
-                else loadTrack(dailyTracks[0]);
+                if (!isNaN(tId) && tId >= 0 && tId < allTracks.length) {
+                    loadTrack(allTracks[tId]);
+                } else {
+                    loadTrack(dailyTracks[0]);
+                }
             } else {
                 loadTrack(dailyTracks[0]);
             }
