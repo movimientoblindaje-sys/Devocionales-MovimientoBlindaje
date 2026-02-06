@@ -154,7 +154,7 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const START_DATE = new Date(); 
+        const START_DATE = new Date(2026,0,2); 
         START_DATE.setHours(0,0,0,0);
         
         const TRACKS_PER_DAY = 3;
@@ -162,7 +162,7 @@
         
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        appId = typeof __app_id !== 'undefined' ? __app_id : '1-samuel-devotional';
+        appId = typeof __app_id !== 'undefined' ? __app_id : '1-y-2-samuel-devotional';
 
         const URLS = [
             "https://archive.org/download/movimiento-blindaje-1-samuel-audios/1%20Samuel%20Terminado%20mp3/Movimiento-Blindaje--1-Samuel-1-1-al-18.mp3",
