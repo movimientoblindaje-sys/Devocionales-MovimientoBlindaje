@@ -7,7 +7,6 @@
 -->
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,12 +14,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-
         body {
             font-family: 'Inter', sans-serif;
             background-color: #ffc61a;
         }
-
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
             height: 16px;
@@ -31,7 +28,6 @@
             margin-top: -6px;
             box-shadow: 0 0 10px rgba(0,0,0,0.3);
         }
-
         .large-logo {
             height: auto;
             max-height: 250px;
@@ -42,12 +38,10 @@
         .play-pulse {
             animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
-
         @keyframes pulse-ring {
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.05); opacity: 0.9; }
         }
-
         .custom-scrollbar::-webkit-scrollbar {
             width: 4px;
         }
@@ -60,24 +54,18 @@
         }
     </style>
 </head>
-
 <body class="p-4 md:p-8 min-h-screen">
-
     <header class="text-center mb-8">
-        <!-- Restaurado el Logo original con la ruta del archivo local -->
         <img id="logo-img" src="logo-blindaje.png" alt="Logo Blindaje"
             class="mx-auto large-logo shadow-2xl mb-6 rounded-lg">
-
         <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-wider uppercase drop-shadow-lg">Devocional diario</h1>
         <p id="devotion-day-info" class="text-sm font-semibold text-gray-800 mt-2 italic">Iniciando serie: 1 Samuel</p>
     </header>
 
     <main id="card-container" class="flex flex-col gap-6 max-w-4xl mx-auto">
-
         <!-- Reproductor Principal -->
         <section id="player-card" class="bg-gray-900 text-white p-6 md:p-10 rounded-2xl shadow-2xl border border-white/5">
             <h2 class="text-xs uppercase tracking-[0.2em] font-black text-yellow-500 mb-6 text-center opacity-80">Reproductor Blindaje</h2>
-
             <div class="space-y-6">
                 <div class="text-center mb-8">
                     <p id="track-name" class="text-2xl md:text-3xl font-bold truncate px-2 text-yellow-500">Cargando...</p>
@@ -96,22 +84,18 @@
 
                 <!-- Controles de Reproducción -->
                 <div class="flex justify-center items-center space-x-4 md:space-x-8 py-4">
-
-                    <!-- Retroceder 5s -->
                     <button id="skip-backward-btn" class="text-gray-500 hover:text-yellow-500 transition-colors" title="Retroceder 5s">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.334 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z" />
                         </svg>
                     </button>
 
-                    <!-- Anterior -->
                     <button id="prev-btn" class="text-gray-400 hover:text-white transition-all group">
                         <svg class="w-10 h-10 group-active:scale-90" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M8.445 14.832A1 1 0 0010 14V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4zM16.445 14.832A1 1 0 0018 14V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z" />
                         </svg>
                     </button>
 
-                    <!-- Play/Pausa -->
                     <button id="play-pause-btn"
                         class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 p-6 rounded-full shadow-[0_0_25px_rgba(234,179,8,0.4)] transition-all transform hover:scale-110 active:scale-95">
                         <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20">
@@ -122,14 +106,12 @@
                         </svg>
                     </button>
 
-                    <!-- Siguiente -->
                     <button id="next-btn" class="text-gray-400 hover:text-white transition-all group">
                         <svg class="w-10 h-10 group-active:scale-90" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M4.555 6.168A1 1 0 003 7v6a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4zM12.555 6.168A1 1 0 0011 7v6a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4z" />
                         </svg>
                     </button>
 
-                    <!-- Avanzar 5s -->
                     <button id="skip-forward-btn" class="text-gray-500 hover:text-yellow-500 transition-colors" title="Avanzar 5s">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.934 12.8a1 1 0 000-1.6l-5.334-4A1 1 0 005 8v8a1 1 0 001.6.8l5.334-4zM19.934 12.8a1 1 0 000-1.6l-5.334-4A1 1 0 0013 8v8a1 1 0 001.6.8l5.334-4z" />
@@ -165,7 +147,6 @@
         <div class="text-center text-[10px] text-black/50 font-bold uppercase tracking-widest">
             Sesión: <span id="user-id">...</span>
         </div>
-
     </main>
 
     <script type="module">
@@ -173,14 +154,12 @@
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // CONFIGURACIÓN: El historial estará vacío porque hoy es el día 0 relativo a START_DATE
         const START_DATE = new Date(); 
         START_DATE.setHours(0,0,0,0);
         
         const TRACKS_PER_DAY = 3;
-
         let audio, tracks = [], currentTrackIndex = 0, isPlaying = false, auth, db, userId = 'default', appId, currentStartIndex = 0;
-
+        
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         appId = typeof __app_id !== 'undefined' ? __app_id : '1-samuel-devotional';
@@ -261,82 +240,88 @@
             "https://archive.org/download/movimiento-blindaje-1-samuel-audios/1%20Samuel%20Terminado%20mp3/Movimiento-Blindaje--1-Samuel-30-9-al-31.mp3",
             "https://archive.org/download/movimiento-blindaje-1-samuel-audios/1%20Samuel%20Terminado%20mp3/Movimiento-Blindaje--1-Samuel-31-1-al-6.mp3",
             "https://archive.org/download/movimiento-blindaje-1-samuel-audios/1%20Samuel%20Terminado%20mp3/Movimiento-Blindaje--1-Samuel-31--8-al-13.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-1-1-al-16.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-1-17-al-21.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-2-1-al-7.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-2-8-al-32.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-3-1-al-5.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-3-6-al-21.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-3-22-al-39.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-4-1-al-12.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-5-1-al-16.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-5-17-al-25.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-6-1-al-10.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-6-11-al-15.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-6-16-al-23.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-7-1-al-17.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-7-18-al-29.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-8-1-al-18.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-9-1-al-13.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-10-1-al-5.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-10-6-al-19.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-11-1-al-4.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-11-5-a-13.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-11-14-al-27.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-12-1-al-12.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-12-13-al-18.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-12-19-al-25.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-12-26-al-31.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-13-1-al-5.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-13-6-al-16.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-13-17-al-22.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-13-23-al-39.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-14-1-al-24.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-14-25-al-33.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-15-1-al-6.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-15-7-al-12.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-15-13-al-23.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-15-24-al-37.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-16-1-al-4.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-16-5-al-14.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-16-15-al-23.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-17-1-al-14.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-17-15-al-21.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-17-22-al-29.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-18-1-al-5.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-18-6-al-18.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-18-19-al-33.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-1-al-8.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-9-al-14.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-15-al-23.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-24-al-31.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-31-al-40.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-41-al-43.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-20-1-al-5.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-20-6-al-13.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-20-14-al-25.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-21-1-al-14.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-21-15-a-17.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-21-18-al-22.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-22-1-al-7.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-22-8-al-20.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-22-21-al-28.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-22-29-al-51.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-23-1-al-7.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-23-8-al-12.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-23-13-al-17.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-23-18-al-23.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-23-24-al-39.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-24-1-al-9.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-24-10-al-17.mp3",
-          "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-24-18-al-25.mp3"
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-1-1-al-16.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-1-17-al-21.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-2-1-al-7.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-2-8-al-32.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-3-1-al-5.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-3-6-al-21.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-3-22-al-39.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-4-1-al-12.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-5-1-al-16.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-5-17-al-25.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-6-1-al-10.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-6-11-al-15.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-6-16-al-23.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-7-1-al-17.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-7-18-al-29.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-8-1-al-18.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-9-1-al-13.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-10-1-al-5.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-10-6-al-19.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-11-1-al-4.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-11-5-a-13.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-11-14-al-27.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-12-1-al-12.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-12-13-al-18.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-12-19-al-25.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-12-26-al-31.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-13-1-al-5.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-13-6-al-16.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-13-17-al-22.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-13-23-al-39.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-14-1-al-24.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-14-25-al-33.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-15-1-al-6.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-15-7-al-12.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-15-13-al-23.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-15-24-al-37.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-16-1-al-4.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-16-5-al-14.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-16-15-al-23.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-17-1-al-14.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-17-15-al-21.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-17-22-al-29.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-18-1-al-5.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-18-6-al-18.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-18-19-al-33.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-1-al-8.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-9-al-14.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-15-al-23.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-24-al-31.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-31-al-40.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-19-41-al-43.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-20-1-al-5.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-20-6-al-13.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-20-14-al-25.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-21-1-al-14.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-21-15-a-17.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-21-18-al-22.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-22-1-al-7.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-22-8-al-20.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-22-21-al-28.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-22-29-al-51.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-23-1-al-7.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-23-8-al-12.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-23-13-al-17.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-23-18-al-23.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-23-24-al-39.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-24-1-al-9.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-24-10-al-17.mp3",
+            "https://archive.org/download/movimiento-blindaje-2-Samuel/2%20Samuel/Movimiento-Blindaje--2-Samuel-24-18-al-25.mp3"
         ];
 
         function extractTrackName(url) {
             const decodedUrl = decodeURIComponent(url);
             const filename = decodedUrl.split('/').pop().replace('.mp3', '');
-            const match = filename.match(/1-Samuel-(\d+)-(\d+)-(?:al|a|--)?-(\d+)/);
-            if (match) return `1 Samuel ${match[1]}:${match[2]}-${match[3]}`;
+            
+            // Intento de extraer capítulo y versículos
+            const match = filename.match(/(\d+)-Samuel-(\d+)-(\d+)-(?:al|a|--)?-(\d+)/i);
+            if (match) return `${match[1]} Samuel ${match[2]}:${match[3]}-${match[4]}`;
+            
+            const matchSingle = filename.match(/(\d+)-Samuel-(\d+)-(\d+)/i);
+            if (matchSingle) return `${matchSingle[1]} Samuel ${matchSingle[2]}:${matchSingle[3]}`;
+
             return filename.replace(/Movimiento-Blindaje--|Movimiento-Blindaje-/g, '').replace(/-/g, ' ');
         }
 
@@ -381,31 +366,38 @@
             let bizDays = getBusinessDaysCount(START_DATE, today) - 1;
             if (bizDays < 0) bizDays = 0;
             const startIndex = bizDays * TRACKS_PER_DAY;
-            devotionDayInfoEl.textContent = `Día ${bizDays + 1} de Devocional (1 Samuel)`;
-            return startIndex >= ALL_TRACKS.length ? Math.floor((ALL_TRACKS.length-1)/3)*3 : startIndex;
+            
+            // Determinar si es 1 o 2 Samuel basado en el índice
+            const book = startIndex < 75 * 3 ? "1 Samuel" : "2 Samuel";
+            devotionDayInfoEl.textContent = `Día ${bizDays + 1} de Devocional (${book})`;
+            
+            return startIndex >= ALL_TRACKS.length ? Math.floor((ALL_TRACKS.length - 1) / 3) * 3 : startIndex;
         }
 
         async function saveState() {
             if (!db || !userId) return;
             try {
-                await setDoc(doc(db, `artifacts/${appId}/users/${userId}/playlist_data`, 'user_state'), {
+                const stateRef = doc(db, 'artifacts', appId, 'users', userId, 'playlist_data', 'user_state');
+                await setDoc(stateRef, {
                     currentTrackIndex,
                     lastPlayedTime: audio ? audio.currentTime : 0
                 }, { merge: true });
-            } catch (e) { console.error(e); }
+            } catch (e) { console.error("Error guardando estado:", e); }
         }
 
         function renderPlaylist() {
-            dailyListEl.innerHTML = ''; archiveListEl.innerHTML = '';
+            dailyListEl.innerHTML = ''; 
+            archiveListEl.innerHTML = '';
             const dailyLabels = ["Desayuno", "Almuerzo", "Cena"];
             
             let hasHistory = false;
-
             ALL_TRACKS.forEach((track, i) => {
                 const isDaily = i >= currentStartIndex && i < currentStartIndex + 3;
                 const isHistory = i < currentStartIndex;
                 const isCurrent = i === currentTrackIndex;
                 
+                if (!isDaily && !isHistory) return;
+
                 const li = document.createElement('li');
                 li.className = `flex justify-between items-center p-4 rounded-xl cursor-pointer transition-all ${isCurrent ? 'bg-yellow-500 text-black font-black scale-[1.02] shadow-lg' : 'bg-gray-800/40 hover:bg-gray-800 text-gray-300'}`;
                 
@@ -429,6 +421,8 @@
         function loadTrack(i) {
             currentTrackIndex = i;
             const track = ALL_TRACKS[i];
+            if (!track) return;
+            
             audio.src = track.url;
             trackNameEl.textContent = track.name;
             audio.load();
@@ -439,49 +433,88 @@
         function playTrack() {
             audio.play().then(() => {
                 isPlaying = true;
-                playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden');
+                playIcon.classList.add('hidden'); 
+                pauseIcon.classList.remove('hidden');
                 document.getElementById('play-pause-btn').classList.add('play-pulse');
-            }).catch(e => console.error(e));
+            }).catch(e => console.error("Error en reproducción:", e));
         }
 
         function pauseTrack() {
-            audio.pause(); isPlaying = false;
-            playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden');
+            audio.pause(); 
+            isPlaying = false;
+            playIcon.classList.remove('hidden'); 
+            pauseIcon.classList.add('hidden');
             document.getElementById('play-pause-btn').classList.remove('play-pulse');
             saveState();
         }
 
         function initializePlayer(idx, time) {
             audio = new Audio();
+            
             audio.ontimeupdate = () => {
                 if (audio.duration) {
                     seekBar.value = (audio.currentTime / audio.duration) * 100;
                     currentTimeEl.textContent = formatTime(audio.currentTime);
                 }
             };
+
             audio.onloadedmetadata = () => {
                 totalTimeEl.textContent = formatTime(audio.duration);
                 if (time > 0) audio.currentTime = time;
             };
+
             audio.onended = () => {
-                if (currentTrackIndex < currentStartIndex + 2) {
-                    currentTrackIndex++; loadTrack(currentTrackIndex); playTrack();
+                if (currentTrackIndex < ALL_TRACKS.length - 1) {
+                    currentTrackIndex++; 
+                    loadTrack(currentTrackIndex); 
+                    playTrack();
                 }
             };
 
             playPauseBtn.onclick = () => isPlaying ? pauseTrack() : playTrack();
-            prevBtn.onclick = () => { if(currentTrackIndex > 0){ currentTrackIndex--; loadTrack(currentTrackIndex); playTrack(); }};
-            nextBtn.onclick = () => { if(currentTrackIndex < ALL_TRACKS.length - 1){ currentTrackIndex++; loadTrack(currentTrackIndex); playTrack(); }};
-            skipBackwardBtn.onclick = () => audio.currentTime -= 5;
-            skipForwardBtn.onclick = () => audio.currentTime += 5;
-            seekBar.oninput = () => { audio.currentTime = (seekBar.value / 100) * audio.duration; };
+            
+            prevBtn.onclick = () => { 
+                if(currentTrackIndex > 0){ 
+                    currentTrackIndex--; 
+                    loadTrack(currentTrackIndex); 
+                    playTrack(); 
+                }
+            };
+
+            nextBtn.onclick = () => { 
+                if(currentTrackIndex < ALL_TRACKS.length - 1){ 
+                    currentTrackIndex++; 
+                    loadTrack(currentTrackIndex); 
+                    playTrack(); 
+                }
+            };
+
+            skipBackwardBtn.onclick = () => { audio.currentTime = Math.max(0, audio.currentTime - 5); };
+            skipForwardBtn.onclick = () => { audio.currentTime = Math.min(audio.duration, audio.currentTime + 5); };
+            
+            seekBar.oninput = () => { 
+                if (audio.duration) {
+                    audio.currentTime = (seekBar.value / 100) * audio.duration; 
+                }
+            };
             
             shareAudioBtn.onclick = () => {
                 const url = window.location.href.split('?')[0] + '?trackIndex=' + currentTrackIndex;
-                if (navigator.share) navigator.share({ title: trackNameEl.textContent, url });
-                else {
-                    const el = document.createElement('textarea'); el.value = url; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
-                    alert("Enlace copiado.");
+                if (navigator.share) {
+                    navigator.share({ title: trackNameEl.textContent, url });
+                } else {
+                    const el = document.createElement('textarea'); 
+                    el.value = url; 
+                    document.body.appendChild(el); 
+                    el.select(); 
+                    document.execCommand('copy'); 
+                    document.body.removeChild(el);
+                    // Usar un div flotante en lugar de alert para no romper la UI
+                    const msg = document.createElement('div');
+                    msg.textContent = "Enlace copiado al portapapeles";
+                    msg.className = "fixed bottom-10 left-1/2 -translate-x-1/2 bg-yellow-500 text-black px-6 py-2 rounded-full font-bold shadow-lg z-50";
+                    document.body.appendChild(msg);
+                    setTimeout(() => msg.remove(), 2000);
                 }
             };
 
@@ -489,26 +522,50 @@
         }
 
         async function init() {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app); auth = getAuth(app);
-            await setPersistence(auth, browserLocalPersistence);
-            initialAuthToken ? await signInWithCustomToken(auth, initialAuthToken) : await signInAnonymously(auth);
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app); 
+                auth = getAuth(app);
+                
+                await setPersistence(auth, browserLocalPersistence);
 
-            onAuthStateChanged(auth, u => {
-                if (u) {
-                    userId = u.uid; userIdEl.textContent = userId.substring(0,8);
-                    currentStartIndex = calculateCurrentDayIndex();
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const sharedIdx = urlParams.get('trackIndex');
-                    
-                    onSnapshot(doc(db, `artifacts/${appId}/users/${userId}/playlist_data`, 'user_state'), s => {
-                        const d = s.exists() ? s.data() : {};
-                        const idx = sharedIdx !== null ? parseInt(sharedIdx) : (d.currentTrackIndex !== undefined ? d.currentTrackIndex : currentStartIndex);
-                        if (!audio) initializePlayer(idx, sharedIdx ? 0 : (d.lastPlayedTime || 0));
-                    });
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
                 }
-            });
+
+                onAuthStateChanged(auth, u => {
+                    if (u) {
+                        userId = u.uid; 
+                        userIdEl.textContent = userId.substring(0,8);
+                        currentStartIndex = calculateCurrentDayIndex();
+                        
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const sharedIdx = urlParams.get('trackIndex');
+                        
+                        const stateDocRef = doc(db, 'artifacts', appId, 'users', userId, 'playlist_data', 'user_state');
+                        
+                        onSnapshot(stateDocRef, s => {
+                            const d = s.exists() ? s.data() : {};
+                            const idx = sharedIdx !== null ? parseInt(sharedIdx) : (d.currentTrackIndex !== undefined ? d.currentTrackIndex : currentStartIndex);
+                            if (!audio) {
+                                initializePlayer(idx, (sharedIdx === null && d.lastPlayedTime) ? d.lastPlayedTime : 0);
+                            }
+                        }, (err) => {
+                            console.error("Error en Snapshot:", err);
+                            if (!audio) initializePlayer(currentStartIndex, 0);
+                        });
+                    }
+                });
+            } catch (error) {
+                console.error("Error inicializando app:", error);
+                // Fallback si falla Firebase
+                currentStartIndex = calculateCurrentDayIndex();
+                if (!audio) initializePlayer(currentStartIndex, 0);
+            }
         }
+
         window.onload = init;
     </script>
 </body>
