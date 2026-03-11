@@ -3,88 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devocional Diario - Romanos</title>
+    <title>Movimiento Blindaje - Romanos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #ffc61a; }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; height: 16px; width: 16px; border-radius: 50%;
-            background: white; cursor: pointer; margin-top: -6px; box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;400;700;900&display=swap');
+        
+        :root { --accent: #ffc61a; --bg: #0a0a0a; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--accent); background: radial-gradient(circle at center, #ffdb4d 0%, #ffc61a 100%); }
+        
+        .glass { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .neon-border { border: 1px solid rgba(255, 198, 26, 0.3); box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); }
+        .futuristic-title { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
+        
+        input[type=range] { -webkit-appearance: none; background: #222; border-radius: 10px; }
+        input[type=range]::-webkit-slider-thumb { 
+            -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%; 
+            background: var(--accent); cursor: pointer; box-shadow: 0 0 10px var(--accent);
         }
-        .large-logo { height: auto; max-height: 250px; width: auto; max-width: 100%; }
-        .play-pulse { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse-ring { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.9; } }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 10px; }
+        
+        .play-btn-glow { box-shadow: 0 0 30px rgba(255, 198, 26, 0.4); }
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen">
-    <header class="text-center mb-8">
-        <img id="logo-img" src="logo-blindaje.png" alt="Logo Blindaje" class="mx-auto large-logo shadow-2xl mb-6 rounded-lg">
-        <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-wider uppercase drop-shadow-lg">Devocional diario</h1>
-        <p id="devotion-day-info" class="text-sm font-semibold text-gray-800 mt-2 italic text-center">Iniciando Romanos...</p>
+<body class="p-4 md:p-10 min-h-screen flex flex-col items-center">
+
+    <header class="text-center mb-10">
+        <img id="logo-img" src="logo-blindaje.png" alt="Logo" class="mx-auto max-h-48 mb-6 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]">
+        <h1 class="text-4xl md:text-6xl font-black text-black futuristic-title uppercase mb-2">Romanos</h1>
+        <div id="devotion-day-info" class="inline-block bg-black text-white px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase">Cargando Sistema...</div>
     </header>
 
-    <main id="card-container" class="flex flex-col gap-6 max-w-4xl mx-auto">
-        <section id="player-card" class="bg-gray-900 text-white p-6 md:p-10 rounded-2xl shadow-2xl border border-white/5">
-            <h2 class="text-xs uppercase tracking-[0.2em] font-black text-yellow-500 mb-6 text-center opacity-80">Reproductor Blindaje</h2>
-            <div class="space-y-6 text-center">
-                <p id="track-name" class="text-2xl md:text-3xl font-bold truncate px-2 text-yellow-500">Cargando Romanos...</p>
-                <p class="text-sm text-gray-400 font-medium mt-1 uppercase tracking-widest">Movimiento Blindaje</p>
+    <main class="w-full max-w-2xl space-y-8">
+        <section class="glass neon-border rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 text-4xl font-black italic">MB</div>
+            
+            <div class="text-center space-y-2 mb-10">
+                <span class="text-yellow-500 text-[10px] tracking-[0.4em] font-black uppercase">Now Playing</span>
+                <h2 id="track-name" class="text-3xl md:text-4xl font-black text-white truncate">Selecciona un audio</h2>
+                <p class="text-gray-500 text-xs tracking-widest uppercase font-bold">Serie: Movimiento Blindaje</p>
+            </div>
 
-                <div class="flex items-center space-x-3 py-4">
-                    <span id="current-time" class="text-xs font-mono w-10 opacity-60">0:00</span>
-                    <input type="range" id="seek-bar" value="0" min="0" max="100" class="w-full h-1.5 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-yellow-500">
-                    <span id="total-time" class="text-xs font-mono w-10 opacity-60">0:00</span>
+            <div class="space-y-4">
+                <div class="flex justify-between text-[10px] font-mono text-yellow-500/70">
+                    <span id="current-time">0:00</span>
+                    <span id="total-time">0:00</span>
                 </div>
+                <input type="range" id="seek-bar" value="0" class="w-full h-2 cursor-pointer">
+            </div>
 
-                <div class="flex justify-center items-center space-x-4 md:space-x-8">
-                    <button id="prev-btn" class="text-gray-400 hover:text-white transition-all"><svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M8.445 14.832A1 1 0 0010 14V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4zM16.445 14.832A1 1 0 0018 14V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z"/></svg></button>
-                    <button id="play-pause-btn" class="bg-yellow-500 text-gray-900 p-6 rounded-full shadow-xl transition-all transform hover:scale-110">
-                        <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
-                        <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1H8a1 1 0 01-1-1V8zm5-1a1 1 0 00-1 1v4a1 1 0 001 1h2a1 1 0 001-1V8a1 1 0 00-1-1h-2z" clip-rule="evenodd"/></svg>
-                    </button>
-                    <button id="next-btn" class="text-gray-400 hover:text-white transition-all"><svg class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M4.555 6.168A1 1 0 003 7v6a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4zM12.555 6.168A1 1 0 0011 7v6a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4z"/></svg></button>
-                </div>
+            <div class="flex justify-center items-center gap-8 mt-10">
+                <button id="prev-btn" class="text-gray-400 hover:text-white transition-transform active:scale-75">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="1.5" d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                
+                <button id="play-pause-btn" class="bg-yellow-500 text-black p-8 rounded-3xl play-btn-glow transform transition-all hover:scale-110 active:scale-95">
+                    <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.841z"/></svg>
+                    <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
+                </button>
 
-                <button id="share-audio-btn" class="w-full bg-white/5 border border-white/10 text-white hover:bg-yellow-500 hover:text-black font-bold py-4 rounded-xl mt-4 transition-all">
-                    Compartir este Audio
+                <button id="next-btn" class="text-gray-400 hover:text-white transition-transform active:scale-75">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="1.5" d="M13 7l5 5m0 0l-5 5m5-5H6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
             </div>
+
+            <button id="share-audio-btn" class="w-full mt-10 py-4 bg-white/5 border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-yellow-500 hover:text-black transition-all">
+                Compartir Audio Directo
+            </button>
         </section>
 
-        <section class="bg-gray-900 text-white p-6 rounded-2xl shadow-xl">
-            <h2 class="text-lg font-bold mb-4 flex items-center">
-                <span class="w-3 h-3 bg-yellow-500 rounded-full mr-3 shadow-[0_0_8px_#ea7e08]"></span>
-                Audios de Hoy (Romanos)
-            </h2>
-            <ul id="daily-list" class="space-y-2"></ul>
+        <section class="glass rounded-3xl p-6">
+            <h3 class="text-yellow-500 text-xs font-black uppercase tracking-widest mb-4">Programación de Hoy</h3>
+            <div id="daily-list" class="space-y-3"></div>
         </section>
 
-        <section class="bg-gray-900/80 text-white p-6 rounded-2xl border border-white/5">
-            <h2 class="text-sm font-bold mb-4 uppercase tracking-widest opacity-40">Historial de Romanos</h2>
-            <ul id="archive-list" class="space-y-1 text-sm max-h-48 overflow-y-auto custom-scrollbar"></ul>
+        <section class="opacity-80">
+            <h3 class="text-black text-xs font-black uppercase tracking-widest mb-4 ml-4">Audios Anteriores</h3>
+            <div id="archive-list" class="space-y-2 max-h-40 overflow-y-auto custom-scrollbar px-2"></div>
         </section>
-
-        <div class="text-center text-[10px] text-black/50 font-bold uppercase tracking-widest">
-            Sesión: <span id="user-id">...</span>
-        </div>
     </main>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const START_DATE = new Date(); // Hoy es el Día 1
-        START_DATE.setHours(0,0,0,0);
+        // CONFIGURACIÓN INICIAL
+        const START_DATE = new Date(2026, 2, 11); // Ajustado a hoy
         const TRACKS_PER_DAY = 3;
-        
-        let audio, currentTrackIndex = 0, isPlaying = false, auth, db, userId = 'default', appId = 'romanos-devotional', currentStartIndex = 0;
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-
         const URLS = [
             "https://archive.org/download/movimiento-blindaje-romanos/Movimiento-Blindaje--Romanos-1-1-al-7.mp3",
             "https://archive.org/download/movimiento-blindaje-romanos/Movimiento-Blindaje--Romanos-1-8-al-17.mp3",
@@ -136,147 +142,110 @@
             "https://archive.org/download/movimiento-blindaje-romanos/Movimiento-Blindaje--Romanos-16-17-al-27.mp3"
         ];
 
-        function cleanName(url) {
-            const name = decodeURIComponent(url).split('/').pop().replace('.mp3', '');
-            const match = name.match(/Romanos-(\d+)-(\d+)-(?:al|a)-(\d+)/i);
-            return match ? `Romanos ${match[1]}:${match[2]}-${match[3]}` : name.replace(/Movimiento-Blindaje--/g, '').replace(/-/g, ' ');
-        }
+        let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0;
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
 
-        const ALL_TRACKS = URLS.map(url => ({ name: cleanName(url), url }));
-
-        const playPauseBtn = document.getElementById('play-pause-btn'),
+        // DOM Elements
+        const trackName = document.getElementById('track-name'),
+              playPauseBtn = document.getElementById('play-pause-btn'),
               playIcon = document.getElementById('play-icon'),
               pauseIcon = document.getElementById('pause-icon'),
-              prevBtn = document.getElementById('prev-btn'),
-              nextBtn = document.getElementById('next-btn'),
-              trackNameEl = document.getElementById('track-name'),
-              currentTimeEl = document.getElementById('current-time'),
-              totalTimeEl = document.getElementById('total-time'),
               seekBar = document.getElementById('seek-bar'),
-              dailyListEl = document.getElementById('daily-list'),
-              archiveListEl = document.getElementById('archive-list'),
-              devotionDayInfoEl = document.getElementById('devotion-day-info');
+              dailyList = document.getElementById('daily-list'),
+              archiveList = document.getElementById('archive-list'),
+              shareBtn = document.getElementById('share-audio-btn');
 
-        function calculateCurrentDayIndex() {
-            const today = new Date();
-            const diffDays = Math.floor(Math.abs(today - START_DATE) / (1000 * 60 * 60 * 24));
-            devotionDayInfoEl.textContent = `Día ${diffDays + 1} • Romanos`;
-            return Math.min(diffDays * TRACKS_PER_DAY, ALL_TRACKS.length - 3);
+        function getCleanName(url) {
+            const name = decodeURIComponent(url).split('/').pop().replace('.mp3', '');
+            const m = name.match(/Romanos-(\d+)-(\d+)-(?:al|a)-(\d+)/i);
+            return m ? `Capítulo ${m[1]}:${m[2]}-${m[3]}` : name;
+        }
+
+        const ALL_TRACKS = URLS.map(url => ({ name: getCleanName(url), url }));
+
+        function loadTrack(i, autoPlay = false) {
+            currentIdx = i;
+            audio.src = ALL_TRACKS[i].url;
+            trackName.textContent = ALL_TRACKS[i].name;
+            renderLists();
+            if(autoPlay) {
+                audio.play(); 
+                isPlaying = true;
+                playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden');
+            }
         }
 
         function renderLists() {
-            dailyListEl.innerHTML = ''; archiveListEl.innerHTML = '';
+            dailyList.innerHTML = ''; archiveList.innerHTML = '';
             const labels = ["Desayuno", "Almuerzo", "Cena"];
-            ALL_TRACKS.forEach((track, i) => {
-                const isCurrent = i === currentTrackIndex;
-                const li = document.createElement('li');
-                li.className = `p-4 rounded-xl cursor-pointer transition-all ${isCurrent ? 'bg-yellow-500 text-black font-black scale-[1.02]' : 'bg-gray-800/40 hover:bg-gray-800 text-gray-300'}`;
+            ALL_TRACKS.forEach((t, i) => {
+                const li = document.createElement('div');
+                const active = i === currentIdx;
                 
-                if (i >= currentStartIndex && i < currentStartIndex + 3) {
-                    li.innerHTML = `<div><span class="text-[10px] uppercase opacity-60 block">${labels[i - currentStartIndex]}</span>${track.name}</div>`;
-                    li.onclick = () => { currentTrackIndex = i; loadTrack(i); playTrack(); };
-                    dailyListEl.appendChild(li);
-                } else if (i < currentStartIndex) {
-                    li.className = "p-2 rounded-lg bg-gray-800/20 text-xs text-gray-500 flex justify-between";
-                    li.innerHTML = `<span>${track.name}</span><span class="opacity-30">Visto</span>`;
-                    li.onclick = () => { currentTrackIndex = i; loadTrack(i); playTrack(); };
-                    archiveListEl.appendChild(li);
+                if (i >= currentDayStart && i < currentDayStart + 3) {
+                    li.className = `p-4 rounded-2xl cursor-pointer flex justify-between items-center transition-all ${active ? 'bg-yellow-500 text-black font-black scale-[1.02]' : 'bg-white/5 hover:bg-white/10 text-white'}`;
+                    li.innerHTML = `<div><span class="text-[9px] uppercase opacity-60 block">${labels[i-currentDayStart]}</span>${t.name}</div>${active ? '<span>▶</span>' : ''}`;
+                    li.onclick = () => loadTrack(i, true);
+                    dailyList.appendChild(li);
+                } else if (i < currentDayStart) {
+                    li.className = "p-3 rounded-xl bg-black/20 text-xs text-white/40 flex justify-between cursor-pointer hover:text-white";
+                    li.innerHTML = `<span>${t.name}</span><span class="text-[8px] uppercase">Historial</span>`;
+                    li.onclick = () => loadTrack(i, true);
+                    archiveList.appendChild(li);
                 }
             });
         }
 
-        function loadTrack(i) {
-            currentTrackIndex = i;
-            const track = ALL_TRACKS[i];
-            if (!track) return;
-            audio.src = track.url;
-            trackNameEl.textContent = track.name;
-            audio.load();
-            renderLists();
-            saveState();
-        }
-
-        async function saveState() {
-            if (!db || !userId) return;
-            const stateRef = doc(db, 'artifacts', appId, 'users', userId, 'playlist_data', 'user_state');
-            await setDoc(stateRef, { currentTrackIndex, lastPlayedTime: audio.currentTime }, { merge: true });
-        }
-
-        function playTrack() {
-            audio.play(); isPlaying = true;
-            playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden');
-        }
-
-        function pauseTrack() {
-            audio.pause(); isPlaying = false;
-            playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden');
-        }
-
-        function initializePlayer(idx, time) {
-            audio = new Audio();
-            audio.ontimeupdate = () => {
-                if (audio.duration) {
-                    seekBar.value = (audio.currentTime / audio.duration) * 100;
-                    currentTimeEl.textContent = `${Math.floor(audio.currentTime/60)}:${Math.floor(audio.currentTime%60).toString().padStart(2,'0')}`;
-                }
-            };
-            audio.onloadedmetadata = () => {
-                totalTimeEl.textContent = `${Math.floor(audio.duration/60)}:${Math.floor(audio.duration%60).toString().padStart(2,'0')}`;
-                if (time > 0) audio.currentTime = time;
-            };
-            audio.onended = () => {
-                if (currentTrackIndex < (currentStartIndex + 2)) {
-                    currentTrackIndex++; loadTrack(currentTrackIndex); playTrack();
-                } else { pauseTrack(); }
-            };
-
-            playPauseBtn.onclick = () => isPlaying ? pauseTrack() : playTrack();
-            prevBtn.onclick = () => { if(currentTrackIndex > 0) { currentTrackIndex--; loadTrack(currentTrackIndex); playTrack(); } };
-            nextBtn.onclick = () => { if(currentTrackIndex < (currentStartIndex + 2)) { currentTrackIndex++; loadTrack(currentTrackIndex); playTrack(); } };
-            seekBar.oninput = () => { audio.currentTime = (seekBar.value / 100) * audio.duration; };
+        // Lógica de Compartir Corregida
+        shareBtn.onclick = () => {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
             
-            // LÓGICA DE COMPARTIR
-            document.getElementById('share-audio-btn').onclick = () => {
-                const shareUrl = window.location.origin + window.location.pathname + '?trackIndex=' + currentTrackIndex;
-                if (navigator.share) {
-                    navigator.share({ title: 'Devocional Romanos', text: `Escucha: ${ALL_TRACKS[currentTrackIndex].name}`, url: shareUrl });
-                } else {
-                    navigator.clipboard.writeText(shareUrl);
-                    alert("¡Enlace del reproductor copiado!");
-                }
-            };
+            if (navigator.share) {
+                navigator.share({ title: 'Devocional Romanos', url: shareUrl });
+            } else {
+                navigator.clipboard.writeText(shareUrl);
+                alert("¡Enlace directo al audio copiado!");
+            }
+        };
 
-            loadTrack(idx);
-        }
+        // Player Controls
+        playPauseBtn.onclick = () => {
+            if(isPlaying) { audio.pause(); } else { audio.play(); }
+            isPlaying = !isPlaying;
+            playIcon.classList.toggle('hidden'); pauseIcon.classList.toggle('hidden');
+        };
+
+        audio.ontimeupdate = () => {
+            if(audio.duration) {
+                seekBar.value = (audio.currentTime / audio.duration) * 100;
+                document.getElementById('current-time').textContent = formatTime(audio.currentTime);
+                document.getElementById('total-time').textContent = formatTime(audio.duration);
+            }
+        };
+
+        function formatTime(s) { return Math.floor(s/60) + ":" + Math.floor(s%60).toString().padStart(2,'0'); }
+        seekBar.oninput = () => audio.currentTime = (seekBar.value / 100) * audio.duration;
 
         async function init() {
-            try {
-                const app = initializeApp(firebaseConfig);
-                db = getFirestore(app); auth = getAuth(app);
-                await setPersistence(auth, browserLocalPersistence);
-                await signInAnonymously(auth);
-                onAuthStateChanged(auth, u => {
-                    if (u) {
-                        userId = u.uid; document.getElementById('user-id').textContent = userId.substring(0,8);
-                        currentStartIndex = calculateCurrentDayIndex();
-                        
-                        const urlParams = new URLSearchParams(window.location.search);
-                        const sharedIdx = urlParams.get('trackIndex');
-                        
-                        const stateDocRef = doc(db, 'artifacts', appId, 'users', userId, 'playlist_data', 'user_state');
-                        onSnapshot(stateDocRef, s => {
-                            const d = s.exists() ? s.data() : {};
-                            let idx = sharedIdx !== null ? parseInt(sharedIdx) : (d.currentTrackIndex !== undefined ? d.currentTrackIndex : currentStartIndex);
-                            if (idx > currentStartIndex + 2) idx = currentStartIndex; // No ver el futuro
-                            if (!audio) initializePlayer(idx, (sharedIdx === null && d.lastPlayedTime) ? d.lastPlayedTime : 0);
-                        });
-                    }
-                });
-            } catch (error) {
-                currentStartIndex = calculateCurrentDayIndex();
-                if (!audio) initializePlayer(currentStartIndex, 0);
-            }
+            const today = new Date();
+            const diff = Math.floor((today - START_DATE) / (1000 * 60 * 60 * 24));
+            currentDayStart = Math.max(0, diff * TRACKS_PER_DAY);
+            document.getElementById('devotion-day-info').textContent = `Día ${diff + 1} de Romanos`;
+
+            // LEER PARÁMETROS DE LA URL
+            const params = new URLSearchParams(window.location.search);
+            const urlIdx = params.get('trackIndex');
+            const shouldPlay = params.get('play') === 'true';
+
+            let startIdx = urlIdx !== null ? parseInt(urlIdx) : currentDayStart;
+            
+            // Seguridad: Si es un audio del futuro, lo mandamos al de hoy
+            if(startIdx > currentDayStart + 2) startIdx = currentDayStart;
+
+            loadTrack(startIdx, shouldPlay);
         }
+
         window.onload = init;
     </script>
 </body>
