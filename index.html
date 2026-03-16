@@ -24,14 +24,14 @@
     <header class="text-center mb-10">
         <img id="logo-img" src="logo-blindaje.png" alt="Logo" class="mx-auto max-h-48 mb-6 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]">
         <h1 class="text-4xl md:text-6xl font-black text-black futuristic-title uppercase mb-2">Romanos</h1>
-        <div id="devotion-day-info" class="inline-block bg-black text-white px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase">Cargando Sistema...</div>
+        <div id="devotion-day-info" class="inline-block bg-black text-white px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase">Calculando...</div>
     </header>
 
     <main class="w-full max-w-2xl space-y-8">
         <section class="glass neon-border rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden">
             <div class="absolute top-0 right-0 p-4 opacity-10 text-4xl font-black italic">MB</div>
             <div class="text-center space-y-2 mb-10">
-                <span class="text-yellow-500 text-[10px] tracking-[0.4em] font-black uppercase">Now Playing</span>
+                <span class="text-yellow-500 text-[10px] tracking-[0.4em] font-black uppercase">En Reproducción</span>
                 <h2 id="track-name" class="text-3xl md:text-4xl font-black text-white truncate">Selecciona un audio</h2>
                 <p class="text-gray-500 text-xs tracking-widest uppercase font-bold">Serie: Movimiento Blindaje</p>
             </div>
@@ -74,8 +74,9 @@
     </main>
 
     <script type="module">
-        // CONFIGURACIÓN INICIAL
-        const START_DATE = new Date(2026, 2, 12); // Jueves 12 de Marzo 2026
+        // --- 1. CONFIGURACIÓN DE FECHA E INICIO ---
+        // Se cambió al 11 de Marzo para que hoy Lunes 16 sea el Día 4
+        const START_DATE = new Date(2026, 2, 11); 
         const TRACKS_PER_DAY = 3;
         const URLS = [
             "https://archive.org/download/movimiento-blindaje-romanos/Movimiento-Blindaje--Romanos-1-1-al-7.mp3",
@@ -128,7 +129,7 @@
             "https://archive.org/download/movimiento-blindaje-romanos/Movimiento-Blindaje--Romanos-16-17-al-27.mp3"
         ];
 
-        let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0, totalWorkDays = 0;
+        let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0;
 
         const trackName = document.getElementById('track-name'),
               playPauseBtn = document.getElementById('play-pause-btn'),
@@ -167,12 +168,15 @@
                 const li = document.createElement('div');
                 const active = i === currentIdx;
                 
+                // Mostrar los 3 audios del día laboral actual
                 if (i >= currentDayStart && i < currentDayStart + 3) {
                     li.className = `p-4 rounded-2xl cursor-pointer flex justify-between items-center transition-all ${active ? 'bg-yellow-500 text-black font-black scale-[1.02]' : 'bg-white/5 hover:bg-white/10 text-white'}`;
                     li.innerHTML = `<div><span class="text-[9px] uppercase opacity-60 block">${labels[i-currentDayStart]}</span>${t.name}</div>${active ? '<span>▶</span>' : ''}`;
                     li.onclick = () => loadTrack(i, true);
                     dailyList.appendChild(li);
-                } else if (i < currentDayStart) {
+                } 
+                // Audios anteriores al día de hoy
+                else if (i < currentDayStart) {
                     li.className = "p-3 rounded-xl bg-black/20 text-xs text-white/40 flex justify-between cursor-pointer hover:text-white";
                     li.innerHTML = `<span>${t.name}</span><span class="text-[8px] uppercase">Historial</span>`;
                     li.onclick = () => loadTrack(i, true);
@@ -181,9 +185,9 @@
             });
         }
 
-        // REGLA 2: REPRODUCCIÓN AUTOMÁTICA (DESAYUNO -> ALMUERZO -> CENA)
+        // --- 2. LOGICA DE REPRODUCCION AUTOMATICA ---
         audio.onended = () => {
-            // Solo salta automáticamente si el siguiente audio es del MISMO DÍA
+            // Si el siguiente audio pertenece al mismo día (bloque de 3), salta automáticamente
             if (currentIdx < currentDayStart + 2 && currentIdx < ALL_TRACKS.length - 1) {
                 loadTrack(currentIdx + 1, true);
             } else {
@@ -192,17 +196,7 @@
             }
         };
 
-        shareBtn.onclick = () => {
-            const baseUrl = window.location.origin + window.location.pathname;
-            const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
-            if (navigator.share) {
-                navigator.share({ title: 'Devocional Romanos', url: shareUrl });
-            } else {
-                navigator.clipboard.writeText(shareUrl);
-                alert("¡Enlace directo al audio copiado!");
-            }
-        };
-
+        // CONTROLES DE INTERFAZ
         playPauseBtn.onclick = () => {
             if(isPlaying) { audio.pause(); } else { audio.play(); }
             isPlaying = !isPlaying;
@@ -221,37 +215,47 @@
         function formatTime(s) { return Math.floor(s/60) + ":" + Math.floor(s%60).toString().padStart(2,'0'); }
         seekBar.oninput = () => audio.currentTime = (seekBar.value / 100) * audio.duration;
 
-        // REGLA 1: CALCULO DE DÍAS SALTANDO SÁBADOS Y DOMINGOS
+        shareBtn.onclick = () => {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
+            if (navigator.share) {
+                navigator.share({ title: 'Movimiento Blindaje', url: shareUrl });
+            } else {
+                navigator.clipboard.writeText(shareUrl);
+                alert("Enlace copiado");
+            }
+        };
+
+        // --- 3. LÓGICA DE DÍAS LABORALES (Lunes a Viernes) ---
         async function init() {
             const today = new Date();
-            let count = 0;
+            let countWorkDays = 0;
             let tempDate = new Date(START_DATE);
 
-            // Contamos solo días laborales desde el inicio hasta hoy
+            // Contamos días laborales desde el inicio hasta hoy
             while (tempDate <= today) {
                 const dayOfWeek = tempDate.getDay();
                 if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-                    count++;
+                    countWorkDays++;
                 }
-                tempDate.setDate(tempDate.getDate() + 1);
+                tempDate.setDate(tempDate.setDate(tempDate.getDate() + 1));
             }
 
-            // Si hoy es fin de semana, nos quedamos en el último viernes cargado
             const isWeekend = (today.getDay() === 0 || today.getDay() === 6);
-            totalWorkDays = isWeekend ? count : count; 
             
-            // Calculamos el inicio del bloque de 3 audios
-            currentDayStart = Math.max(0, (totalWorkDays - 1) * TRACKS_PER_DAY);
+            // Si es fin de semana, mantenemos el "Día" del viernes pero avisamos
+            currentDayStart = Math.max(0, (countWorkDays - 1) * TRACKS_PER_DAY);
             
-            document.getElementById('devotion-day-info').textContent = isWeekend ? `Modo Repaso - Fin de Semana` : `Día ${totalWorkDays} de Romanos`;
+            document.getElementById('devotion-day-info').textContent = isWeekend ? 
+                `Modo Repaso - Fin de Semana` : 
+                `Día ${countWorkDays} de Romanos`;
 
+            // Carga por URL o carga inicial
             const params = new URLSearchParams(window.location.search);
             const urlIdx = params.get('trackIndex');
             const shouldPlay = params.get('play') === 'true';
 
             let startIdx = urlIdx !== null ? parseInt(urlIdx) : currentDayStart;
-            if(startIdx > currentDayStart + 2 && !isWeekend) startIdx = currentDayStart;
-
             loadTrack(startIdx, shouldPlay);
         }
 
