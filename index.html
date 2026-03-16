@@ -7,20 +7,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;400;700;900&display=swap');
-        
         :root { --accent: #ffc61a; --bg: #0a0a0a; }
         body { font-family: 'Inter', sans-serif; background-color: var(--accent); background: radial-gradient(circle at center, #ffdb4d 0%, #ffc61a 100%); }
-        
         .glass { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .neon-border { border: 1px solid rgba(255, 198, 26, 0.3); box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); }
         .futuristic-title { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
-        
         input[type=range] { -webkit-appearance: none; background: #222; border-radius: 10px; }
-        input[type=range]::-webkit-slider-thumb { 
-            -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%; 
-            background: var(--accent); cursor: pointer; box-shadow: 0 0 10px var(--accent);
-        }
-        
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%; background: var(--accent); cursor: pointer; box-shadow: 0 0 10px var(--accent); }
         .play-btn-glow { box-shadow: 0 0 30px rgba(255, 198, 26, 0.4); }
         .custom-scrollbar::-webkit-scrollbar { width: 5px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
@@ -37,7 +30,6 @@
     <main class="w-full max-w-2xl space-y-8">
         <section class="glass neon-border rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden">
             <div class="absolute top-0 right-0 p-4 opacity-10 text-4xl font-black italic">MB</div>
-            
             <div class="text-center space-y-2 mb-10">
                 <span class="text-yellow-500 text-[10px] tracking-[0.4em] font-black uppercase">Now Playing</span>
                 <h2 id="track-name" class="text-3xl md:text-4xl font-black text-white truncate">Selecciona un audio</h2>
@@ -56,12 +48,10 @@
                 <button id="prev-btn" class="text-gray-400 hover:text-white transition-transform active:scale-75">
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="1.5" d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
-                
                 <button id="play-pause-btn" class="bg-yellow-500 text-black p-8 rounded-3xl play-btn-glow transform transition-all hover:scale-110 active:scale-95">
                     <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.841z"/></svg>
                     <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
                 </button>
-
                 <button id="next-btn" class="text-gray-400 hover:text-white transition-transform active:scale-75">
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="1.5" d="M13 7l5 5m0 0l-5 5m5-5H6" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
@@ -84,12 +74,8 @@
     </main>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
         // CONFIGURACIÓN INICIAL
-        const START_DATE = new Date(2026, 2, 11); // Ajustado a hoy
+        const START_DATE = new Date(2026, 2, 12); // Jueves 12 de Marzo 2026
         const TRACKS_PER_DAY = 3;
         const URLS = [
             "https://archive.org/download/movimiento-blindaje-romanos/Movimiento-Blindaje--Romanos-1-1-al-7.mp3",
@@ -142,10 +128,8 @@
             "https://archive.org/download/movimiento-blindaje-romanos/Movimiento-Blindaje--Romanos-16-17-al-27.mp3"
         ];
 
-        let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0;
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0, totalWorkDays = 0;
 
-        // DOM Elements
         const trackName = document.getElementById('track-name'),
               playPauseBtn = document.getElementById('play-pause-btn'),
               playIcon = document.getElementById('play-icon'),
@@ -169,14 +153,15 @@
             trackName.textContent = ALL_TRACKS[i].name;
             renderLists();
             if(autoPlay) {
-                audio.play(); 
+                audio.play();
                 isPlaying = true;
                 playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden');
             }
         }
 
         function renderLists() {
-            dailyList.innerHTML = ''; archiveList.innerHTML = '';
+            dailyList.innerHTML = '';
+            archiveList.innerHTML = '';
             const labels = ["Desayuno", "Almuerzo", "Cena"];
             ALL_TRACKS.forEach((t, i) => {
                 const li = document.createElement('div');
@@ -196,11 +181,20 @@
             });
         }
 
-        // Lógica de Compartir Corregida
+        // REGLA 2: REPRODUCCIÓN AUTOMÁTICA (DESAYUNO -> ALMUERZO -> CENA)
+        audio.onended = () => {
+            // Solo salta automáticamente si el siguiente audio es del MISMO DÍA
+            if (currentIdx < currentDayStart + 2 && currentIdx < ALL_TRACKS.length - 1) {
+                loadTrack(currentIdx + 1, true);
+            } else {
+                isPlaying = false;
+                playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden');
+            }
+        };
+
         shareBtn.onclick = () => {
             const baseUrl = window.location.origin + window.location.pathname;
             const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
-            
             if (navigator.share) {
                 navigator.share({ title: 'Devocional Romanos', url: shareUrl });
             } else {
@@ -209,11 +203,11 @@
             }
         };
 
-        // Player Controls
         playPauseBtn.onclick = () => {
             if(isPlaying) { audio.pause(); } else { audio.play(); }
             isPlaying = !isPlaying;
-            playIcon.classList.toggle('hidden'); pauseIcon.classList.toggle('hidden');
+            playIcon.classList.toggle('hidden');
+            pauseIcon.classList.toggle('hidden');
         };
 
         audio.ontimeupdate = () => {
@@ -227,21 +221,36 @@
         function formatTime(s) { return Math.floor(s/60) + ":" + Math.floor(s%60).toString().padStart(2,'0'); }
         seekBar.oninput = () => audio.currentTime = (seekBar.value / 100) * audio.duration;
 
+        // REGLA 1: CALCULO DE DÍAS SALTANDO SÁBADOS Y DOMINGOS
         async function init() {
             const today = new Date();
-            const diff = Math.floor((today - START_DATE) / (1000 * 60 * 60 * 24));
-            currentDayStart = Math.max(0, diff * TRACKS_PER_DAY);
-            document.getElementById('devotion-day-info').textContent = `Día ${diff + 1} de Romanos`;
+            let count = 0;
+            let tempDate = new Date(START_DATE);
 
-            // LEER PARÁMETROS DE LA URL
+            // Contamos solo días laborales desde el inicio hasta hoy
+            while (tempDate <= today) {
+                const dayOfWeek = tempDate.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    count++;
+                }
+                tempDate.setDate(tempDate.getDate() + 1);
+            }
+
+            // Si hoy es fin de semana, nos quedamos en el último viernes cargado
+            const isWeekend = (today.getDay() === 0 || today.getDay() === 6);
+            totalWorkDays = isWeekend ? count : count; 
+            
+            // Calculamos el inicio del bloque de 3 audios
+            currentDayStart = Math.max(0, (totalWorkDays - 1) * TRACKS_PER_DAY);
+            
+            document.getElementById('devotion-day-info').textContent = isWeekend ? `Modo Repaso - Fin de Semana` : `Día ${totalWorkDays} de Romanos`;
+
             const params = new URLSearchParams(window.location.search);
             const urlIdx = params.get('trackIndex');
             const shouldPlay = params.get('play') === 'true';
 
             let startIdx = urlIdx !== null ? parseInt(urlIdx) : currentDayStart;
-            
-            // Seguridad: Si es un audio del futuro, lo mandamos al de hoy
-            if(startIdx > currentDayStart + 2) startIdx = currentDayStart;
+            if(startIdx > currentDayStart + 2 && !isWeekend) startIdx = currentDayStart;
 
             loadTrack(startIdx, shouldPlay);
         }
