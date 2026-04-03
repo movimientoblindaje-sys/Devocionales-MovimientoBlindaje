@@ -3,259 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movimiento Blindaje - Romanos</title>
+    <title>Movimiento Blindaje - Especial Semana Santa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;400;700;900&display=swap');
         :root { --accent: #ffc61a; --bg: #0a0a0a; }
         body { font-family: 'Inter', sans-serif; background-color: var(--accent); background: radial-gradient(circle at center, #ffdb4d 0%, #ffc61a 100%); }
         .glass { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .neon-border { border: 1px solid rgba(255, 198, 26, 0.3); box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); }
+        .neon-border { border: 2px solid rgba(255, 198, 26, 0.5); box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); }
         .futuristic-title { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
-        input[type=range] { -webkit-appearance: none; background: #222; border-radius: 10px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%; background: var(--accent); cursor: pointer; box-shadow: 0 0 10px var(--accent); }
-        .play-btn-glow { box-shadow: 0 0 30px rgba(255, 198, 26, 0.4); }
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        video { border-radius: 1.5rem; width: 100%; aspect-ratio: 16/9; background: #000; outline: none; }
+        /* Estilo para el botón de compartir */
+        .btn-action { transition: all 0.3s ease; }
+        .btn-action:hover { background-color: var(--accent); color: black; transform: translateY(-2px); }
     </style>
 </head>
 <body class="p-4 md:p-10 min-h-screen flex flex-col items-center">
 
-    <header class="text-center mb-10">
-        <img id="logo-img" src="logo-blindaje.png" alt="Logo" class="mx-auto max-h-48 mb-6 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]">
-        <h1 class="text-4xl md:text-6xl font-black text-black futuristic-title uppercase mb-2">Romanos</h1>
-        <div id="devotion-day-info" class="inline-block bg-black text-white px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase">Cargando Sistema...</div>
+    <header class="text-center mb-8">
+        <img id="logo-img" src="logo-blindaje.png" alt="Logo" class="mx-auto max-h-40 mb-4 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]">
+        <h1 class="text-3xl md:text-5xl font-black text-black futuristic-title uppercase mb-1">Especial</h1>
+        <h2 class="text-xl md:text-2xl font-bold text-black opacity-80 uppercase tracking-widest">Semana Santa</h2>
     </header>
 
-    <main class="w-full max-w-2xl space-y-8">
-        <section class="glass neon-border rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden">
-            <div class="absolute top-0 right-0 p-4 opacity-10 text-4xl font-black italic">MB</div>
-            <div class="text-center space-y-2 mb-10">
-                <span class="text-yellow-500 text-[10px] tracking-[0.4em] font-black uppercase">Now Playing</span>
-                <h2 id="track-name" class="text-3xl md:text-4xl font-black text-white truncate">Selecciona un audio</h2>
-                <p class="text-gray-500 text-xs tracking-widest uppercase font-bold">Serie: Movimiento Blindaje</p>
-            </div>
-
-            <div class="space-y-4">
-                <div class="flex justify-between text-[10px] font-mono text-yellow-500/70">
-                    <span id="current-time">0:00</span>
-                    <span id="total-time">0:00</span>
+    <main class="w-full max-w-3xl">
+        <section class="glass neon-border rounded-[2.5rem] p-4 md:p-8 text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10 text-4xl font-black italic text-yellow-500">MB</div>
+            
+            <div class="text-center mb-6">
+                <div id="video-day-label" class="inline-block bg-yellow-500 text-black px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-2 shadow-lg">
+                    Cargando...
                 </div>
-                <input type="range" id="seek-bar" value="0" class="w-full h-2 cursor-pointer">
+                <h3 id="video-title" class="text-2xl md:text-3xl font-black text-white leading-tight">Reflexión</h3>
             </div>
 
-            <div class="flex justify-center items-center gap-8 mt-10">
-                <button id="prev-btn" class="text-gray-400 hover:text-white transition-transform active:scale-75">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="1.5" d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
-                <button id="play-pause-btn" class="bg-yellow-500 text-black p-8 rounded-3xl play-btn-glow transform transition-all hover:scale-110 active:scale-95">
-                    <svg id="play-icon" class="w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.841z"/></svg>
-                    <svg id="pause-icon" class="w-10 h-10 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
-                </button>
-                <button id="next-btn" class="text-gray-400 hover:text-white transition-transform active:scale-75">
-                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="1.5" d="M13 7l5 5m0 0l-5 5m5-5H6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </button>
+            <div class="relative group rounded-[1.5rem] overflow-hidden bg-black shadow-2xl">
+                <video id="main-video" controls playsinline poster="logo-blindaje.png">
+                    <source id="video-source" src="" type="video/mp4">
+                    Tu navegador no soporta la reproducción de video.
+                </video>
             </div>
 
-            <button id="share-audio-btn" class="w-full mt-10 py-4 bg-white/5 border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-yellow-500 hover:text-black transition-all">
-                Compartir Audio Directo
-            </button>
-        </section>
-
-        <section class="glass rounded-3xl p-6">
-            <h3 class="text-yellow-500 text-xs font-black uppercase tracking-widest mb-4">Programación de Hoy</h3>
-            <div id="daily-list" class="space-y-3"></div>
-        </section>
-
-        <section class="opacity-80">
-            <h3 class="text-black text-xs font-black uppercase tracking-widest mb-4 ml-4">Audios Anteriores</h3>
-            <div id="archive-list" class="space-y-2 max-h-40 overflow-y-auto custom-scrollbar px-2"></div>
+            <div class="mt-8 space-y-4">
+                <button id="share-btn" class="btn-action w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest shadow-xl">
+                    Compartir Especial de Hoy
+                </button>
+                <div class="flex justify-center items-center gap-2 opacity-50">
+                    <span class="h-[1px] w-8 bg-gray-500"></span>
+                    <p class="text-[9px] font-bold uppercase tracking-[0.3em]">Movimiento Blindaje • 720p HD</p>
+                    <span class="h-[1px] w-8 bg-gray-500"></span>
+                </div>
+            </div>
         </section>
     </main>
 
-    <script type="module">
-        // CONFIGURACIÓN INICIAL
-        const START_DATE = new Date(2026, 2, 11); // Miercoles 11 de Marzo 2026
-        const TRACKS_PER_DAY = 3;
-       const URLS = [
-            "Movimiento-Blindaje--Romanos-1-1-al-7.mp3",
-            "Movimiento-Blindaje--Romanos-1-8-al-17.mp3",
-            "Movimiento-Blindaje--Romanos-1-18-al-32.mp3",
-            "Movimiento-Blindaje--Romanos-2-1-al-8.mp3",
-            "Movimiento-Blindaje--Romanos-2-9-al-16.mp3",
-            "Movimiento-Blindaje--Romanos-2-17-al-29.mp3",
-            "Movimiento-Blindaje--Romanos-3-1-al-8.mp3",
-            "Movimiento-Blindaje--Romanos-3-9-al-20.mp3",
-            "Movimiento-Blindaje--Romanos-3-21-al-31.mp3",
-            "Movimiento-Blindaje--Romanos-4-1-al-8.mp3",
-            "Movimiento-Blindaje--Romanos-4-9-al-16.mp3",
-            "Movimiento-Blindaje--Romanos-4-17-al-25.mp3",
-            "Movimiento-Blindaje--Romanos-5-1-al-5.mp3",
-            "Movimiento-Blindaje--Romanos-5-6-al-11.mp3",
-            "Movimiento-Blindaje--Romanos-5-12-al-21.mp3",
-            "Movimiento-Blindaje--Romanos-6-1-al-5.mp3",
-            "Movimiento-Blindaje--Romanos-6-6-al-14.mp3",
-            "Movimiento-Blindaje--Romanos-6-15-al-23.mp3",
-            "Movimiento-Blindaje--Romanos-7-1-al-6.mp3",
-            "Movimiento-Blindaje--Romanos-7-7-al-13.mp3",
-            "Movimiento-Blindaje--Romanos-7-14-al-25.mp3",
-            "Movimiento-Blindaje--Romanos-8-1-al-11.mp3",
-            "Movimiento-Blindaje--Romanos-8-12-al-25.mp3",
-            "Movimiento-Blindaje--Romanos-8-26-al-39.mp3",
-            "Movimiento-Blindaje--Romanos-9-1-al-9.mp3",
-            "Movimiento-Blindaje--Romanos-9-10-al-23.mp3",
-            "Movimiento-Blindaje--Romanos-9-24-al-33.mp3",
-            "Movimiento-Blindaje--Romanos-10-1-al-4.mp3",
-            "Movimiento-Blindaje--Romanos-10-5-al-13.mp3",
-            "Movimiento-Blindaje--Romanos-10-14-al-21.mp3",
-            "Movimiento-Blindaje--Romanos-11-1-al-11.mp3",
-            "Movimiento-Blindaje--Romanos-11-12-al-24.mp3",
-            "Movimiento-Blindaje--Romanos-11-25-al-36.mp3",
-            "Movimiento-Blindaje--Romanos-12-1-al-5.mp3",
-            "Movimiento-Blindaje--Romanos-12-6-al-13.mp3",
-            "Movimiento-Blindaje--Romanos-12-14-al-21.mp3",
-            "Movimiento-Blindaje--Romanos-13-1-al-7.mp3",
-            "Movimiento-Blindaje--Romanos-13-8-al-10.mp3",
-            "Movimiento-Blindaje--Romanos-13-11-al-14.mp3",
-            "Movimiento-Blindaje--Romanos-14-1-al-10.mp3",
-            "Movimiento-Blindaje--Romanos-14-11-al-17.mp3",
-            "Movimiento-Blindaje--Romanos-14-18-al-23.mp3",
-            "Movimiento-Blindaje--Romanos-15-1-al-7.mp3",
-            "Movimiento-Blindaje--Romanos-15-8-al-14.mp3",
-            "Movimiento-Blindaje--Romanos-15-15-al-33.mp3",
-            "Movimiento-Blindaje--Romanos-16-1-al-10.mp3",
-            "Movimiento-Blindaje--Romanos-16-11-al-16.mp3",
-            "Movimiento-Blindaje--Romanos-16-17-al-27.mp3"
-        ];
+    <script>
+        const videoElement = document.getElementById('main-video');
+        const videoSource = document.getElementById('video-source');
+        const videoTitle = document.getElementById('video-title');
+        const dayLabel = document.getElementById('video-day-label');
+        const shareBtn = document.getElementById('share-btn');
 
-        let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0, totalWorkDays = 0;
-
-        const trackName = document.getElementById('track-name'),
-              playPauseBtn = document.getElementById('play-pause-btn'),
-              playIcon = document.getElementById('play-icon'),
-              pauseIcon = document.getElementById('pause-icon'),
-              seekBar = document.getElementById('seek-bar'),
-              dailyList = document.getElementById('daily-list'),
-              archiveList = document.getElementById('archive-list'),
-              shareBtn = document.getElementById('share-audio-btn');
-
-        function getCleanName(url) {
-            const name = decodeURIComponent(url).split('/').pop().replace('.mp3', '');
-            const m = name.match(/Romanos-(\d+)-(\d+)-(?:al|a)-(\d+)/i);
-            return m ? `Capítulo ${m[1]}:${m[2]}-${m[3]}` : name;
-        }
-
-        const ALL_TRACKS = URLS.map(url => ({ name: getCleanName(url), url }));
-
-        function loadTrack(i, autoPlay = false) {
-            currentIdx = i;
-            audio.src = ALL_TRACKS[i].url;
-            trackName.textContent = ALL_TRACKS[i].name;
-            renderLists();
-            if(autoPlay) {
-                audio.play();
-                isPlaying = true;
-                playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden');
-            }
-        }
-
-        function renderLists() {
-            dailyList.innerHTML = '';
-            archiveList.innerHTML = '';
-            const labels = ["Desayuno", "Almuerzo", "Cena"];
-            ALL_TRACKS.forEach((t, i) => {
-                const li = document.createElement('div');
-                const active = i === currentIdx;
-                
-                if (i >= currentDayStart && i < currentDayStart + 3) {
-                    li.className = `p-4 rounded-2xl cursor-pointer flex justify-between items-center transition-all ${active ? 'bg-yellow-500 text-black font-black scale-[1.02]' : 'bg-white/5 hover:bg-white/10 text-white'}`;
-                    li.innerHTML = `<div><span class="text-[9px] uppercase opacity-60 block">${labels[i-currentDayStart]}</span>${t.name}</div>${active ? '<span>▶</span>' : ''}`;
-                    li.onclick = () => loadTrack(i, true);
-                    dailyList.appendChild(li);
-                } else if (i < currentDayStart) {
-                    li.className = "p-3 rounded-xl bg-black/20 text-xs text-white/40 flex justify-between cursor-pointer hover:text-white";
-                    li.innerHTML = `<span>${t.name}</span><span class="text-[8px] uppercase">Historial</span>`;
-                    li.onclick = () => loadTrack(i, true);
-                    archiveList.appendChild(li);
-                }
-            });
-        }
-
-        // REGLA 2: REPRODUCCIÓN AUTOMÁTICA (DESAYUNO -> ALMUERZO -> CENA)
-        audio.onended = () => {
-            // Solo salta automáticamente si el siguiente audio es del MISMO DÍA
-            if (currentIdx < currentDayStart + 2 && currentIdx < ALL_TRACKS.length - 1) {
-                loadTrack(currentIdx + 1, true);
-            } else {
-                isPlaying = false;
-                playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden');
+        // ENLACES DE ARCHIVE.ORG PROPORCIONADOS
+        const SPECIAL_CONTENT = {
+            5: { // Viernes
+                title: "Crucifixión y Entrega",
+                url: "https://ia600903.us.archive.org/21/items/viernes_202604/viernes.mp4",
+                label: "Viernes Santo"
+            },
+            6: { // Sábado
+                title: "Silencio y Esperanza",
+                url: "https://ia601903.us.archive.org/16/items/sabado_202604/sabado.mp4",
+                label: "Sábado de Gloria"
+            },
+            0: { // Domingo
+                title: "Victoria y Resurrección",
+                url: "https://ia800608.us.archive.org/18/items/domingo_202604/domingo.mp4",
+                label: "Domingo de Resurrección"
             }
         };
+
+        function loadVideo() {
+            const now = new Date();
+            const dayOfWeek = now.getDay();
+            
+            // Lógica para detectar si hay un parámetro 'day' en la URL (para compartir videos específicos)
+            const params = new URLSearchParams(window.location.search);
+            const dayParam = params.get('day');
+            
+            const selectedDay = (dayParam !== null && SPECIAL_CONTENT[dayParam]) ? parseInt(dayParam) : dayOfWeek;
+            const content = SPECIAL_CONTENT[selectedDay];
+
+            if (content) {
+                videoSource.src = content.url;
+                videoTitle.textContent = content.title;
+                dayLabel.textContent = content.label;
+                videoElement.load();
+            } else {
+                // Caso por defecto si no es fin de semana o no hay parámetro
+                const viernes = SPECIAL_CONTENT[5];
+                videoSource.src = viernes.url;
+                videoTitle.textContent = viernes.title;
+                dayLabel.textContent = "Especial Semana Santa";
+                videoElement.load();
+            }
+        }
 
         shareBtn.onclick = () => {
+            const params = new URLSearchParams(window.location.search);
+            const dayParam = params.get('day');
+            const now = new Date();
+            const currentDay = dayParam !== null ? dayParam : now.getDay();
+            
             const baseUrl = window.location.origin + window.location.pathname;
-            const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
+            const shareUrl = `${baseUrl}?day=${currentDay}`;
+            
             if (navigator.share) {
-                navigator.share({ title: 'Devocional Romanos', url: shareUrl });
+                navigator.share({ 
+                    title: 'Movimiento Blindaje - Especial', 
+                    text: `Mira el video de hoy: ${videoTitle.textContent}`,
+                    url: shareUrl 
+                });
             } else {
                 navigator.clipboard.writeText(shareUrl);
-                alert("¡Enlace directo al audio copiado!");
+                alert("¡Enlace del video copiado!");
             }
         };
 
-        playPauseBtn.onclick = () => {
-            if(isPlaying) { audio.pause(); } else { audio.play(); }
-            isPlaying = !isPlaying;
-            playIcon.classList.toggle('hidden');
-            pauseIcon.classList.toggle('hidden');
-        };
-
-        audio.ontimeupdate = () => {
-            if(audio.duration) {
-                seekBar.value = (audio.currentTime / audio.duration) * 100;
-                document.getElementById('current-time').textContent = formatTime(audio.currentTime);
-                document.getElementById('total-time').textContent = formatTime(audio.duration);
-            }
-        };
-
-        function formatTime(s) { return Math.floor(s/60) + ":" + Math.floor(s%60).toString().padStart(2,'0'); }
-        seekBar.oninput = () => audio.currentTime = (seekBar.value / 100) * audio.duration;
-
-        // REGLA 1: CALCULO DE DÍAS SALTANDO SÁBADOS Y DOMINGOS
-        async function init() {
-            const today = new Date();
-            let count = 0;
-            let tempDate = new Date(START_DATE);
-
-            // Contamos solo días laborales desde el inicio hasta hoy
-            while (tempDate <= today) {
-                const dayOfWeek = tempDate.getDay();
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-                    count++;
-                }
-                tempDate.setDate(tempDate.getDate() + 1);
-            }
-
-            // Si hoy es fin de semana, nos quedamos en el último viernes cargado
-            const isWeekend = (today.getDay() === 0 || today.getDay() === 6);
-            totalWorkDays = isWeekend ? count : count; 
-            
-            // Calculamos el inicio del bloque de 3 audios
-            currentDayStart = Math.max(0, (totalWorkDays - 1) * TRACKS_PER_DAY);
-            
-            document.getElementById('devotion-day-info').textContent = isWeekend ? `Modo Repaso - Fin de Semana` : `Día ${totalWorkDays} de Romanos`;
-
-            const params = new URLSearchParams(window.location.search);
-            const urlIdx = params.get('trackIndex');
-            const shouldPlay = params.get('play') === 'true';
-
-            let startIdx = urlIdx !== null ? parseInt(urlIdx) : currentDayStart;
-            if(startIdx > currentDayStart + 2 && !isWeekend) startIdx = currentDayStart;
-
-            loadTrack(startIdx, shouldPlay);
-        }
-
-        window.onload = init;
+        window.onload = loadVideo;
     </script>
 </body>
 </html>
