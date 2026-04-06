@@ -2,135 +2,227 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movimiento Blindaje - Especial Semana Santa</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Movimiento Blindaje - Oseas</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;400;700;900&display=swap');
-        :root { --accent: #ffc61a; --bg: #0a0a0a; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--accent); background: radial-gradient(circle at center, #ffdb4d 0%, #ffc61a 100%); }
-        .glass { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .neon-border { border: 2px solid rgba(255, 198, 26, 0.5); box-shadow: 0 0 20px rgba(0, 0, 0, 0.4); }
-        .futuristic-title { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
-        video { border-radius: 1.5rem; width: 100%; aspect-ratio: 16/9; background: #000; outline: none; }
-        /* Estilo para el botón de compartir */
-        .btn-action { transition: all 0.3s ease; }
-        .btn-action:hover { background-color: var(--accent); color: black; transform: translateY(-2px); }
+        :root {
+            --color-fondo: #0a0a0a;
+            --color-texto: #ffffff;
+            --color-principal: #FFD700;
+            --color-neon-azul: #00e5ff;
+            --color-neon-rosa: #ff00ff;
+            --tarjeta-bg: #1a1a1a;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .logo-container { margin-bottom: 15px; text-align: center; }
+        .logo-container img { max-width: 120px; height: auto; }
+
+        .header-text { text-align: center; margin-bottom: 15px; }
+        .header-text h1 { font-size: 1.6rem; margin: 0; font-weight: 900; color: var(--color-principal); text-transform: uppercase; }
+
+        /* TARJETA PRINCIPAL NEÓN */
+        .reproductor-card {
+            background-color: var(--tarjeta-bg);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid transparent;
+            background-image: linear-gradient(var(--tarjeta-bg), var(--tarjeta-bg)), 
+                              linear-gradient(135deg, var(--color-principal), var(--color-neon-azul), var(--color-neon-rosa));
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+        }
+
+        .info-actual { text-align: center; margin-bottom: 15px; }
+        .dia-badge { border: 1px solid var(--color-principal); color: var(--color-principal); padding: 3px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
+        
+        #titulo-audio { font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #fff; line-height: 1.2; }
+
+        audio { width: 100%; filter: invert(100%) hue-rotate(180deg) brightness(1.5); margin: 15px 0; }
+
+        /* BOTONES */
+        .btn-accion { width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-bottom: 10px; font-size: 0.9rem; }
+        .btn-compartir { background: transparent; color: var(--color-neon-azul); border: 1px solid var(--color-neon-azul); }
+        .btn-principal { background: linear-gradient(45deg, var(--color-principal), #b8860b); color: #000; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+        .btn-accion:active { transform: scale(0.97); }
+
+        /* SECCIÓN HISTORIAL */
+        .historial-container { width: 100%; max-width: 400px; margin-top: 10px; padding-bottom: 40px; }
+        .historial-titulo { font-size: 0.8rem; color: #777; text-transform: uppercase; margin-bottom: 12px; border-left: 3px solid var(--color-neon-rosa); padding-left: 10px; font-weight: bold; }
+        .historial-item { background: #1a1a1a; padding: 14px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; }
+        .historial-item span { font-size: 0.85rem; font-weight: 500; color: #ddd; }
+        .btn-play-small { background: var(--color-principal); border: none; border-radius: 8px; padding: 6px 12px; font-size: 0.7rem; font-weight: 900; cursor: pointer; color: #000; }
     </style>
 </head>
-<body class="p-4 md:p-10 min-h-screen flex flex-col items-center">
+<body>
 
-    <header class="text-center mb-8">
-        <img id="logo-img" src="logo-blindaje.png" alt="Logo" class="mx-auto max-h-40 mb-4 drop-shadow-[0_10px_20px_rgba(0,0,0,0.4)]">
-        <h1 class="text-3xl md:text-5xl font-black text-black futuristic-title uppercase mb-1">Especial</h1>
-        <h2 class="text-xl md:text-2xl font-bold text-black opacity-80 uppercase tracking-widest">Semana Santa</h2>
-    </header>
+    <div class="logo-container">
+        <img src="logo-blindaje.png" alt="Movimiento Blindaje">
+    </div>
 
-    <main class="w-full max-w-3xl">
-        <section class="glass neon-border rounded-[2.5rem] p-4 md:p-8 text-white relative overflow-hidden">
-            <div class="absolute top-0 right-0 p-4 opacity-10 text-4xl font-black italic text-yellow-500">MB</div>
-            
-            <div class="text-center mb-6">
-                <div id="video-day-label" class="inline-block bg-yellow-500 text-black px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-2 shadow-lg">
-                    Cargando...
-                </div>
-                <h3 id="video-title" class="text-2xl md:text-3xl font-black text-white leading-tight">Reflexión</h3>
-            </div>
+    <div class="header-text">
+        <h1>OSEAS</h1>
+    </div>
 
-            <div class="relative group rounded-[1.5rem] overflow-hidden bg-black shadow-2xl">
-                <video id="main-video" controls playsinline poster="logo-blindaje.png">
-                    <source id="video-source" src="" type="video/mp4">
-                    Tu navegador no soporta la reproducción de video.
-                </video>
-            </div>
+    <div class="reproductor-card">
+        <div class="info-actual">
+            <span class="dia-badge" id="dia-texto">CARGANDO...</span>
+            <div id="titulo-audio">Seleccionando contenido</div>
+        </div>
 
-            <div class="mt-8 space-y-4">
-                <button id="share-btn" class="btn-action w-full py-4 bg-white/5 border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest shadow-xl">
-                    Compartir Especial de Hoy
-                </button>
-                <div class="flex justify-center items-center gap-2 opacity-50">
-                    <span class="h-[1px] w-8 bg-gray-500"></span>
-                    <p class="text-[9px] font-bold uppercase tracking-[0.3em]">Movimiento Blindaje • 720p HD</p>
-                    <span class="h-[1px] w-8 bg-gray-500"></span>
-                </div>
-            </div>
-        </section>
-    </main>
+        <audio id="main-player" controls><source src="" type="audio/mpeg"></audio>
+
+        <button class="btn-accion btn-principal" onclick="document.getElementById('main-player').play()">ESCUCHAR AHORA</button>
+        <button class="btn-accion btn-compartir" onclick="compartirAudio()">COMPARTIR CON UN AMIGO</button>
+    </div>
+
+    <div class="historial-container" id="seccion-historial" style="display:none;">
+        <div class="historial-titulo">Audios Anteriores</div>
+        <div id="lista-historial"></div>
+    </div>
 
     <script>
-        const videoElement = document.getElementById('main-video');
-        const videoSource = document.getElementById('video-source');
-        const videoTitle = document.getElementById('video-title');
-        const dayLabel = document.getElementById('video-day-label');
-        const shareBtn = document.getElementById('share-btn');
+        const listaAudios = [
+            { titulo: "Oseas 1:1-2", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-1-1-al-2.mp3" },
+            { titulo: "Oseas 1:3-9", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-1-3-al-9.mp3" },
+            { titulo: "Oseas 1:10-11", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-1-10-al-11.mp3" },
+            { titulo: "Oseas 2:1-13", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-2-1-al-13.mp3" },
+            { titulo: "Oseas 2:14-23", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-2-14-al-23.mp3" },
+            { titulo: "Oseas 3:1-5", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-3-1-al-5.mp3" },
+            { titulo: "Oseas 4:1-5", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-4-1-al-5.mp3" },
+            { titulo: "Oseas 4:6-12", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-4-6-al-12.mp3" },
+            { titulo: "Oseas 4:13-19", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-4-13-al-19.mp3" },
+            { titulo: "Oseas 5:1-5", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-5-1-al-5.mp3" },
+            { titulo: "Oseas 5:6-9", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-5-6-al-9.mp3" },
+            { titulo: "Oseas 5:10-15", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-5-10-al-15.mp3" },
+            { titulo: "Oseas 6:1-3", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-6-1-al-3.mp3" },
+            { titulo: "Oseas 6:4-6", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-6-4-al-6.mp3" },
+            { titulo: "Oseas 6:7-11", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-6-7-al-11.mp3" },
+            { titulo: "Oseas 7:1-6", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-7-1-al-6.mp3" },
+            { titulo: "Oseas 7:7-12", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-7-7-al-12.mp3" },
+            { titulo: "Oseas 7:13-16", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-7-13-al-16.mp3" },
+            { titulo: "Oseas 8:1-4", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-8-1-al-4.mp3" },
+            { titulo: "Oseas 8:5-9", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-8-5-al-9.mp3" },
+            { titulo: "Oseas 8:10-14", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-8-10-al-14.mp3" },
+            { titulo: "Oseas 9:1-4", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-9-1-al-4.mp3" },
+            { titulo: "Oseas 9:5-9", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-9-5-al-9.mp3" },
+            { titulo: "Oseas 9:10-17", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-9-10-al-17.mp3" },
+            { titulo: "Oseas 10:1-5", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-10-1-al-5.mp3" },
+            { titulo: "Oseas 10:6-10", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-10-6-al-10.mp3" },
+            { titulo: "Oseas 10:11-15", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-10-11-al-15.mp3" },
+            { titulo: "Oseas 11:1-6", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-11-1-al-6.mp3" },
+            { titulo: "Oseas 11:7-12", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-11-7-al-12.mp3" },
+            { titulo: "Oseas 12:1-6", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-12-1-al-6.mp3" },
+            { titulo: "Oseas 12:7-14", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-12-7-al-14.mp3" },
+            { titulo: "Oseas 13:1-6", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-13-1-al-6.mp3" },
+            { titulo: "Oseas 13:7-11", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-13-7-al-11.mp3" },
+            { titulo: "Oseas 13:12-16", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-13-12-al-16.mp3" },
+            { titulo: "Oseas 14:1-4", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-14-1-al-4.mp3" },
+            { titulo: "Oseas 14:5-9", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-14-5-al-9.mp3" }
+        ];
 
-        // ENLACES DE ARCHIVE.ORG PROPORCIONADOS
-        const SPECIAL_CONTENT = {
-            5: { // Viernes
-                title: "Crucifixión y Entrega",
-                url: "https://ia600903.us.archive.org/21/items/viernes_202604/viernes.mp4",
-                label: "Viernes Santo"
-            },
-            6: { // Sábado
-                title: "Silencio y Esperanza",
-                url: "https://ia601903.us.archive.org/16/items/sabado_202604/sabado.mp4",
-                label: "Sábado de Gloria"
-            },
-            0: { // Domingo
-                title: "Victoria y Resurrección",
-                url: "https://ia800608.us.archive.org/18/items/domingo_202604/domingo.mp4",
-                label: "Domingo de Resurrección"
+        function inicializar() {
+            const fechaInicio = new Date("2026-04-06T00:00:00");
+            const hoy = new Date();
+            const diaSemana = hoy.getDay(); // 0: Dom, 6: Sab
+
+            // Lógica Fin de Semana
+            if (diaSemana === 0 || diaSemana === 6) {
+                document.getElementById('titulo-audio').innerText = "Hoy es tiempo de reposar y meditar en lo aprendido.";
+                document.getElementById('dia-texto').innerText = "FIN DE SEMANA";
+                document.getElementById('main-player').style.display = "none";
+                document.querySelector('.btn-principal').style.display = "none";
+                cargarHistorialCompleto();
+                return;
             }
-        };
 
-        function loadVideo() {
-            const now = new Date();
-            const dayOfWeek = now.getDay();
-            
-            // Lógica para detectar si hay un parámetro 'day' en la URL (para compartir videos específicos)
-            const params = new URLSearchParams(window.location.search);
-            const dayParam = params.get('day');
-            
-            const selectedDay = (dayParam !== null && SPECIAL_CONTENT[dayParam]) ? parseInt(dayParam) : dayOfWeek;
-            const content = SPECIAL_CONTENT[selectedDay];
+            // Cálculo de índice saltando fines de semana
+            let diffDias = Math.floor((hoy - fechaInicio) / (1000 * 60 * 60 * 24));
+            let semanasCompletas = Math.floor(diffDias / 7);
+            let indiceAjustado = diffDias - (semanasCompletas * 2);
 
-            if (content) {
-                videoSource.src = content.url;
-                videoTitle.textContent = content.title;
-                dayLabel.textContent = content.label;
-                videoElement.load();
-            } else {
-                // Caso por defecto si no es fin de semana o no hay parámetro
-                const viernes = SPECIAL_CONTENT[5];
-                videoSource.src = viernes.url;
-                videoTitle.textContent = viernes.title;
-                dayLabel.textContent = "Especial Semana Santa";
-                videoElement.load();
+            if (indiceAjustado >= 0 && indiceAjustado < listaAudios.length) {
+                const actual = listaAudios[indiceAjustado];
+                document.getElementById('titulo-audio').innerText = actual.titulo;
+                document.getElementById('dia-texto').innerText = `ESTUDIO DE HOY`;
+                document.getElementById('main-player').src = actual.url;
+                cargarHistorial(indiceAjustado);
             }
         }
 
-        shareBtn.onclick = () => {
-            const params = new URLSearchParams(window.location.search);
-            const dayParam = params.get('day');
-            const now = new Date();
-            const currentDay = dayParam !== null ? dayParam : now.getDay();
-            
-            const baseUrl = window.location.origin + window.location.pathname;
-            const shareUrl = `${baseUrl}?day=${currentDay}`;
-            
-            if (navigator.share) {
-                navigator.share({ 
-                    title: 'Movimiento Blindaje - Especial', 
-                    text: `Mira el video de hoy: ${videoTitle.textContent}`,
-                    url: shareUrl 
-                });
-            } else {
-                navigator.clipboard.writeText(shareUrl);
-                alert("¡Enlace del video copiado!");
+        function cargarHistorial(indiceActual) {
+            if (indiceActual === 0) return;
+            document.getElementById('seccion-historial').style.display = "block";
+            const contenedor = document.getElementById('lista-historial');
+            contenedor.innerHTML = "";
+            for (let i = 0; i < indiceActual; i++) {
+                crearItemHistorial(i, contenedor);
             }
-        };
+        }
 
-        window.onload = loadVideo;
+        function cargarHistorialCompleto() {
+            // En fin de semana, mostramos todo lo que se ha liberado hasta ahora
+            const fechaInicio = new Date("2026-04-06T00:00:00");
+            const hoy = new Date();
+            let diffDias = Math.floor((hoy - fechaInicio) / (1000 * 60 * 60 * 24));
+            let semanasCompletas = Math.floor(diffDias / 7);
+            let totalHastaHoy = diffDias - (semanasCompletas * 2);
+
+            if (totalHastaHoy > 0) {
+                document.getElementById('seccion-historial').style.display = "block";
+                const contenedor = document.getElementById('lista-historial');
+                for (let i = 0; i < Math.min(totalHastaHoy, listaAudios.length); i++) {
+                    crearItemHistorial(i, contenedor);
+                }
+            }
+        }
+
+        function crearItemHistorial(i, contenedor) {
+            const item = document.createElement('div');
+            item.className = 'historial-item';
+            item.innerHTML = `<span>${listaAudios[i].titulo}</span>
+                             <button class="btn-play-small" onclick="reproducirAudio('${listaAudios[i].url}', '${listaAudios[i].titulo}')">OÍR</button>`;
+            contenedor.appendChild(item);
+        }
+
+        function reproducirAudio(url, titulo) {
+            const player = document.getElementById('main-player');
+            player.style.display = "block";
+            document.querySelector('.btn-principal').style.display = "block";
+            player.src = url;
+            document.getElementById('titulo-audio').innerText = titulo;
+            player.play();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function compartirAudio() {
+            const titulo = document.getElementById('titulo-audio').innerText;
+            const url = document.getElementById('main-player').src;
+            if (navigator.share) {
+                navigator.share({ title: 'Movimiento Blindaje', text: `Escucha el estudio de hoy: ${titulo}`, url: url });
+            } else {
+                alert("Copia el link del audio: " + url);
+            }
+        }
+
+        window.onload = inicializar;
     </script>
 </body>
 </html>
