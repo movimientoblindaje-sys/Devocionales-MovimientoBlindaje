@@ -3,18 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Movimiento Blindaje - Oseas</title>
+    <title>Movimiento Blindaje - Oseas (Comic Style)</title>
     <style>
+        /* =========================================
+           1. VARIABLES DE COLOR (Comic Identity)
+           ========================================= */
         :root {
-            --color-fondo: #0a0a0a;
+            --color-fondo: #0d0d0d; /* Negro profundo */
             --color-texto: #ffffff;
-            --color-principal: #FFD700;
-            --color-neon-azul: #00e5ff;
-            --color-neon-rosa: #ff00ff;
-            --tarjeta-bg: #1a1a1a;
+            --color-principal: #FFD700; /* Amarillo/Oro de Movimiento Blindaje */
+            --color-comic-rojo: #e60000; /* Rojo vibrante de impacto */
+            --color-comic-azul: #008cff; /* Azul eléctrico de contraste */
+            --tarjeta-bg: #f5f5f5; /* Fondo blanco-grisáceo para el panel de cómic */
+            --borde-negro: 4px solid #000000; /* Borde grueso característico */
+            --fuente-comic: 'Arial Black', 'Helvetica Bold', sans-serif; /* Fuente gruesa e impactante */
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+        }
 
         body {
             background-color: var(--color-fondo);
@@ -26,79 +34,270 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(255, 215, 0, 0.05) 0%, transparent 30%),
+                radial-gradient(circle at 90% 90%, rgba(230, 0, 0, 0.05) 0%, transparent 30%);
         }
 
-        .logo-container { margin-bottom: 15px; text-align: center; }
-        .logo-container img { max-width: 120px; height: auto; }
+        /* =========================================
+           2. CABECERA (Logo siempre arriba)
+           ========================================= */
+        .logo-container {
+            margin-bottom: 20px;
+            text-align: center;
+            border: 5px solid #000;
+            padding: 5px;
+            background-color: #000;
+        }
+        .logo-img {
+            max-width: 110px; /* Tamaño optimizado para móvil */
+            height: auto;
+        }
 
-        .header-text { text-align: center; margin-bottom: 15px; }
-        .header-text h1 { font-size: 1.6rem; margin: 0; font-weight: 900; color: var(--color-principal); text-transform: uppercase; }
-
-        /* TARJETA PRINCIPAL NEÓN */
-        .reproductor-card {
-            background-color: var(--tarjeta-bg);
-            width: 100%;
-            max-width: 400px;
-            border-radius: 20px;
-            padding: 25px;
-            border: 2px solid transparent;
-            background-image: linear-gradient(var(--tarjeta-bg), var(--tarjeta-bg)), 
-                              linear-gradient(135deg, var(--color-principal), var(--color-neon-azul), var(--color-neon-rosa));
-            background-origin: border-box;
-            background-clip: content-box, border-box;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+        .header-text {
+            text-align: center;
             margin-bottom: 20px;
         }
+        .header-text h1 {
+            font-family: var(--fuente-comic);
+            font-size: 2rem;
+            margin: 0;
+            font-weight: 900;
+            color: var(--color-principal);
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            /* Efecto de sombra de cómic */
+            text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 4px 4px 0 rgba(0,0,0,0.5);
+        }
 
-        .info-actual { text-align: center; margin-bottom: 15px; }
-        .dia-badge { border: 1px solid var(--color-principal); color: var(--color-principal); padding: 3px 10px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
-        
-        #titulo-audio { font-size: 1.3rem; font-weight: bold; margin: 15px 0; color: #fff; line-height: 1.2; }
+        /* =========================================
+           3. TARJETA PRINCIPAL (Panel de Cómic)
+           ========================================= */
+        .reproductor-card {
+            background-color: var(--tarjeta-bg);
+            color: #000;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 10px;
+            padding: 25px;
+            border: var(--borde-negro);
+            position: relative;
+            box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.8);
+            margin-bottom: 25px;
+            overflow: hidden;
+            /* Efecto de inclinación ligera para dinamismo */
+            transform: rotate(-1deg);
+        }
 
-        audio { width: 100%; filter: invert(100%) hue-rotate(180deg) brightness(1.5); margin: 15px 0; }
+        /* Simulación de textura de papel de cómic con puntos */
+        .reproductor-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(#ccc 1px, transparent 1px);
+            background-size: 10px 10px;
+            opacity: 0.2;
+            z-index: 0;
+        }
 
-        /* BOTONES */
-        .btn-accion { width: 100%; padding: 16px; border-radius: 12px; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; margin-bottom: 10px; font-size: 0.9rem; }
-        .btn-compartir { background: transparent; color: var(--color-neon-azul); border: 1px solid var(--color-neon-azul); }
-        .btn-principal { background: linear-gradient(45deg, var(--color-principal), #b8860b); color: #000; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-        .btn-accion:active { transform: scale(0.97); }
+        .info-actual {
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
 
-        /* SECCIÓN HISTORIAL */
-        .historial-container { width: 100%; max-width: 400px; margin-top: 10px; padding-bottom: 40px; }
-        .historial-titulo { font-size: 0.8rem; color: #777; text-transform: uppercase; margin-bottom: 12px; border-left: 3px solid var(--color-neon-rosa); padding-left: 10px; font-weight: bold; }
-        .historial-item { background: #1a1a1a; padding: 14px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333; }
-        .historial-item span { font-size: 0.85rem; font-weight: 500; color: #ddd; }
-        .btn-play-small { background: var(--color-principal); border: none; border-radius: 8px; padding: 6px 12px; font-size: 0.7rem; font-weight: 900; cursor: pointer; color: #000; }
+        /* DÍA BADGE - Explosión de color comic */
+        .dia-badge {
+            background: linear-gradient(135deg, var(--color-comic-rojo), #ff4d4d);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-family: var(--fuente-comic);
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            border: 3px solid #000;
+            transform: rotate(3deg);
+            text-transform: uppercase;
+            box-shadow: 3px 3px 0 #000;
+        }
+
+        #titulo-audio {
+            font-family: var(--fuente-comic);
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin: 15px 0 5px 0;
+            color: #000;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            transform: rotate(-1deg);
+        }
+
+        .subtitulo-audio {
+            font-size: 0.9rem;
+            color: #555;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        /* ESTILO DEL AUDIO PLAYER (Nativo optimizado para tema claro) */
+        audio {
+            width: 100%;
+            height: 40px;
+            margin: 15px 0;
+            position: relative;
+            z-index: 1;
+            /* Mantenemos el reproductor nativo claro, sin invertir colores */
+        }
+
+        /* =========================================
+           4. BOTONES (Comic Bursts)
+           ========================================= */
+        .btn-accion {
+            width: 100%;
+            padding: 16px;
+            border-radius: 8px;
+            border: var(--borde-negro);
+            font-family: var(--fuente-comic);
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .btn-principal {
+            background: linear-gradient(135deg, var(--color-principal), #ffea00);
+            color: #000;
+            box-shadow: 5px 5px 0 #000;
+        }
+
+        .btn-compartir {
+            background: linear-gradient(135deg, var(--color-comic-azul), #00c3ff);
+            color: #fff;
+            box-shadow: 5px 5px 0 #000;
+        }
+
+        .btn-accion:active {
+            transform: translate(3px, 3px);
+            box-shadow: 2px 2px 0 #000;
+        }
+
+        /* =========================================
+           5. SECCIÓN HISTORIAL (Lista de Paneles)
+           ========================================= */
+        .historial-container {
+            width: 100%;
+            max-width: 420px;
+            margin-top: 15px;
+            padding-bottom: 50px;
+        }
+
+        .historial-titulo {
+            font-family: var(--fuente-comic);
+            font-size: 1rem;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            background: #000;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 5px;
+            border: 3px solid var(--color-comic-rosa); /* Mantenemos el rosa de acento */
+            transform: rotate(-2deg);
+        }
+
+        .historial-item {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 3px solid #333;
+            transition: border-color 0.2s;
+        }
+        .historial-item:hover {
+            border-color: var(--color-principal);
+        }
+
+        .historial-item span {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #eee;
+            text-transform: uppercase;
+            font-family: 'Courier New', Courier, monospace; /* Toque "máquina de escribir" */
+        }
+
+        .btn-play-small {
+            background: var(--color-principal);
+            border: 2px solid #000;
+            border-radius: 5px;
+            padding: 8px 15px;
+            font-size: 0.75rem;
+            font-family: var(--fuente-comic);
+            font-weight: 900;
+            cursor: pointer;
+            color: #000;
+            text-transform: uppercase;
+            box-shadow: 3px 3px 0 #000;
+        }
+        .btn-play-small:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        /* Fin de semana: Mensaje Comic */
+        .weekend-message {
+            font-family: var(--fuente-comic);
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--color-comic-rojo);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin: 20px 0;
+            line-height: 1.2;
+            text-shadow: 1px 1px 0 #000;
+        }
     </style>
 </head>
 <body>
 
     <div class="logo-container">
-        <img src="logo-blindaje.png" alt="Movimiento Blindaje">
+        <div style="font-size: 1.2rem; font-weight: 900; color: #fff; text-transform: uppercase;">MB</div>
     </div>
 
     <div class="header-text">
-        <h1>OSEAS</h1>
+        <h1>OSEAS Estudio</h1>
     </div>
 
     <div class="reproductor-card">
         <div class="info-actual">
             <span class="dia-badge" id="dia-texto">CARGANDO...</span>
-            <div id="titulo-audio">Seleccionando contenido</div>
+            <div id="titulo-audio">Seleccionando panel</div>
+            <div class="subtitulo-audio" id="subtitulo-texto">...</div>
         </div>
 
         <audio id="main-player" controls><source src="" type="audio/mpeg"></audio>
 
-        <button class="btn-accion btn-principal" onclick="document.getElementById('main-player').play()">ESCUCHAR AHORA</button>
-        <button class="btn-accion btn-compartir" onclick="compartirAudio()">COMPARTIR CON UN AMIGO</button>
+        <button class="btn-accion btn-principal" onclick="document.getElementById('main-player').play()">¡ESCUCHAR AHORA!</button>
+        <button class="btn-accion btn-compartir" onclick="compartirAudio()">COMPARTIR CON UN GUERRERO</button>
     </div>
 
     <div class="historial-container" id="seccion-historial" style="display:none;">
-        <div class="historial-titulo">Audios Anteriores</div>
+        <div class="historial-titulo">Paneles Anteriores</div>
         <div id="lista-historial"></div>
     </div>
 
     <script>
+        // La lista de audios permanece igual
         const listaAudios = [
             { titulo: "Oseas 1:1-2", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-1-1-al-2.mp3" },
             { titulo: "Oseas 1:3-9", url: "https://archive.org/download/oseas/Libro%20de%20Oseas/Libro-de-Oseas-1-3-al-9.mp3" },
@@ -139,21 +338,22 @@
         ];
 
         function inicializar() {
+            // Misma lógica de fecha: Inicio Lunes 6 de Abril 2026
             const fechaInicio = new Date("2026-04-06T00:00:00");
             const hoy = new Date();
-            const diaSemana = hoy.getDay(); // 0: Dom, 6: Sab
+            const diaSemana = hoy.getDay(); 
 
-            // Lógica Fin de Semana
             if (diaSemana === 0 || diaSemana === 6) {
-                document.getElementById('titulo-audio').innerText = "Hoy es tiempo de reposar y meditar en lo aprendido.";
+                // MensajeComic de Fin de Semana
+                document.getElementById('titulo-audio').innerHTML = "<div class='weekend-message'>¡POW!<br>Tiempo de reposar y meditar en la Palabra.</div>";
                 document.getElementById('dia-texto').innerText = "FIN DE SEMANA";
+                document.getElementById('subtitulo-texto').innerText = "Recarga energías espirituales";
                 document.getElementById('main-player').style.display = "none";
                 document.querySelector('.btn-principal').style.display = "none";
                 cargarHistorialCompleto();
                 return;
             }
 
-            // Cálculo de índice saltando fines de semana
             let diffDias = Math.floor((hoy - fechaInicio) / (1000 * 60 * 60 * 24));
             let semanasCompletas = Math.floor(diffDias / 7);
             let indiceAjustado = diffDias - (semanasCompletas * 2);
@@ -161,12 +361,14 @@
             if (indiceAjustado >= 0 && indiceAjustado < listaAudios.length) {
                 const actual = listaAudios[indiceAjustado];
                 document.getElementById('titulo-audio').innerText = actual.titulo;
-                document.getElementById('dia-texto').innerText = `ESTUDIO DE HOY`;
+                document.getElementById('dia-texto').innerText = `PANEL DE HOY`;
+                document.getElementById('subtitulo-texto').innerText = "Palabra de Jehová para Movimiento Blindaje";
                 document.getElementById('main-player').src = actual.url;
                 cargarHistorial(indiceAjustado);
             }
         }
 
+        // Funciones de historial permanecen igual, solo cambia el estilo de los botones
         function cargarHistorial(indiceActual) {
             if (indiceActual === 0) return;
             document.getElementById('seccion-historial').style.display = "block";
@@ -178,7 +380,6 @@
         }
 
         function cargarHistorialCompleto() {
-            // En fin de semana, mostramos todo lo que se ha liberado hasta ahora
             const fechaInicio = new Date("2026-04-06T00:00:00");
             const hoy = new Date();
             let diffDias = Math.floor((hoy - fechaInicio) / (1000 * 60 * 60 * 24));
@@ -188,6 +389,7 @@
             if (totalHastaHoy > 0) {
                 document.getElementById('seccion-historial').style.display = "block";
                 const contenedor = document.getElementById('lista-historial');
+                contenedor.innerHTML = "";
                 for (let i = 0; i < Math.min(totalHastaHoy, listaAudios.length); i++) {
                     crearItemHistorial(i, contenedor);
                 }
@@ -216,7 +418,7 @@
             const titulo = document.getElementById('titulo-audio').innerText;
             const url = document.getElementById('main-player').src;
             if (navigator.share) {
-                navigator.share({ title: 'Movimiento Blindaje', text: `Escucha el estudio de hoy: ${titulo}`, url: url });
+                navigator.share({ title: 'Movimiento Blindaje', text: `¡ZAS! Escucha el estudio de Oseas de hoy: ${titulo}`, url: url });
             } else {
                 alert("Copia el link del audio: " + url);
             }
