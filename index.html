@@ -14,7 +14,7 @@
             --comic-cyan: #00d2ff;
             --comic-pink: #ff00ff;
             --comic-orange: #ff6b00;
-            --comic-paper: #fdf6e3; /* Color crema tipo papel antiguo */
+            --comic-paper: #fdf6e3; 
         }
 
         body {
@@ -52,7 +52,7 @@
             transition: all 0.2s;
         }
 
-        /* Seek bar estilo comic avanzado */
+        /* Seek bar estilo comic */
         input[type=range] {
             -webkit-appearance: none;
             background: #000;
@@ -73,22 +73,18 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: #000; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--comic-yellow); border: 2px solid black; }
 
-        /* Efecto de borde "entintado" para el logo */
         .ink-border {
             border: 6px solid black;
             box-shadow: 8px 8px 0px var(--comic-cyan), -8px -8px 0px var(--comic-pink);
         }
 
-        /* Ocultar alt text si la imagen falla */
         img { color: transparent; }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen flex flex-col items-center">
 
     <header class="text-center mb-12 relative">
-        <!-- Logo con doble sombra tipo impresión offset -->
         <div class="inline-block p-2 bg-white ink-border transform -rotate-2 mb-10">
-            <!-- Actualizado a logo-blindaje.png y con manejador de error -->
             <img id="logo-img" 
                  src="logo-blindaje.png" 
                  alt=" " 
@@ -106,19 +102,15 @@
         </div>
         
         <div id="devotion-day-info" class="mt-8 inline-block bg-black text-white px-10 py-4 border-4 border-white comic-font text-3xl tracking-widest uppercase transform -rotate-1 shadow-[10px_10px_0px_var(--comic-cyan)]">
-            ORDEN DEL DÍA
+            CARGANDO MISIÓN...
         </div>
     </header>
 
     <main class="w-full max-w-xl space-y-10">
         <!-- Reproductor Principal -->
         <section class="comic-card rounded-none p-10 md:p-14 relative overflow-visible">
-            <!-- Stickers de acción -->
             <div class="absolute -top-8 -left-8 bg-orange-500 text-white border-4 border-black p-4 comic-font text-2xl transform -rotate-12 z-20 shadow-xl">
                 ¡ACTION!
-            </div>
-            <div class="absolute -bottom-6 -right-6 bg-yellow-400 border-4 border-black p-3 comic-font text-xl transform rotate-6 z-20 shadow-xl">
-                KAPOW!
             </div>
             
             <div class="text-center mb-12">
@@ -130,7 +122,6 @@
                 </h2>
             </div>
 
-            <!-- Controles de Progreso -->
             <div class="space-y-6 mb-12">
                 <input type="range" id="seek-bar" value="0" class="w-full">
                 <div class="flex justify-between font-black text-lg uppercase italic tracking-tighter">
@@ -139,7 +130,6 @@
                 </div>
             </div>
 
-            <!-- Botones de Control -->
             <div class="flex justify-center items-center gap-6 md:gap-12">
                 <button id="prev-btn" class="comic-button bg-cyan-400 w-20 h-20 rounded-none transform -rotate-3 hover:bg-cyan-300">
                     <svg class="w-10 h-10" fill="none" stroke="black" stroke-width="5" viewBox="0 0 24 24"><path d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke-linecap="square"/></svg>
@@ -173,12 +163,11 @@
         </section>
     </main>
 
-    <!-- Footer con Icono Final -->
     <footer class="mt-20 pb-16 text-center space-y-12">
-         <!-- Icono Inferior solicitado -->
+         <!-- Icono Inferior Transparente ajustado -->
          <div class="flex justify-center">
-            <div class="p-2 bg-black border-4 border-white shadow-[10px_10px_0px_rgba(0,0,0,0.3)] transform -rotate-6">
-                <img src="icono-blindaje.png" alt=" " class="max-h-32 md:max-h-40" onerror="this.style.display='none'">
+            <div class="transform hover:scale-110 transition-transform cursor-pointer drop-shadow-[10px_10px_2px_rgba(0,0,0,0.5)]">
+                <img src="icono-blindaje.png" alt=" " class="max-h-40 md:max-h-48" onerror="this.style.display='none'">
             </div>
          </div>
 
@@ -188,7 +177,7 @@
     </footer>
 
     <script type="module">
-        const START_DATE = new Date(2026, 3, 7); 
+        const START_DATE = new Date(2026, 3, 7); // 7 de Abril de 2026
         const TRACKS_PER_DAY = 3;
         
         const URLS = [
@@ -239,7 +228,8 @@
               seekBar = document.getElementById('seek-bar'),
               dailyList = document.getElementById('daily-list'),
               archiveList = document.getElementById('archive-list'),
-              shareBtn = document.getElementById('share-audio-btn');
+              shareBtn = document.getElementById('share-audio-btn'),
+              dayInfo = document.getElementById('devotion-day-info');
 
         function getCleanName(url) {
             const fileName = decodeURIComponent(url).split('/').pop().replace('.mp3', '');
@@ -314,10 +304,12 @@
         shareBtn.onclick = () => {
             const baseUrl = window.location.origin + window.location.pathname;
             const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
+            const textToShare = `¡Escucha la misión de hoy en Blindaje Oseas: ${ALL_TRACKS[currentIdx].name}! 🚀\n${shareUrl}`;
+
             if (navigator.share) {
-                navigator.share({ title: 'Blindaje Oseas', url: shareUrl });
+                navigator.share({ title: 'Blindaje Oseas', text: textToShare, url: shareUrl });
             } else {
-                const dummy = document.createElement("input");
+                const dummy = document.createElement("textarea");
                 document.body.appendChild(dummy);
                 dummy.value = shareUrl;
                 dummy.select();
@@ -344,9 +336,12 @@
             let count = 0;
             let tempDate = new Date(START_DATE);
 
+            // Contamos solo días de semana (Lunes a Viernes)
             while (tempDate <= today) {
                 const dayOfWeek = tempDate.getDay();
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) count++;
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    count++;
+                }
                 tempDate.setDate(tempDate.getDate() + 1);
             }
 
@@ -354,16 +349,19 @@
             
             if (today < START_DATE) {
                 currentDayStart = 0;
-                document.getElementById('devotion-day-info').textContent = "ESPERANDO ÓRDENES";
+                dayInfo.textContent = "PRÓXIMA MISIÓN: 7 ABRIL";
             } else {
+                // Si es fin de semana, 'count' ya tiene el número de días laborables completados
+                // Mantenemos los 3 audios del último viernes laborable
                 currentDayStart = Math.max(0, (count - 1) * TRACKS_PER_DAY);
-                document.getElementById('devotion-day-info').textContent = isWeekend ? `MODO ENTRENAMIENTO` : `DÍA DE COMBATE: ${count}`;
+                dayInfo.textContent = isWeekend ? `MODO REPASO - FIN DE SEMANA` : `DÍA DE COMBATE: ${count}`;
             }
 
             const params = new URLSearchParams(window.location.search);
             const urlIdx = params.get('trackIndex');
             const shouldPlay = params.get('play') === 'true';
 
+            // Cargar por defecto el primero del día actual, o el compartido por URL
             let startIdx = urlIdx !== null ? parseInt(urlIdx) : currentDayStart;
             if (startIdx >= ALL_TRACKS.length) startIdx = ALL_TRACKS.length - 1;
 
