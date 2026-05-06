@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blindaje - Colosenses Comic Vintage</title>
+    <title>Blindaje - Ester Comic Vintage</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap');
@@ -52,7 +52,6 @@
             transition: all 0.2s;
         }
 
-        /* Seek bar estilo comic */
         input[type=range] {
             -webkit-appearance: none;
             background: #000;
@@ -94,10 +93,10 @@
         
         <div class="relative">
             <h1 class="text-8xl md:text-9xl font-normal text-black comic-font uppercase drop-shadow-[8px_8px_0px_white] transform rotate-1">
-                COLOSENSES
+                ESTER
             </h1>
             <div class="absolute -top-10 -right-12 bg-white border-4 border-black px-6 py-2 comic-font text-3xl transform rotate-12 hidden md:block">
-                ¡PUM!
+                ¡BOOM!
             </div>
         </div>
         
@@ -109,12 +108,12 @@
     <main class="w-full max-w-xl space-y-10">
         <section class="comic-card rounded-none p-10 md:p-14 relative overflow-visible">
             <div class="absolute -top-8 -left-8 bg-orange-500 text-white border-4 border-black p-4 comic-font text-2xl transform -rotate-12 z-20 shadow-xl">
-                ¡ACTION!
+                ¡AL AIRE!
             </div>
             
             <div class="text-center mb-12">
                 <div class="flex justify-center mb-6">
-                     <span class="bg-black text-white px-6 py-2 text-sm font-black uppercase tracking-[0.3em] italic border-2 border-dashed border-white">Canal de Misión</span>
+                     <span class="bg-black text-white px-6 py-2 text-sm font-black uppercase tracking-[0.3em] italic border-2 border-dashed border-white">Capítulo de Hoy</span>
                 </div>
                 <h2 id="track-name" class="text-5xl md:text-6xl font-black text-black uppercase leading-tight italic border-b-[10px] border-cyan-400 inline-block py-2">
                     ---
@@ -145,17 +144,17 @@
             </div>
 
             <button id="share-audio-btn" class="w-full mt-12 py-5 bg-black text-white comic-font text-3xl uppercase tracking-widest hover:bg-yellow-400 hover:text-black transition-all shadow-[10px_10px_0px_var(--comic-cyan)] active:translate-y-1">
-                ¡ENVIAR REFUERZOS!
+                ¡COMPARTIR REFUERZOS!
             </button>
         </section>
 
         <section class="comic-card p-8 transform rotate-1">
-            <h3 class="comic-font text-4xl text-black mb-8 border-b-6 border-black inline-block uppercase">Instrucciones de Hoy</h3>
+            <h3 class="comic-font text-4xl text-black mb-8 border-b-6 border-black inline-block uppercase">Escenas de Hoy</h3>
             <div id="daily-list" class="grid grid-cols-1 gap-6"></div>
         </section>
 
         <section class="px-4">
-            <h3 class="comic-font text-3xl text-black mb-6 uppercase inline-block border-l-[12px] border-black pl-5">Bitácora de Guerra</h3>
+            <h3 class="comic-font text-3xl text-black mb-6 uppercase inline-block border-l-[12px] border-black pl-5">Archivo de Palacio</h3>
             <div id="archive-list" class="space-y-4 max-h-72 overflow-y-auto custom-scrollbar pr-6"></div>
         </section>
     </main>
@@ -173,25 +172,29 @@
     </footer>
 
     <script type="module">
-        const START_DATE = new Date(2026, 3, 27); // Ajustado a fecha actual 27 de Abril 2026
+        // FECHA ACTUALIZADA: 6 de Mayo de 2026 para iniciar HOY
+        const START_DATE = new Date(2026, 4, 6); 
         const TRACKS_PER_DAY = 3;
         
         const URLS = [
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-1-1-al-5.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-1-6-al-10.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-1-11-al-14.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-1-15-al-23.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-1-24-al-29.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-2-1-al-5.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-2-6-al-10.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-2-11-al-15.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-2-16-al-23.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-3-1-al-5.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-3-6-al-10.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-3-11-al-17.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-3-18-al-4-1.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-4-2-al-6.mp3",
-            "https://raw.githubusercontent.com/movimientoblindaje-sys/Devocionales-MovimientoBlindaje/main/movimiento-blindaje--colosenses-4-7-al-18.mp3"
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-1-1-al-12.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-1-13-al-22.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-2-1-al-18.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-2-19-al-23.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-3-1-al-11.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-3-12-al-15.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-4-1-al-7.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-4-8-al-17.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-5-1-al-8.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-5-9-al-14.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-6.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-7.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-8-1-al-9.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-8-10-al-17.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-9-1-al-19.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-9-20-al-25.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-9-26-al-32.mp3",
+            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-10.mp3"
         ];
 
         let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0;
@@ -208,8 +211,11 @@
 
         function getCleanName(url) {
             const fileName = decodeURIComponent(url).split('/').pop().replace('.mp3', '');
-            const match = fileName.match(/colosenses-(\d+)-(\d+)-(?:al|a)-(\d+)/i);
-            return match ? `COLOSENSES ${match[1]}:${match[2]}-${match[3]}` : fileName.replace(/-/g, ' ').replace('movimiento blindaje', '').trim().toUpperCase();
+            const matchRange = fileName.match(/ester-(\d+)-(\d+)-(?:al|a)-(\d+)/i);
+            if (matchRange) return `ESTER ${matchRange[1]}:${matchRange[2]}-${matchRange[3]}`;
+            const matchSingle = fileName.match(/ester-(\d+)$/i);
+            if (matchSingle) return `ESTER CAPÍTULO ${matchSingle[1]}`;
+            return fileName.replace(/-/g, ' ').replace(/movimiento blindaje/gi, '').trim().toUpperCase();
         }
 
         const ALL_TRACKS = URLS.map(url => ({ name: getCleanName(url), url }));
@@ -250,7 +256,7 @@
                     dailyList.appendChild(li);
                 } else if (i < currentDayStart) {
                     li.className = "p-5 bg-white/90 border-4 border-black text-sm font-black uppercase flex justify-between cursor-pointer hover:bg-black hover:text-white group transition-all";
-                    li.innerHTML = `<span>${t.name}</span> <span class="bg-yellow-400 text-black px-3 py-1 border-2 border-black group-hover:bg-cyan-400">COMPLETO</span>`;
+                    li.innerHTML = `<span>${t.name}</span> <span class="bg-yellow-400 text-black px-3 py-1 border-2 border-black group-hover:bg-cyan-400">VISTO</span>`;
                     li.onclick = () => loadTrack(i, true);
                     archiveList.appendChild(li);
                 }
@@ -279,10 +285,10 @@
         shareBtn.onclick = () => {
             const baseUrl = window.location.origin + window.location.pathname;
             const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
-            const textToShare = `¡Escucha la misión de hoy en Blindaje Colosenses: ${ALL_TRACKS[currentIdx].name}! 🚀\n${shareUrl}`;
+            const textToShare = `¡Descubre la historia de Ester en Blindaje: ${ALL_TRACKS[currentIdx].name}! 👑\n${shareUrl}`;
 
             if (navigator.share) {
-                navigator.share({ title: 'Blindaje Colosenses', text: textToShare, url: shareUrl });
+                navigator.share({ title: 'Blindaje Ester', text: textToShare, url: shareUrl });
             } else {
                 const dummy = document.createElement("textarea");
                 document.body.appendChild(dummy);
@@ -291,7 +297,7 @@
                 document.execCommand("copy");
                 document.body.removeChild(dummy);
                 shareBtn.textContent = "¡ENLACE COPIADO!";
-                setTimeout(() => shareBtn.textContent = "¡ENVIAR REFUERZOS!", 2000);
+                setTimeout(() => shareBtn.textContent = "¡COMPARTIR REFUERZOS!", 2000);
             }
         };
 
@@ -323,10 +329,10 @@
             
             if (today < START_DATE) {
                 currentDayStart = 0;
-                dayInfo.textContent = "PRÓXIMA MISIÓN: 27 ABRIL";
+                dayInfo.textContent = "PRÓXIMA MISIÓN: 6 MAYO";
             } else {
                 currentDayStart = Math.max(0, (count - 1) * TRACKS_PER_DAY);
-                dayInfo.textContent = isWeekend ? `MODO REPASO - FIN DE SEMANA` : `DÍA DE COMBATE: ${count}`;
+                dayInfo.textContent = isWeekend ? `REPASO DE PALACIO` : `CRÓNICA DE GUERRA: ${count}`;
             }
 
             const params = new URLSearchParams(window.location.search);
