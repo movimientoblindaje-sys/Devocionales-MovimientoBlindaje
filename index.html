@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blindaje - Ester Comic Vintage</title>
+    <title>Blindaje - Hebreos Comic Vintage</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap');
@@ -93,7 +93,7 @@
         
         <div class="relative">
             <h1 class="text-8xl md:text-9xl font-normal text-black comic-font uppercase drop-shadow-[8px_8px_0px_white] transform rotate-1">
-                ESTER
+                HEBREOS
             </h1>
             <div class="absolute -top-10 -right-12 bg-white border-4 border-black px-6 py-2 comic-font text-3xl transform rotate-12 hidden md:block">
                 ¡BOOM!
@@ -172,29 +172,50 @@
     </footer>
 
     <script type="module">
-        // FECHA ACTUALIZADA: 6 de Mayo de 2026 para iniciar HOY
-        const START_DATE = new Date(2026, 4, 6); 
+        // FECHA ACTUALIZADA: 14 de Mayo de 2026 para iniciar HOY con Hebreos
+        const START_DATE = new Date(2026, 4, 14); 
         const TRACKS_PER_DAY = 3;
         
         const URLS = [
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-1-1-al-12.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-1-13-al-22.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-2-1-al-18.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-2-19-al-23.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-3-1-al-11.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-3-12-al-15.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-4-1-al-7.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-4-8-al-17.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-5-1-al-8.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-5-9-al-14.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-6.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-7.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-8-1-al-9.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-8-10-al-17.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-9-1-al-19.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-9-20-al-25.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-9-26-al-32.mp3",
-            "https://archive.org/download/ester_202605/Movimiento-Blindaje--Ester-10.mp3"
+            "https://archive.org/download/hebreos%20202605/Hebreo-1-1-al-4.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-1-5-al-9.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-1-10-al-14.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-2-1-al-4.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-2-5-al-13.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-2-14-al-18.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-3-1-al-6.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-3-7-al-13.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-3-14-al-19.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-4-1-al-6.mp3",
+            "https://archive.org/download/hebreos_202605/Hebreo-4-7-al-13.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-4-14-al-18.mp3",
+            "https://archive.org/download/hebreos_202605/Hebreo-5-1-al-4.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-5-5-al-10.mp3",
+            "https://archive.org/download/hebreos_202605/Hebreo-5-11-al-14.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-6-1-al-6.mp3",
+            "https://archive.org/download/hebreos_202605/Hebreo-6-7-al-12.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-6-13-al-20.mp3",
+            "https://archive.org/download/hebreos_202605/Hebreo-7-1-al-10.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-7-11-al-19.mp3",
+            "https://archive.org/download/hebreos_202605/Hebreo-7-19-al-28.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-8-1-al-5.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-8-6-al-9.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-8-10-al-13.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-9-1-al-15.mp3",
+            "https://archive.org/download/hebreos_202605/Hebreo-9-16-al-20.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-9-21-al-27.mp3",
+            "https://archive.org/download/hebreos_202605/Hebreo-10-1-al-18.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-10-19-al-31.mp3",
+            "https://archive.org/download/hebreos_202605/Hebreo-10-32-al-39.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-11-1-al-12.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-11-13-al-32.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-11-33-al-40.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-12-1-al-13.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-12-14-al-17.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-12-18-al-28.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-13-1-al-6.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-13-7-al-16.mp3",
+            "https://archive.org/download/hebreos%20202605/Hebreo-13-17-al-25.mp3"
         ];
 
         let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0;
@@ -211,10 +232,10 @@
 
         function getCleanName(url) {
             const fileName = decodeURIComponent(url).split('/').pop().replace('.mp3', '');
-            const matchRange = fileName.match(/ester-(\d+)-(\d+)-(?:al|a)-(\d+)/i);
-            if (matchRange) return `ESTER ${matchRange[1]}:${matchRange[2]}-${matchRange[3]}`;
-            const matchSingle = fileName.match(/ester-(\d+)$/i);
-            if (matchSingle) return `ESTER CAPÍTULO ${matchSingle[1]}`;
+            const matchRange = fileName.match(/hebreo(?:s)?-(\d+)-(\d+)-(?:al|a)-(\d+)/i);
+            if (matchRange) return `HEBREOS ${matchRange[1]}:${matchRange[2]}-${matchRange[3]}`;
+            const matchSingle = fileName.match(/hebreo(?:s)?-(\d+)$/i);
+            if (matchSingle) return `HEBREOS CAPÍTULO ${matchSingle[1]}`;
             return fileName.replace(/-/g, ' ').replace(/movimiento blindaje/gi, '').trim().toUpperCase();
         }
 
@@ -285,10 +306,10 @@
         shareBtn.onclick = () => {
             const baseUrl = window.location.origin + window.location.pathname;
             const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
-            const textToShare = `¡Descubre la historia de Ester en Blindaje: ${ALL_TRACKS[currentIdx].name}! 👑\n${shareUrl}`;
+            const textToShare = `¡Descubre la carta a los Hebreos en Blindaje: ${ALL_TRACKS[currentIdx].name}! 🛡️\n${shareUrl}`;
 
             if (navigator.share) {
-                navigator.share({ title: 'Blindaje Ester', text: textToShare, url: shareUrl });
+                navigator.share({ title: 'Blindaje Hebreos', text: textToShare, url: shareUrl });
             } else {
                 const dummy = document.createElement("textarea");
                 document.body.appendChild(dummy);
@@ -329,7 +350,7 @@
             
             if (today < START_DATE) {
                 currentDayStart = 0;
-                dayInfo.textContent = "PRÓXIMA MISIÓN: 6 MAYO";
+                dayInfo.textContent = "PRÓXIMA MISIÓN: 14 MAYO";
             } else {
                 currentDayStart = Math.max(0, (count - 1) * TRACKS_PER_DAY);
                 dayInfo.textContent = isWeekend ? `REPASO DE PALACIO` : `CRÓNICA DE GUERRA: ${count}`;
