@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blindaje - Miqueas Comic Vintage</title>
+    <title>Blindaje - Santiago Comic Vintage</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap');
@@ -93,7 +93,7 @@
         
         <div class="relative">
             <h1 class="text-8xl md:text-9xl font-normal text-black comic-font uppercase drop-shadow-[8px_8px_0px_white] transform rotate-1">
-                MIQUEAS
+                SANTIAGO
             </h1>
             <div class="absolute -top-10 -right-12 bg-white border-4 border-black px-6 py-2 comic-font text-3xl transform rotate-12 hidden md:block">
                 ¡BOOM!
@@ -144,7 +144,7 @@
             </div>
 
             <button id="share-audio-btn" class="w-full mt-12 py-5 bg-black text-white comic-font text-3xl uppercase tracking-widest hover:bg-yellow-400 hover:text-black transition-all shadow-[10px_10px_0px_var(--comic-cyan)] active:translate-y-1">
-                ¡COMPARTIR REFUERZOS!
+                ¡COMPARTE TUS MUNICIONES!
             </button>
         </section>
 
@@ -172,28 +172,27 @@
     </footer>
 
     <script type="module">
-        const START_DATE = new Date(2026, 5, 3); // 3 de Junio de 2026 (Mes 5 en JS = Junio)
+        // Lanzamiento oficial configurado para hoy: 15 de Junio de 2026 (Mes 5 en JS = Junio)
+        const START_DATE = new Date(2026, 5, 15); 
         const TRACK_PER_DAY = 3;
         
+        // Lista completa de tus 15 enlaces de Archive.org cargados correctamente
         const URLS = [
-            "https://archive.org/download/miqueas/Miqueas-1-1-al-7.mp3",
-            "https://archive.org/download/miqueas/Miqueas-1-8-al-10.mp3",
-            "https://archive.org/download/miqueas/Miqueas-1-11-al-16.mp3",
-            "https://archive.org/download/miqueas/Miqueas-2-1-al-5.mp3",
-            "https://archive.org/download/miqueas/Miqueas-2-6-al-11.mp3",
-            "https://archive.org/download/miqueas/Miqueas-2-12-al-13.mp3",
-            "https://archive.org/download/miqueas/Miqueas-3-1-al-7.mp3",
-            "https://archive.org/download/miqueas/Miqueas-3-8-al-12.mp3",
-            "https://archive.org/download/miqueas/Miqueas-4-1-al-5.mp3",
-            "https://archive.org/download/miqueas/Miqueas-4-6-al-13.mp3",
-            "https://archive.org/download/miqueas/Miqueas-5-1-al-6.mp3",
-            "https://archive.org/download/miqueas/Miqueas-5-7-al-15.mp3",
-            "https://archive.org/download/miqueas/Miqueas-6-1-al-8.mp3",
-            "https://archive.org/download/miqueas/Miqueas-6-9-al-11.mp3",
-            "https://archive.org/download/miqueas/Miqueas-6-12-al-16.mp3",
-            "https://archive.org/download/miqueas/Miqueas-7-1-al-6.mp3",
-            "https://archive.org/download/miqueas/Miqueas-7-7-al-13.mp3",
-            "https://archive.org/download/miqueas/Miqueas-7-14-al-20.mp3"
+            "https://archive.org/download/santiago_202606/Santiago-1-1-al-11.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-1-12-al-18.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-1-19-al-27.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-2-1-al-13.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-2-14-al-20.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-2-21-al-26.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-3-1-al-12.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-3-13-al--18.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-4-1-al-3.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-4-4-al-10.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-4-10-y-11.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-4-13-al-17.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-5-1-al-6.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-5-7-al-12.mp3",
+            "https://archive.org/download/santiago_202606/Santiago-5-13-al-20.mp3"
         ];
 
         let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0;
@@ -208,12 +207,17 @@
               shareBtn = document.getElementById('share-audio-btn'),
               dayInfo = document.getElementById('devotion-day-info');
 
+        // Formateador robusto para procesar rangos con "al", "--" o "y"
         function getCleanName(url) {
             const fileName = decodeURIComponent(url).split('/').pop().replace('.mp3', '');
-            const matchRange = fileName.match(/miqueas-(\d+)-(\d+)-(?:al|a)-(\d+)/i);
-            if (matchRange) return `MIQUEAS ${matchRange[1]}:${matchRange[2]}-${matchRange[3]}`;
-            const matchSingle = fileName.match(/miqueas-(\d+)$/i);
-            if (matchSingle) return `MIQUEAS CAPÍTULO ${matchSingle[1]}`;
+            
+            // Soporta patrones comunes: Santiago-1-1-al-11, Santiago-3-13-al--18, Santiago-4-10-y-11
+            const matchRange = fileName.match(/santiago-(\d+)-(\d+)-(?:al|a|y)-+?(\d+)/i);
+            if (matchRange) return `SANTIAGO ${matchRange[1]}:${matchRange[2]}-${matchRange[3]}`;
+            
+            const matchSingle = fileName.match(/santiago-(\d+)$/i);
+            if (matchSingle) return `SANTIAGO CAPÍTULO ${matchSingle[1]}`;
+            
             return fileName.replace(/-/g, ' ').replace(/movimiento blindaje/gi, '').trim().toUpperCase();
         }
 
@@ -284,10 +288,10 @@
         shareBtn.onclick = () => {
             const baseUrl = window.location.origin + window.location.pathname;
             const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
-            const textToShare = `¡Descubre el libro de Miqueas en Blindaje: ${ALL_TRACKS[currentIdx].name}! 🛡️\n${shareUrl}`;
+            const textToShare = `¡Descubre el libro de Santiago en Blindaje: ${ALL_TRACKS[currentIdx].name}! 🛡️\n${shareUrl}`;
 
             if (navigator.share) {
-                navigator.share({ title: 'Blindaje Miqueas', text: textToShare, url: shareUrl });
+                navigator.share({ title: 'Blindaje Santiago', text: textToShare, url: shareUrl });
             } else {
                 const dummy = document.createElement("textarea");
                 document.body.appendChild(dummy);
@@ -296,7 +300,7 @@
                 document.execCommand("copy");
                 document.body.removeChild(dummy);
                 shareBtn.textContent = "¡ENLACE COPIADO!";
-                setTimeout(() => shareBtn.textContent = "¡COMPARTIR REFUERZOS!", 2000);
+                setTimeout(() => shareBtn.textContent = "¡COMPARTE TUS MUNICIONES!", 2000);
             }
         };
 
@@ -328,7 +332,8 @@
             
             if (today < START_DATE) {
                 currentDayStart = 0;
-                dayInfo.textContent = "PRÓXIMA MISIÓN: 3 JUNIO";
+                const opciones = { day: 'numeric', month: 'long' };
+                dayInfo.textContent = `PRÓXIMA MISIÓN: ${START_DATE.toLocaleDateString('es-ES', opciones).toUpperCase()}`;
             } else {
                 currentDayStart = Math.max(0, (count - 1) * TRACK_PER_DAY);
                 dayInfo.textContent = isWeekend ? `REPASO DE PALACIO` : `CRÓNICA DE GUERRA: ${count}`;
