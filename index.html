@@ -3,284 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movimiento Blindaje - Reproductor Diario</title>
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.321.0/dist/umd/lucide.min.js"></script>
+    <title>Blindaje - Salmos Comic Vintage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap');
+        
         :root {
-            --bg-color: #ffffff;
-            --text-color: #1a1a1a;
-            --primary-color: #2563eb;
-            --gray-light: #f3f4f6;
-            --gray-md: #e5e7eb;
-            --gray-text: #4b5563;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --comic-yellow: #ffc61a;
+            --comic-black: #000000;
+            --comic-cyan: #00d2ff;
+            --comic-pink: #ff00ff;
+            --comic-orange: #ff6b00;
+            --comic-paper: #fdf6e3; 
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--comic-yellow);
+            background-image: radial-gradient(rgba(0,0,0,0.18) 2px, transparent 2px);
+            background-size: 20px 20px;
+        }
+
+        .comic-font { font-family: 'Bangers', cursive; letter-spacing: 2px; }
+
+        .comic-card {
+            background: var(--comic-paper);
+            border: 6px solid var(--comic-black);
+            box-shadow: 14px 14px 0px var(--comic-black);
+        }
+
+        .comic-button {
+            border: 4px solid var(--comic-black);
+            box-shadow: 6px 6px 0px var(--comic-black);
+            transition: all 0.1s;
             display: flex;
+            align-items: center;
             justify-content: center;
-            padding: 16px;
         }
 
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .comic-button:active {
+            transform: translate(3px, 3px);
+            box-shadow: 1px 1px 0px var(--comic-black);
         }
 
-        /* Encabezado */
-        header {
-            text-align: center;
-            padding: 10px 0;
-            border-bottom: 2px solid var(--text-color);
+        .comic-track-card {
+            border: 3px solid var(--comic-black);
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.2);
+            transition: all 0.2s;
         }
 
-        header h1 {
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Info del Día */
-        .day-badge {
-            background-color: var(--gray-light);
-            border: 2px solid var(--text-color);
-            padding: 12px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-            border-radius: 4px;
-        }
-
-        /* Reproductor Principal */
-        .player-card {
-            border: 3px solid var(--text-color);
-            padding: 20px;
-            border-radius: 8px;
-            background: white;
-            box-shadow: 4px 4px 0px 0px var(--text-color);
-        }
-
-        .track-info {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        .track-info h2 {
-            font-size: 1.3rem;
-            margin-bottom: 4px;
-            color: var(--text-color);
-        }
-
-        .track-info p {
-            font-size: 0.9rem;
-            color: var(--gray-text);
-        }
-
-        /* Barra de Progreso */
-        .progress-container {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-bottom: 20px;
-        }
-
-        .seek-bar {
-            width: 100%;
-            height: 8px;
+        input[type=range] {
             -webkit-appearance: none;
-            appearance: none;
-            background: var(--gray-md);
-            border: 2px solid var(--text-color);
-            border-radius: 4px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .seek-bar::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            background: var(--text-color);
-            cursor: pointer;
-            border-radius: 50%;
-        }
-
-        .time-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            font-weight: bold;
-        }
-
-        /* Controles */
-        .controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .btn {
-            background: white;
-            border: 2px solid var(--text-color);
-            padding: 10px 16px;
-            font-weight: bold;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-radius: 4px;
-            box-shadow: 2px 2px 0px 0px var(--text-color);
-            transition: all 0.1s ease;
-        }
-
-        .btn:active {
-            transform: translate(2px, 2px);
-            box-shadow: 0px 0px 0px 0px var(--text-color);
-        }
-
-        .btn-main {
-            padding: 14px 24px;
-            font-size: 1.1rem;
-            background: var(--text-color);
-            color: white;
-            box-shadow: 2px 2px 0px 0px #666;
-        }
-
-        .btn-main i {
-            stroke: white;
-        }
-
-        /* Listas de Módulos (Mañana, Tarde, Noche) */
-        .section-title {
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            border-left: 4px solid var(--text-color);
-            padding-left: 8px;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .module-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .playlist-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            border: 2px solid var(--text-color);
-            border-radius: 4px;
-            cursor: pointer;
-            background: var(--gray-light);
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .playlist-item:hover {
-            background: var(--gray-md);
-        }
-
-        .playlist-item.active {
-            background: #dbeafe;
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .playlist-item i {
-            width: 18px;
+            background: #000;
             height: 18px;
+            border: 4px solid black;
+            cursor: pointer;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 32px;
+            width: 18px;
+            background: var(--comic-pink);
+            border: 3px solid black;
+            box-shadow: 4px 0px 0px black;
         }
 
-        .share-container {
-            margin-top: 10px;
-            display: flex;
-            justify-content: center;
+        .custom-scrollbar::-webkit-scrollbar { width: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #000; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--comic-yellow); border: 2px solid black; }
+
+        .ink-border {
+            border: 6px solid black;
+            box-shadow: 8px 8px 0px var(--comic-cyan), -8px -8px 0px var(--comic-pink);
         }
+
+        img { color: transparent; }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8 min-h-screen flex flex-col items-center">
 
-    <div class="container">
-        <header>
-            <h1>Movimiento Blindaje</h1>
-        </header>
-
-        <div class="day-badge" id="devotion-day-info">
-            Cargando día del devocional...
+    <header class="text-center mb-12 relative">
+        <div class="inline-block p-2 bg-white ink-border transform -rotate-2 mb-10">
+            <img id="logo-img" 
+                 src="logo-blindaje.png" 
+                 alt=" " 
+                 class="max-h-40 md:max-h-52 block mx-auto"
+                 onerror="this.style.display='none'">
         </div>
+        
+        <div class="relative">
+            <h1 class="text-8xl md:text-9xl font-normal text-black comic-font uppercase drop-shadow-[8px_8px_0px_white] transform rotate-1">
+                SALMOS
+            </h1>
+            <div class="absolute -top-10 -right-12 bg-white border-4 border-black px-6 py-2 comic-font text-3xl transform rotate-12 hidden md:block">
+                ¡BOOM!
+            </div>
+        </div>
+        
+        <div id="devotion-day-info" class="mt-8 inline-block bg-black text-white px-10 py-4 border-4 border-white comic-font text-3xl tracking-widest uppercase transform -rotate-1 shadow-[10px_10px_0px_var(--comic-cyan)]">
+            CARGANDO MISIÓN...
+        </div>
+    </header>
 
-        <!-- Reproductor Principal -->
-        <div class="player-card">
-            <div class="track-info">
-                <p style="text-transform: uppercase; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; color: var(--primary-color);">Escuchando ahora</p>
-                <h2 id="track-name">Selecciona un audio</h2>
-                <p id="track-module">Módulo</p>
+    <main class="w-full max-w-xl space-y-10">
+        <section class="comic-card rounded-none p-10 md:p-14 relative overflow-visible">
+            <div class="absolute -top-8 -left-8 bg-orange-500 text-white border-4 border-black p-4 comic-font text-2xl transform -rotate-12 z-20 shadow-xl">
+                ¡AL AIRE!
+            </div>
+            
+            <div class="text-center mb-12">
+                <div class="flex justify-center mb-6">
+                     <span class="bg-black text-white px-6 py-2 text-sm font-black uppercase tracking-[0.3em] italic border-2 border-dashed border-white">Capítulo de Hoy</span>
+                </div>
+                <h2 id="track-name" class="text-5xl md:text-6xl font-black text-black uppercase leading-tight italic border-b-[10px] border-cyan-400 inline-block py-2">
+                    ---
+                </h2>
             </div>
 
-            <div class="progress-container">
-                <input type="range" class="seek-bar" id="seek-bar" value="0" min="0" max="100">
-                <div class="time-info">
-                    <span id="current-time">0:00</span>
-                    <span id="total-duration">0:00</span>
+            <div class="space-y-6 mb-12">
+                <input type="range" id="seek-bar" value="0" class="w-full">
+                <div class="flex justify-between font-black text-lg uppercase italic tracking-tighter">
+                    <span id="current-time" class="bg-black text-white px-3">0:00</span>
+                    <span id="total-time" class="bg-black text-white px-3">0:00</span>
                 </div>
             </div>
 
-            <div class="controls">
-                <button class="btn btn-main" id="play-pause-btn">
-                    <i id="play-icon" data-lucide="play"></i>
-                    <i id="pause-icon" data-lucide="pause" style="display: none;"></i>
-                    <span id="btn-text">Reproducir</span>
+            <div class="flex justify-center items-center gap-6 md:gap-12">
+                <button id="prev-btn" class="comic-button bg-cyan-400 w-20 h-20 rounded-none transform -rotate-3 hover:bg-cyan-300">
+                    <svg class="w-10 h-10" fill="none" stroke="black" stroke-width="5" viewBox="0 0 24 24"><path d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke-linecap="square"/></svg>
+                </button>
+                
+                <button id="play-pause-btn" class="comic-button bg-pink-500 w-28 h-28 rounded-none transform rotate-3 hover:scale-110 active:scale-95">
+                    <svg id="play-icon" class="w-16 h-16" fill="black" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.841z"/></svg>
+                    <svg id="pause-icon" class="w-16 h-16 hidden" fill="black" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
+                </button>
+
+                <button id="next-btn" class="comic-button bg-orange-500 w-20 h-20 rounded-none transform rotate-3 hover:bg-orange-400">
+                    <svg class="w-10 h-10" fill="none" stroke="black" stroke-width="5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6" stroke-linecap="square"/></svg>
                 </button>
             </div>
-        </div>
 
-        <!-- Bloque de Audios del Día -->
-        <div>
-            <div class="section-title">Audios de Hoy</div>
-            <div class="module-list" id="daily-list">
-                <!-- Se generan dinámicamente -->
-            </div>
-        </div>
-
-        <!-- Botón para Compartir -->
-        <div class="share-container">
-            <button class="btn" id="share-audio-btn">
-                <i data-lucide="share-2"></i> Compartir audio de hoy
+            <button id="share-audio-btn" class="w-full mt-12 py-5 bg-black text-white comic-font text-3xl uppercase tracking-widest hover:bg-yellow-400 hover:text-black transition-all shadow-[10px_10px_0px_var(--comic-cyan)] active:translate-y-1">
+                ¡COMPARTE TUS MUNICIONES!
             </button>
-        </div>
+        </section>
 
-        <!-- Historial / Archivo Completo -->
-        <div>
-            <div class="section-title">Archivo de Salmos (Anteriores)</div>
-            <div class="module-list" id="archive-list">
-                <!-- Se generan dinámicamente -->
+        <section class="comic-card p-8 transform rotate-1">
+            <h3 class="comic-font text-4xl text-black mb-8 border-b-6 border-black inline-block uppercase">Escenas de Hoy</h3>
+            <div id="daily-list" class="grid grid-cols-1 gap-6"></div>
+        </section>
+
+        <section class="px-4">
+            <h3 class="comic-font text-3xl text-black mb-6 uppercase inline-block border-l-[12px] border-black pl-5">Archivo de Palacio</h3>
+            <div id="archive-list" class="space-y-4 max-h-72 overflow-y-auto custom-scrollbar pr-6"></div>
+        </section>
+    </main>
+
+    <footer class="mt-20 pb-16 text-center space-y-12">
+         <div class="flex justify-center">
+            <div class="transform hover:scale-110 transition-transform cursor-pointer drop-shadow-[10px_10px_2px_rgba(0,0,0,0.5)]">
+                <img src="icono-blindaje.png" alt=" " class="max-h-40 md:max-h-48" onerror="this.style.display='none'">
             </div>
-        </div>
-    </div>
+         </div>
+
+         <div class="comic-font text-black text-3xl bg-white border-4 border-black px-10 py-3 inline-block shadow-[12px_12px_0px_var(--comic-pink)] transform rotate-2">
+            MOVIMIENTO BLINDAJE © 2026
+         </div>
+    </footer>
 
     <script type="module">
-        // Inicializar iconos de Lucide
-        lucide.createIcons();
-
-        // Lista completa de tus 79 enlaces de Archive.org corregidos y validados
+        // Lanzamiento oficial configurado para hoy: 23 de Junio de 2026
+        const START_DATE = new Date(2026, 5, 23); 
+        const TRACK_PER_DAY = 3;
+        
+        // Lista completa de tus 79 enlaces de Archive.org procesados correctamente
         const URLS = [
             "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-1-1-al-3.mp3",
             "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-1-4-al-6.mp3",
@@ -367,24 +263,19 @@
         let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0;
 
         const trackName = document.getElementById('track-name'),
-              trackModule = document.getElementById('track-module'),
               playPauseBtn = document.getElementById('play-pause-btn'),
               playIcon = document.getElementById('play-icon'),
               pauseIcon = document.getElementById('pause-icon'),
-              btnText = document.getElementById('btn-text'),
               seekBar = document.getElementById('seek-bar'),
-              currentTimeEl = document.getElementById('current-time'),
-              totalDurationEl = document.getElementById('total-duration'),
               dailyList = document.getElementById('daily-list'),
               archiveList = document.getElementById('archive-list'),
               shareBtn = document.getElementById('share-audio-btn'),
               dayInfo = document.getElementById('devotion-day-info');
 
-        // FUNCIÓN CORREGIDA: Ahora es 100% tolerante a variaciones de tipeo en las URLs
+        // FUNCIÓN MEJORADA Y TOLERANTE A ERRORES TIPOGRÁFICOS
         function getCleanName(url) {
             const fileName = decodeURIComponent(url).split('/').pop().replace('.mp3', '');
             
-            // Expresión regular que ignora mayúsculas/minúsculas y variaciones tipográficas
             const matchRange = fileName.match(/salmos-(\d+)-(\d+)-(?:al|a|y)-+?(\d+)/i);
             if (matchRange) return `SALMOS ${matchRange[1]}:${matchRange[2]}-${matchRange[3]}`;
             
@@ -397,188 +288,140 @@
                            .toUpperCase();
         }
 
-        function getModuleLabel(index) {
-            const modules = ["Desayuno", "Almuerzo", "Cena"];
-            return modules[index % 3];
+        const ALL_TRACKS = URLS.map(url => ({ name: getCleanName(url), url }));
+
+        function loadTrack(i, autoPlay = false) {
+            if (i < 0 || i >= ALL_TRACKS.length) return;
+            currentIdx = i;
+            audio.src = ALL_TRACKS[i].url;
+            trackName.textContent = ALL_TRACKS[i].name;
+            renderLists();
+            if(autoPlay) {
+                audio.play().catch(e => console.log("Error de reproducción:", e));
+                isPlaying = true;
+                playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden');
+            }
         }
 
-        function calculateDevotionalDay() {
-            // Fecha base de inicio del proyecto (Ajustable)
-            const startDate = new Date("2026-06-01");
-            const today = new Date();
+        function renderLists() {
+            dailyList.innerHTML = '';
+            archiveList.innerHTML = '';
+            const labels = ["DESAYUNO", "ALMUERZO", "CENA"];
+            const cardColors = ["hover:bg-cyan-200", "hover:bg-pink-200", "hover:bg-orange-200"];
             
-            let totalDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-            if (totalDays < 0) totalDays = 0;
-
-            // Lógica de saltarse fines de semana (Lunes a Viernes únicamente)
-            let businessDays = 0;
-            for (let i = 0; i <= totalDays; i++) {
-                let currentCheck = new Date(startDate.getTime() + (i * 24 * 60 * 60 * 1000));
-                let dayOfWeek = currentCheck.getDay();
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Evitar Sábado (6) y Domingo (0)
-                    businessDays++;
-                }
-            }
-
-            dayInfo.textContent = `Día del Devocional: #${businessDays === 0 ? 1 : businessDays}`;
-            
-            // Cada día hábil consume exactamente 3 módulos (audios) del índice de enlaces
-            currentDayStart = Math.max(0, (businessDays - 1) * 3);
-            if (currentDayStart >= URLS.length) currentDayStart = 0; 
-        }
-
-        function loadTrack(index) {
-            if (index < 0 || index >= URLS.length) return;
-            currentIdx = index;
-            audio.src = URLS[currentIdx];
-            trackName.textContent = getCleanName(URLS[currentIdx]);
-            trackModule.textContent = `Módulo: ${getModuleLabel(currentIdx)}`;
-            
-            // Reset de barra de progreso
-            seekBar.value = 0;
-            currentTimeEl.textContent = "0:00";
-            totalDurationEl.textContent = "0:00";
-
-            // Resaltar elemento activo en las listas visuales
-            document.querySelectorAll('.playlist-item').forEach(item => {
-                item.classList.remove('active');
-                let playIconInner = item.querySelector('.play-item-icon');
-                if (playIconInner) playIconInner.setAttribute('data-lucide', 'play');
-            });
-
-            const activeItem = document.querySelector(`[data-index="${currentIdx}"]`);
-            if (activeItem) {
-                activeItem.classList.add('active');
-                let playIconInner = activeItem.querySelector('.play-item-icon');
-                if (playIconInner && isPlaying) playIconInner.setAttribute('data-lucide', 'pause');
-            }
-            lucide.createIcons();
-        }
-
-        function togglePlay() {
-            if (audio.src === "" && URLS.length > 0) {
-                loadTrack(currentDayStart);
-            }
-
-            if (isPlaying) {
-                audio.pause();
-                isPlaying = false;
-                playIcon.style.display = "inline";
-                pauseIcon.style.display = "none";
-                btnText.textContent = "Reproducir";
-            } else {
-                audio.play().then(() => {
-                    isPlaying = true;
-                    playIcon.style.display = "none";
-                    pauseIcon.style.display = "inline";
-                    btnText.textContent = "Pausar";
-                    loadTrack(currentIdx); // Refresca iconos de lista activa
-                }).catch(err => {
-                    console.error("Error al reproducir el archivo de Archive.org: ", err);
-                });
-            }
-        }
-
-        // Renderizar dinámicamente las listas
-        function renderPlaylists() {
-            dailyList.innerHTML = "";
-            archiveList.innerHTML = "";
-
-            URLS.forEach((url, index) => {
-                const item = document.createElement('div');
-                item.className = "playlist-item";
-                item.setAttribute('data-index', index);
-                item.innerHTML = `
-                    <div>
-                        <div style="font-size:0.85rem; font-weight:bold; color:var(--gray-text); text-transform:uppercase;">${getModuleLabel(index)}</div>
-                        <div>${getCleanName(url)}</div>
-                    </div>
-                    <i class="play-item-icon" data-lucide="play"></i>
-                `;
-
-                item.addEventListener('click', () => {
-                    if (currentIdx === index && isPlaying) {
-                        togglePlay();
-                    } else {
-                        isPlaying = false; // Forzar reinicio de estado para el nuevo track
-                        loadTrack(index);
-                        togglePlay();
-                    }
-                });
-
-                // Si está dentro de los 3 audios que corresponden a hoy, va arriba. Si no, al archivo.
-                if (index >= currentDayStart && index < currentDayStart + 3) {
-                    dailyList.appendChild(item);
-                } else {
-                    archiveList.appendChild(item);
-                }
-            });
-
-            lucide.createIcons();
-        }
-
-        // Eventos del Reproductor nativo de Audio
-        audio.addEventListener('timeupdate', () => {
-            if (audio.duration) {
-                const value = (audio.currentTime / audio.duration) * 100;
-                seekBar.value = value;
+            ALL_TRACKS.forEach((t, i) => {
+                const li = document.createElement('div');
+                const active = i === currentIdx;
                 
-                // Formatear minutos y segundos actualizados
-                let curMins = Math.floor(audio.currentTime / 60);
-                let curSecs = Math.floor(audio.currentTime % 60);
-                if (curSecs < 10) curSecs = `0${curSecs}`;
-                currentTimeEl.textContent = `${curMins}:${curSecs}`;
-            }
-        });
+                if (i >= currentDayStart && i < currentDayStart + TRACK_PER_DAY) {
+                    const labelIdx = i - currentDayStart;
+                    li.className = `p-6 comic-track-card cursor-pointer flex justify-between items-center transition-transform ${active ? 'bg-black text-white scale-[1.03] z-10' : 'bg-white text-black ' + cardColors[labelIdx]}`;
+                    li.innerHTML = `
+                        <div>
+                            <span class="text-xs font-black italic block ${active ? 'text-yellow-400' : 'text-gray-500'} tracking-widest mb-1">${labels[labelIdx]}</span>
+                            <span class="font-black text-2xl uppercase italic">${t.name}</span>
+                        </div>
+                        <div class="text-3xl">${active ? '⚡' : '▶'}</div>`;
+                    li.onclick = () => loadTrack(i, true);
+                    dailyList.appendChild(li);
+                } else if (i < currentDayStart) {
+                    li.className = "p-5 bg-white/90 border-4 border-black text-sm font-black uppercase flex justify-between cursor-pointer hover:bg-black hover:text-white group transition-all";
+                    li.innerHTML = `<span>${t.name}</span> <span class="bg-yellow-400 text-black px-3 py-1 border-2 border-black group-hover:bg-cyan-400">VISTO</span>`;
+                    li.onclick = () => loadTrack(i, true);
+                    archiveList.appendChild(li);
+                }
+            });
+        }
 
-        audio.addEventListener('loadedmetadata', () => {
-            let durMins = Math.floor(audio.duration / 60);
-            let durSecs = Math.floor(audio.duration % 60);
-            if (durSecs < 10) durSecs = `0${durSecs}`;
-            totalDurationEl.textContent = `${durMins}:${durSecs}`;
-        });
-
-        seekBar.addEventListener('input', () => {
-            if (audio.duration) {
-                audio.currentTime = (seekBar.value / 100) * audio.duration;
-            }
-        });
-
-        audio.addEventListener('ended', () => {
-            // Al terminar avanza automáticamente al siguiente módulo del día
-            if (currentIdx < URLS.length - 1) {
-                loadTrack(currentIdx + 1);
-                audio.play();
+        audio.onended = () => {
+            if (currentIdx < currentDayStart + (TRACK_PER_DAY - 1) && currentIdx < ALL_TRACKS.length - 1) {
+                loadTrack(currentIdx + 1, true);
             } else {
                 isPlaying = false;
-                playIcon.style.display = "inline";
-                pauseIcon.style.display = "none";
-                btnText.textContent = "Reproducir";
+                playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden');
             }
-        });
+        };
 
-        playPauseBtn.addEventListener('click', togglePlay);
+        playPauseBtn.onclick = () => {
+            if(isPlaying) { 
+                audio.pause(); 
+            } else { 
+                audio.play().catch(e => console.log(e)); 
+            }
+            isPlaying = !isPlaying;
+            playIcon.classList.toggle('hidden');
+            pauseIcon.classList.toggle('hidden');
+        };
 
-        // Compartir Enlace del Audio Actual por WhatsApp/Nativo móvil
-        shareBtn.addEventListener('click', () => {
-            const shareText = `Escucha el audio de hoy de Movimiento Blindaje: ${getCleanName(URLS[currentIdx])} -> ${URLS[currentIdx]}`;
+        document.getElementById('prev-btn').onclick = () => loadTrack(currentIdx - 1, true);
+        document.getElementById('next-btn').onclick = () => loadTrack(currentIdx + 1, true);
+
+        shareBtn.onclick = () => {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
+            const textToShare = `¡Descubre el libro de Salmos en Blindaje: ${ALL_TRACKS[currentIdx].name}! 🛡️\n${shareUrl}`;
+
             if (navigator.share) {
-                navigator.share({
-                    title: 'Movimiento Blindaje',
-                    text: shareText,
-                    url: window.location.href
-                }).catch(console.error);
+                navigator.share({ title: 'Blindaje Salmos', text: textToShare, url: shareUrl });
             } else {
-                // Alternativa rápida si no está en dispositivo móvil compatible
-                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank');
+                const dummy = document.createElement("textarea");
+                document.body.appendChild(dummy);
+                dummy.value = shareUrl;
+                dummy.select();
+                document.execCommand("copy");
+                document.body.removeChild(dummy);
+                shareBtn.textContent = "¡ENLACE COPIADO!";
+                setTimeout(() => shareBtn.textContent = "¡COMPARTE TUS MUNICIONES!", 2000);
             }
-        });
+        };
 
-        // Inicialización al cargar la web
-        calculateDevotionalDay();
-        renderPlaylists();
-        loadTrack(currentDayStart); // Precarga el primer audio de la mañana de hoy automáticamente
+        audio.ontimeupdate = () => {
+            if(audio.duration) {
+                seekBar.value = (audio.currentTime / audio.duration) * 100;
+                document.getElementById('current-time').textContent = formatTime(audio.currentTime);
+                document.getElementById('total-time').textContent = formatTime(audio.duration);
+            }
+        };
 
+        function formatTime(s) { return Math.floor(s/60) + ":" + Math.floor(s%60).toString().padStart(2,'0'); }
+        seekBar.oninput = () => audio.currentTime = (seekBar.value / 100) * audio.duration;
+
+        function init() {
+            const today = new Date();
+            let count = 0;
+            let tempDate = new Date(START_DATE);
+
+            // Cuenta omitiendo los fines de semana (Sábados y Domingos)
+            while (tempDate <= today) {
+                const dayOfWeek = tempDate.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    count++;
+                }
+                tempDate.setDate(tempDate.getDate() + 1);
+            }
+
+            const isWeekend = (today.getDay() === 0 || today.getDay() === 6);
+            
+            if (today < START_DATE) {
+                currentDayStart = 0;
+                const opciones = { day: 'numeric', month: 'long' };
+                dayInfo.textContent = `PRÓXIMA MISIÓN: ${START_DATE.toLocaleDateString('es-ES', opciones).toUpperCase()}`;
+            } else {
+                currentDayStart = Math.max(0, (count - 1) * TRACK_PER_DAY);
+                dayInfo.textContent = isWeekend ? `REPASO DE PALACIO` : `CRÓNICA DE GUERRA: ${count}`;
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const urlIdx = params.get('trackIndex');
+            const shouldPlay = params.get('play') === 'true';
+
+            let startIdx = urlIdx !== null ? parseInt(urlIdx) : currentDayStart;
+            if (startIdx >= ALL_TRACKS.length) startIdx = ALL_TRACKS.length - 1;
+
+            loadTrack(startIdx, shouldPlay);
+        }
+
+        window.onload = init;
     </script>
 </body>
 </html>
