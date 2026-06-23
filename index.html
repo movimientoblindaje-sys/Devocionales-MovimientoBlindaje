@@ -172,11 +172,11 @@
     </footer>
 
     <script type="module">
-        // Lanzamiento oficial configurado para hoy: 23 de Junio de 2026
-        const START_DATE = new Date(2026, 5, 23); 
+        // Lanzamiento oficial configurado para hoy: 15 de Junio de 2026 (Mes 5 en JS = Junio)
+        const START_DATE = new Date(2026, 5, 15); 
         const TRACK_PER_DAY = 3;
         
-       // LISTA DE LINKS CORREGIDA Y DEPURADA
+        // Lista de enlaces de Archive.org cargados y depurados sin espacios extraños
         const URLS = [
             "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-1-1-al-3.mp3",
             "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-1-4-al-6.mp3",
@@ -259,6 +259,7 @@
             "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-49-1-al-20.mp3",
             "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-50-1-al-23.mp3"
         ];
+
         let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0;
 
         const trackName = document.getElementById('track-name'),
@@ -271,34 +272,58 @@
               shareBtn = document.getElementById('share-audio-btn'),
               dayInfo = document.getElementById('devotion-day-info');
 
-        // FUNCIÓN MEJORADA Y TOLERANTE A ERRORES TIPOGRÁFICOS
+        // Formateador robusto adaptado específicamente al formato de nombres de los Salmos
         function getCleanName(url) {
             const fileName = decodeURIComponent(url).split('/').pop().replace('.mp3', '');
             
-            const matchRange = fileName.match(/salmos-(\d+)-(\d+)-(?:al|a|y)-+?(\d+)/i);
+            // Procesa rangos complejos (ej: Libro-de-Salmos-1-1-al-3 o LIbro-de-Salmos-31-9-al-24)
+            const matchRange = fileName.match(/Libro-de-Salmos-(\d+)-(\d+)-(?:al|a|y)-+?(\d+)/i);
             if (matchRange) return `SALMOS ${matchRange[1]}:${matchRange[2]}-${matchRange[3]}`;
             
-            const matchSingle = fileName.match(/salmos-(\d+)/i);
-            if (matchSingle) return `SALMOS CAPÍTULO ${matchSingle[1]}`;
+            // Procesa capítulos con un solo versículo específico (ej: Libro-de-Salmos-23-4)
+            const matchSingleVerse = fileName.match(/Libro-de-Salmos-(\d+)-(\d+)/i);
+            if (matchSingleVerse) return `SALMOS ${matchSingleVerse[1]}:${matchSingleVerse[2]}`;
+
+            // Procesa capítulos enteros directos (ej: Libro-de-Salmos-21 o Libro-de-Salmos-24)
+            const matchChapter = fileName.match(/Libro-de-Salmos-(\d+)/i);
+            if (matchChapter) return `SALMOS CAPÍTULO ${matchChapter[1]}`;
             
-            return fileName.replace(/-/g, ' ')
-                           .replace(/(libro|de|salmos|llbro|libro)/gi, '')
-                           .trim()
-                           .toUpperCase();
+            return fileName.replace(/-/g, ' ').replace(/movimiento blindaje/gi, '').trim().toUpperCase();
         }
 
         const ALL_TRACKS = URLS.map(url => ({ name: getCleanName(url), url }));
 
+        // Función de carga con el parche CORS y reseteo completo del buffer multimedia
         function loadTrack(i, autoPlay = false) {
             if (i < 0 || i >= ALL_TRACKS.length) return;
             currentIdx = i;
+            
+            // Reseteo profundo del elemento de audio para limpiar errores de carga previos
+            audio.pause();
+            audio.removeAttribute('src');
+            audio.load();
+            
+            // Habilitación de credenciales anónimas cruzadas (CORS Fix)
+            audio.crossOrigin = "anonymous";
+            
             audio.src = ALL_TRACKS[i].url;
             trackName.textContent = ALL_TRACKS[i].name;
             renderLists();
+            
             if(autoPlay) {
-                audio.play().catch(e => console.log("Error de reproducción:", e));
-                isPlaying = true;
-                playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden');
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        isPlaying = true;
+                        playIcon.classList.add('hidden'); 
+                        pauseIcon.classList.remove('hidden');
+                    }).catch(e => {
+                        console.log("Reproducción automática bloqueada por interacción inicial:", e);
+                        isPlaying = false;
+                        playIcon.classList.remove('hidden'); 
+                        pauseIcon.classList.add('hidden');
+                    });
+                }
             }
         }
 
@@ -342,11 +367,7 @@
         };
 
         playPauseBtn.onclick = () => {
-            if(isPlaying) { 
-                audio.pause(); 
-            } else { 
-                audio.play().catch(e => console.log(e)); 
-            }
+            if(isPlaying) { audio.pause(); } else { audio.play(); }
             isPlaying = !isPlaying;
             playIcon.classList.toggle('hidden');
             pauseIcon.classList.toggle('hidden');
@@ -390,7 +411,6 @@
             let count = 0;
             let tempDate = new Date(START_DATE);
 
-            // Cuenta omitiendo los fines de semana (Sábados y Domingos)
             while (tempDate <= today) {
                 const dayOfWeek = tempDate.getDay();
                 if (dayOfWeek !== 0 && dayOfWeek !== 6) {
