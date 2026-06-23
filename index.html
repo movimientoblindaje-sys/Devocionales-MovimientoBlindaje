@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blindaje - Santiago Comic Vintage</title>
+    <title>Blindaje - Salmos Comic Vintage</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap');
@@ -93,7 +93,7 @@
         
         <div class="relative">
             <h1 class="text-8xl md:text-9xl font-normal text-black comic-font uppercase drop-shadow-[8px_8px_0px_white] transform rotate-1">
-                SANTIAGO
+                SALMOS
             </h1>
             <div class="absolute -top-10 -right-12 bg-white border-4 border-black px-6 py-2 comic-font text-3xl transform rotate-12 hidden md:block">
                 ¡BOOM!
@@ -172,27 +172,92 @@
     </footer>
 
     <script type="module">
-        // Lanzamiento oficial configurado para hoy: 15 de Junio de 2026 (Mes 5 en JS = Junio)
-        const START_DATE = new Date(2026, 5, 15); 
+        // Lanzamiento oficial configurado para hoy: 23 de Junio de 2026 (Mes 5 en JS = Junio)
+        const START_DATE = new Date(2026, 5, 23); 
         const TRACK_PER_DAY = 3;
         
-        // Lista completa de tus 15 enlaces de Archive.org cargados correctamente
+        // Lista completa de tus 79 enlaces de Archive.org procesados y formateados correctamente
         const URLS = [
-            "https://archive.org/download/santiago_202606/Santiago-1-1-al-11.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-1-12-al-18.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-1-19-al-27.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-2-1-al-13.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-2-14-al-20.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-2-21-al-26.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-3-1-al-12.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-3-13-al--18.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-4-1-al-3.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-4-4-al-10.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-4-10-y-11.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-4-13-al-17.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-5-1-al-6.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-5-7-al-12.mp3",
-            "https://archive.org/download/santiago_202606/Santiago-5-13-al-20.mp3"
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-1-1-al-3.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-1-4-al-6.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-2-1-al-4.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-2-4-al-12.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-3-1-al-8.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-4-1-al-4.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-4-5-al-8.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-5-1-al-6.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-5-7-al-12.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-6-1-al-10.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-7-1-al-11.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-7-12-al-17.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-8-1-al-2.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-8-3-al-9.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-9-1-al-10.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-9-11-al-20.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-10-1-al-11.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-10-12-al-18.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-11-1-al-3.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-11-4-al-7.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-12-1-al-8.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-13-1-al-6.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-14-1-al-7.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-15-1-al-5.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-16-1-al-3.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-16-4-al-7.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-16-8-al-11.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-17-1-al-6.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-17-7-al-12.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-17-13-al-15.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-18-1-al-29.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-18-30-al-39.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-18-40-al-50.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-19-1-al-6.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-19-7-al-14.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-20-1-al-9.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-21.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-22-1-al-21.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-22-22-al-31.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-23-1-al-3.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-23-4.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-23-5-al-6.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-24.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-25-1-al-10.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-25-11-al-22.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-26-1-al-12.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-27-1-al-6.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-27-7-al-14.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-28-1-al-9.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-29-1-al-11.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-30-1-al-12.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-Salmos-31-1-al-8.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-31-9-al-24.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/LIbro-de-Salmos-32-1-al-5.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/LIbro-de-Salmos-32-6-al-11.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/LIbro-de-Salmos-33-1-al-9.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/LIbro-de-Salmos-33-10-al-22.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/LIbro-de-Salmos-34-1-al-10.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/LIbro-de-Salmos-34-11-al-22.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-35-1-al-10.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-35-11-al-28.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-36-1-al-12.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-37-1-al-15.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Llbro-de-Salmos-37-16-al-20.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/LIbro-de-Salmos-37-31-al-40.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/LIbro-de-Salmos-38-1-al-22.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/LIbro-de-Salmos-39-1-al-12.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/LIbro-de-Salmos-40-1-al-10.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/LIbro-de-Salmos-40-11-al-17.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-salmos-41-1-al-13.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-42-1-al-11.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-salmos-43-1-al-5.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-salmos-44-1-al-13.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-salmos-44-14-al-26.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-salmos-45-1-al-17.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-salmos-46-1-al-11.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-47-1-al-9.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-salmos-48-1-al-14.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-salmos-49-1-al-20.mp3",
+            "https://archive.org/download/salmos%20202606/Salmos%201%20al%2050/Libro-de-salmos-50-1-al-23.mp3"
         ];
 
         let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0;
@@ -207,18 +272,18 @@
               shareBtn = document.getElementById('share-audio-btn'),
               dayInfo = document.getElementById('devotion-day-info');
 
-        // Formateador robusto para procesar rangos con "al", "--" o "y"
+        // Formateador optimizado para extraer los rangos limpios de los Salmos
         function getCleanName(url) {
             const fileName = decodeURIComponent(url).split('/').pop().replace('.mp3', '');
             
-            // Soporta patrones comunes: Santiago-1-1-al-11, Santiago-3-13-al--18, Santiago-4-10-y-11
-            const matchRange = fileName.match(/santiago-(\d+)-(\d+)-(?:al|a|y)-+?(\d+)/i);
-            if (matchRange) return `SANTIAGO ${matchRange[1]}:${matchRange[2]}-${matchRange[3]}`;
+            // Procesa patrones: Libro-de-Salmos-1-1-al-3, Libro-de-Salmos-11-4-al-7, Libro-de-salmos-21
+            const matchRange = fileName.match(/salmos-(\d+)-(\d+)-(?:al|a|y)-+?(\d+)/i);
+            if (matchRange) return `SALMOS ${matchRange[1]}:${matchRange[2]}-${matchRange[3]}`;
             
-            const matchSingle = fileName.match(/santiago-(\d+)$/i);
-            if (matchSingle) return `SANTIAGO CAPÍTULO ${matchSingle[1]}`;
+            const matchSingle = fileName.match(/salmos-(\d+)/i);
+            if (matchSingle) return `SALMOS CAPÍTULO ${matchSingle[1]}`;
             
-            return fileName.replace(/-/g, ' ').replace(/movimiento blindaje/gi, '').trim().toUpperCase();
+            return fileName.replace(/-/g, ' ').replace(/libro de/gi, '').trim().toUpperCase();
         }
 
         const ALL_TRACKS = URLS.map(url => ({ name: getCleanName(url), url }));
@@ -288,10 +353,10 @@
         shareBtn.onclick = () => {
             const baseUrl = window.location.origin + window.location.pathname;
             const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
-            const textToShare = `¡Descubre el libro de Santiago en Blindaje: ${ALL_TRACKS[currentIdx].name}! 🛡️\n${shareUrl}`;
+            const textToShare = `¡Descubre el libro de Salmos en Blindaje: ${ALL_TRACKS[currentIdx].name}! 🛡️\n${shareUrl}`;
 
             if (navigator.share) {
-                navigator.share({ title: 'Blindaje Santiago', text: textToShare, url: shareUrl });
+                navigator.share({ title: 'Blindaje Salmos', text: textToShare, url: shareUrl });
             } else {
                 const dummy = document.createElement("textarea");
                 document.body.appendChild(dummy);
@@ -320,6 +385,7 @@
             let count = 0;
             let tempDate = new Date(START_DATE);
 
+            // Sistema de conteo automático omitiendo los fines de semana (Sábados y Domingos)
             while (tempDate <= today) {
                 const dayOfWeek = tempDate.getDay();
                 if (dayOfWeek !== 0 && dayOfWeek !== 6) {
