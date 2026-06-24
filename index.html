@@ -418,13 +418,9 @@
                 const opciones = { day: 'numeric', month: 'long' };
                 dayInfo.textContent = `PRÓXIMA MISIÓN: ${START_DATE.toLocaleDateString('es-ES', opciones).toUpperCase()}`;
             } else {
-                // Mantenemos el cálculo del día para los textos informativos de la cabecera
                 currentDayStart = Math.max(0, (count - 1) * TRACK_PER_DAY);
                 dayInfo.textContent = isWeekend ? `REPASO DE PALACIO` : `CRÓNICA DE GUERRA: ${count}`;
             }
-
-            // MODIFICACIÓN CRÍTICA: Forzamos a que el bloque visible de "Hoy" y el audio inicial arranquen desde el Salmo 1
-            currentDayStart = 0; 
 
             const params = new URLSearchParams(window.location.search);
             const urlIdx = params.get('trackIndex');
