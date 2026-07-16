@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blindaje - Salmos Comic Vintage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap');
+        
+        :root {
+            --comic-yellow: #ffc61a;
+            --comic-black: #000000;
+            --comic-cyan: #00d2ff;
+            --comic-pink: #ff00ff;
+            --comic-orange: #ff6b00;
+            --comic-paper: #fdf6e3; 
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--comic-yellow);
+            background-image: radial-gradient(rgba(0,0,0,0.18) 2px, transparent 2px);
+            background-size: 20px 20px;
+        }
+
+        .comic-font { font-family: 'Bangers', cursive; letter-spacing: 2px; }
+
+        .comic-card {
+            background: var(--comic-paper);
+            border: 6px solid var(--comic-black);
+            box-shadow: 14px 14px 0px var(--comic-black);
+        }
+
+        .comic-button {
+            border: 4px solid var(--comic-black);
+            box-shadow: 6px 6px 0px var(--comic-black);
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .comic-button:active {
+            transform: translate(3px, 3px);
+            box-shadow: 1px 1px 0px var(--comic-black);
+        }
+
+        .comic-track-card {
+            border: 3px solid var(--comic-black);
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            background: #000;
+            height: 18px;
+            border: 4px solid black;
+            cursor: pointer;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 32px;
+            width: 18px;
+            background: var(--comic-pink);
+            border: 3px solid black;
+            box-shadow: 4px 0px 0px black;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #000; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--comic-yellow); border: 2px solid black; }
+
+        .ink-border {
+            border: 6px solid black;
+            box-shadow: 8px 8px 0px var(--comic-cyan), -8px -8px 0px var(--comic-pink);
+        }
+
+        img { color: transparent; }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex flex-col items-center">
+
+    <header class="text-center mb-12 relative">
+        <div class="inline-block p-2 bg-white ink-border transform -rotate-2 mb-10">
+            <img id="logo-img" 
+                 src="logo-blindaje.png" 
+                 alt=" " 
+                 class="max-h-40 md:max-h-52 block mx-auto"
+                 onerror="this.style.display='none'">
+        </div>
+        
+        <div class="relative">
+            <h1 class="text-8xl md:text-9xl font-normal text-black comic-font uppercase drop-shadow-[8px_8px_0px_white] transform rotate-1">
+                SALMOS
+            </h1>
+            <div class="absolute -top-10 -right-12 bg-white border-4 border-black px-6 py-2 comic-font text-3xl transform rotate-12 hidden md:block">
+                ¡BOOM!
+            </div>
+        </div>
+        
+        <div id="devotion-day-info" class="mt-8 inline-block bg-black text-white px-10 py-4 border-4 border-white comic-font text-3xl tracking-widest uppercase transform -rotate-1 shadow-[10px_10px_0px_var(--comic-cyan)]">
+            CARGANDO MISIÓN...
+        </div>
+    </header>
+
+    <main class="w-full max-w-xl space-y-10">
+        <section class="comic-card rounded-none p-10 md:p-14 relative overflow-visible">
+            <div class="absolute -top-8 -left-8 bg-orange-500 text-white border-4 border-black p-4 comic-font text-2xl transform -rotate-12 z-20 shadow-xl">
+                ¡AL AIRE!
+            </div>
+            
+            <div class="text-center mb-12">
+                <div class="flex justify-center mb-6">
+                     <span class="bg-black text-white px-6 py-2 text-sm font-black uppercase tracking-[0.3em] italic border-2 border-dashed border-white">Capítulo de Hoy</span>
+                </div>
+                <h2 id="track-name" class="text-5xl md:text-6xl font-black text-black uppercase leading-tight italic border-b-[10px] border-cyan-400 inline-block py-2">
+                    ---
+                </h2>
+            </div>
+
+            <div class="space-y-6 mb-12">
+                <input type="range" id="seek-bar" value="0" class="w-full">
+                <div class="flex justify-between font-black text-lg uppercase italic tracking-tighter">
+                    <span id="current-time" class="bg-black text-white px-3">0:00</span>
+                    <span id="total-time" class="bg-black text-white px-3">0:00</span>
+                </div>
+            </div>
+
+            <div class="flex justify-center items-center gap-6 md:gap-12">
+                <button id="prev-btn" class="comic-button bg-cyan-400 w-20 h-20 rounded-none transform -rotate-3 hover:bg-cyan-300">
+                    <svg class="w-10 h-10" fill="none" stroke="black" stroke-width="5" viewBox="0 0 24 24"><path d="M11 17l-5-5m0 0l5-5m-5 5h12" stroke-linecap="square"/></svg>
+                </button>
+                
+                <button id="play-pause-btn" class="comic-button bg-pink-500 w-28 h-28 rounded-none transform rotate-3 hover:scale-110 active:scale-95">
+                    <svg id="play-icon" class="w-16 h-16" fill="black" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.841z"/></svg>
+                    <svg id="pause-icon" class="w-16 h-16 hidden" fill="black" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
+                </button>
+
+                <button id="next-btn" class="comic-button bg-orange-500 w-20 h-20 rounded-none transform rotate-3 hover:bg-orange-400">
+                    <svg class="w-10 h-10" fill="none" stroke="black" stroke-width="5" viewBox="0 0 24 24"><path d="M13 7l5 5m0 0l-5 5m5-5H6" stroke-linecap="square"/></svg>
+                </button>
+            </div>
+
+            <button id="share-audio-btn" class="w-full mt-12 py-5 bg-black text-white comic-font text-3xl uppercase tracking-widest hover:bg-yellow-400 hover:text-black transition-all shadow-[10px_10px_0px_var(--comic-cyan)] active:translate-y-1">
+                ¡COMPARTE TUS MUNICIONES!
+            </button>
+        </section>
+
+        <section class="comic-card p-8 transform rotate-1">
+            <h3 class="comic-font text-4xl text-black mb-8 border-b-6 border-black inline-block uppercase">Escenas de Hoy</h3>
+            <div id="daily-list" class="grid grid-cols-1 gap-6"></div>
+        </section>
+
+        <section class="px-4">
+            <h3 class="comic-font text-3xl text-black mb-6 uppercase inline-block border-l-[12px] border-black pl-5">Archivo de Palacio</h3>
+            <div id="archive-list" class="space-y-4 max-h-72 overflow-y-auto custom-scrollbar pr-6"></div>
+        </section>
+    </main>
+
+    <footer class="mt-20 pb-16 text-center space-y-12">
+         <div class="flex justify-center">
+            <div class="transform hover:scale-110 transition-transform cursor-pointer drop-shadow-[10px_10px_2px_rgba(0,0,0,0.5)]">
+                <img src="icono-blindaje.png" alt=" " class="max-h-40 md:max-h-48" onerror="this.style.display='none'">
+            </div>
+         </div>
+
+         <div class="comic-font text-black text-3xl bg-white border-4 border-black px-10 py-3 inline-block shadow-[12px_12px_0px_var(--comic-pink)] transform rotate-2">
+            MOVIMIENTO BLINDAJE © 2026
+         </div>
+    </footer>
+
+    <script type="module">
+        // Lanzamiento oficial ajustado al martes 23 de junio de 2026
+        const START_DATE = new Date(2026, 5, 23); 
+        const TRACK_PER_DAY = 3;
+        
+        const URLS = [
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-1-1-al-3.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-1-4-al-6.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-2-1-al-4.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-2-4-al-12.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-3-1-al-8.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-4-1-al-4.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-4-5-al-8.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-5-1-al-6.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-5-7-al-12.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-6-1-al-10.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-7-1-al-11.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-7-12-al-17.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-8-1-al-2.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-8-3-al-9.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-9-1-al-10.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-9-11-al-20.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-10-1-al-11.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-10-12-al-18.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-11-1-al-3.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-11-4-al-7.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-12-1-al-8.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-13-1-al-6.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-14-1-al-7.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-15-1-al-5.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-16-1-al-3.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-16-4-al-7.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-16-8-al-11.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-17-1-al-6.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-17-7-al-12.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-17-13-al-15.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-18-1-al-29.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-18-30-al-39.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-18-40-al-50.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-19-1-al-6.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-19-7-al-14.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-20-1-al-9.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-21.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-22-1-al-21.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-22-22-al-31.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-23-1-al-3.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-23-4.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-23-5-al-6.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-24.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-25-1-al-10.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-25-11-al-22.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-26-1-al-12.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-27-1-al-6.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-27-7-al-14.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-28-1-al-9.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-29-1-al-11.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-30-1-al-12.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-Salmos-31-1-al-8.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-31-9-al-24.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-32-1-al-5.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-32-6-al-11.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-33-1-al-9.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-33-10-al-22.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-34-1-al-10.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-34-11-al-22.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-35-1-al-10.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-35-11-al-28.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-36-1-al-12.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-37-1-al-15.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-37-16-al-20.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-37-31-al-40.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-38-1-al-22.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-39-1-al-12.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-40-1-al-10.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/LIbro-de-Salmos-40-11-al-17.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-41-1-al-13.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-42-1-al-11.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-43-1-al-5.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-44-1-al-13.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-44-14-al-26.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-45-1-al-17.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-46-1-al-11.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-47-1-al-9.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-48-1-al-14.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-49-1-al-20.mp3",
+            "https://archive.org/download/salmos_202606/Salmos%201%20al%2050/Libro-de-salmos-50-1-al-23.mp3"
+        ];
+
+        let audio = new Audio(), currentIdx = 0, isPlaying = false, currentDayStart = 0;
+
+        const trackName = document.getElementById('track-name'),
+              playPauseBtn = document.getElementById('play-pause-btn'),
+              playIcon = document.getElementById('play-icon'),
+              pauseIcon = document.getElementById('pause-icon'),
+              seekBar = document.getElementById('seek-bar'),
+              dailyList = document.getElementById('daily-list'),
+              archiveList = document.getElementById('archive-list'),
+              shareBtn = document.getElementById('share-audio-btn'),
+              dayInfo = document.getElementById('devotion-day-info');
+
+        function getCleanName(url) {
+            const fileName = decodeURIComponent(url).split('/').pop().replace('.mp3', '');
+
+            // Estos patrones ahora reconocen CUALQUIER libro (Salmos, Apocalipsis, Génesis, etc.)
+            // con solo que el archivo se llame "Libro-de-<Nombre del libro>-..." como ya venís haciendo.
+
+            const matchRange = fileName.match(/Libro-de-([A-Za-zÀ-ÿ]+)-(\d+)-(\d+)-(?:al|a|y)-+?(\d+)/i);
+            if (matchRange) return `${matchRange[1].toUpperCase()} ${matchRange[2]}:${matchRange[3]}-${matchRange[4]}`;
+
+            const matchSingleVerse = fileName.match(/Libro-de-([A-Za-zÀ-ÿ]+)-(\d+)-(\d+)/i);
+            if (matchSingleVerse) return `${matchSingleVerse[1].toUpperCase()} ${matchSingleVerse[2]}:${matchSingleVerse[3]}`;
+
+            const matchChapter = fileName.match(/Libro-de-([A-Za-zÀ-ÿ]+)-(\d+)/i);
+            if (matchChapter) return `${matchChapter[1].toUpperCase()} CAPÍTULO ${matchChapter[2]}`;
+
+            return fileName.replace(/-/g, ' ').replace(/movimiento blindaje/gi, '').trim().toUpperCase();
+        }
+
+        const ALL_TRACKS = URLS.map(url => ({ name: getCleanName(url), url }));
+
+        function loadTrack(i, autoPlay = false) {
+            if (i < 0 || i >= ALL_TRACKS.length) return;
+            currentIdx = i;
+            
+            audio.pause();
+            audio.removeAttribute('src');
+            audio.load();
+            
+            audio.crossOrigin = "anonymous";
+            
+            audio.src = ALL_TRACKS[i].url;
+            trackName.textContent = ALL_TRACKS[i].name;
+            renderLists();
+            
+            if(autoPlay) {
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        isPlaying = true;
+                        playIcon.classList.add('hidden'); 
+                        pauseIcon.classList.remove('hidden');
+                    }).catch(e => {
+                        console.log("Reproducción automática bloqueada por interacción inicial:", e);
+                        isPlaying = false;
+                        playIcon.classList.remove('hidden'); 
+                        pauseIcon.classList.add('hidden');
+                    });
+                }
+            }
+        }
+
+        function renderLists() {
+            dailyList.innerHTML = '';
+            archiveList.innerHTML = '';
+            const labels = ["DESAYUNO", "ALMUERZO", "CENA"];
+            const cardColors = ["hover:bg-cyan-200", "hover:bg-pink-200", "hover:bg-orange-200"];
+            
+            ALL_TRACKS.forEach((t, i) => {
+                const li = document.createElement('div');
+                const active = i === currentIdx;
+                
+                if (i >= currentDayStart && i < currentDayStart + TRACK_PER_DAY) {
+                    const labelIdx = i - currentDayStart;
+                    li.className = `p-6 comic-track-card cursor-pointer flex justify-between items-center transition-transform ${active ? 'bg-black text-white scale-[1.03] z-10' : 'bg-white text-black ' + cardColors[labelIdx]}`;
+                    li.innerHTML = `
+                        <div>
+                            <span class="text-xs font-black italic block ${active ? 'text-yellow-400' : 'text-gray-500'} tracking-widest mb-1">${labels[labelIdx]}</span>
+                            <span class="font-black text-2xl uppercase italic">${t.name}</span>
+                        </div>
+                        <div class="text-3xl">${active ? '⚡' : '▶'}</div>`;
+                    li.onclick = () => loadTrack(i, true);
+                    dailyList.appendChild(li);
+                } else if (i < currentDayStart) {
+                    li.className = "p-5 bg-white/90 border-4 border-black text-sm font-black uppercase flex justify-between cursor-pointer hover:bg-black hover:text-white group transition-all";
+                    li.innerHTML = `<span>${t.name}</span> <span class="bg-yellow-400 text-black px-3 py-1 border-2 border-black group-hover:bg-cyan-400">VISTO</span>`;
+                    li.onclick = () => loadTrack(i, true);
+                    archiveList.appendChild(li);
+                }
+            });
+        }
+
+        audio.onended = () => {
+            if (currentIdx < currentDayStart + (TRACK_PER_DAY - 1) && currentIdx < ALL_TRACKS.length - 1) {
+                loadTrack(currentIdx + 1, true);
+            } else {
+                isPlaying = false;
+                playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden');
+            }
+        };
+
+        playPauseBtn.onclick = () => {
+            if(isPlaying) { audio.pause(); } else { audio.play(); }
+            isPlaying = !isPlaying;
+            playIcon.classList.toggle('hidden');
+            pauseIcon.classList.toggle('hidden');
+        };
+
+        document.getElementById('prev-btn').onclick = () => loadTrack(currentIdx - 1, true);
+        document.getElementById('next-btn').onclick = () => loadTrack(currentIdx + 1, true);
+
+        shareBtn.onclick = () => {
+            const baseUrl = window.location.origin + window.location.pathname;
+            const shareUrl = `${baseUrl}?trackIndex=${currentIdx}&play=true`;
+            const textToShare = `¡Descubre el libro de Salmos en Blindaje: ${ALL_TRACKS[currentIdx].name}! 🛡️\n${shareUrl}`;
+
+            if (navigator.share) {
+                navigator.share({ title: 'Blindaje Salmos', text: textToShare, url: shareUrl });
+            } else {
+                const dummy = document.createElement("textarea");
+                document.body.appendChild(dummy);
+                dummy.value = shareUrl;
+                dummy.select();
+                document.execCommand("copy");
+                document.body.removeChild(dummy);
+                shareBtn.textContent = "¡ENLACE COPIADO!";
+                setTimeout(() => shareBtn.textContent = "¡COMPARTE TUS MUNICIONES!", 2000);
+            }
+        };
+
+        audio.ontimeupdate = () => {
+            if(audio.duration) {
+                seekBar.value = (audio.currentTime / audio.duration) * 100;
+                document.getElementById('current-time').textContent = formatTime(audio.currentTime);
+                document.getElementById('total-time').textContent = formatTime(audio.duration);
+            }
+        };
+
+        function formatTime(s) { return Math.floor(s/60) + ":" + Math.floor(s%60).toString().padStart(2,'0'); }
+        seekBar.oninput = () => audio.currentTime = (seekBar.value / 100) * audio.duration;
+
+        function init() {
+            const today = new Date();
+            let count = 0;
+            let tempDate = new Date(START_DATE);
+
+            while (tempDate <= today) {
+                const dayOfWeek = tempDate.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    count++;
+                }
+                tempDate.setDate(tempDate.getDate() + 1);
+            }
+
+            const isWeekend = (today.getDay() === 0 || today.getDay() === 6);
+            
+            if (today < START_DATE) {
+                currentDayStart = 0;
+                const opciones = { day: 'numeric', month: 'long' };
+                dayInfo.textContent = `PRÓXIMA MISIÓN: ${START_DATE.toLocaleDateString('es-ES', opciones).toUpperCase()}`;
+            } else {
+                currentDayStart = Math.max(0, (count - 1) * TRACK_PER_DAY);
+                dayInfo.textContent = isWeekend ? `REPASO DE PALACIO` : `CRÓNICA DE GUERRA: ${count}`;
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const urlIdx = params.get('trackIndex');
+            const shouldPlay = params.get('play') === 'true';
+
+            let startIdx = urlIdx !== null ? parseInt(urlIdx) : currentDayStart;
+            if (startIdx >= ALL_TRACKS.length) startIdx = ALL_TRACKS.length - 1;
+
+            loadTrack(startIdx, shouldPlay);
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
